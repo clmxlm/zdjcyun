@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">中大检测云</string>
+    <string name="load">加载中...</string>
+    <string name="exit">再按一次退出</string>
+    <string name="tv_no_data">该项目没有数据!</string>
+    <string name="tv_network_error_one">您的网络好像在开小差</string>
+    <string name="tv_network_error_two">请检查网络设置,点击屏幕重新加载</string>
+
+    <string name="project_name">项目名称:</string>
+    <string name="all_project">所有项目</string>
+    <string name="project_address">地址:</string>
+    <string name="project_principal">负责人:</string>
+    <string name="project_time">进度条:</string>
+    <string name="project_type">类型:</string>
+    <string name="project_warning">告警:</string>
+
+    <string name="name">请输入用户名</string>
+    <string name="password">请输入密码</string>
+    <string name="login">登录</string>
+    <string name="logout">退出登录</string>
+    <string name="user_name">用户名:</string>
+    <string name="personert_name">姓名:</string>
+    <string name="personert_phone">电话:</string>
+    <string name="personert_email">邮箱:</string>
+    <string name="personert_company">公司:</string>
+
+    <string name="picker_sure">确定</string>
+    <string name="picker_cancel">取消</string>
+    <string name="picker_title">选择时间</string>
+    <string name="begin_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+
+    <string name="picture_one">普通图</string>
+    <string name="picture_two">卫星图</string>
+
+    <string name="tv_up">上一页</string>
+    <string name="tv_down">下一页</string>
+    <string name="tv_warning">暂无告警信息!</string>
+
+    <string name="tv_point">测点</string>
+    <string name="tv_total">累计量</string>
+    <string name="tv_speed">变化速率</string>
+
+    <string name="picker_year">年</string>
+    <string name="picker_month">月</string>
+    <string name="picker_day">日</string>
+    <string name="picker_hour">时</string>
+    <string name="picker_minute">分</string>
+
+    <string name="tv_surveys_point_name">测点名称&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="tv_terminal_number">终端编号&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="tv_sensor_number">传感器编号&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="tv_project_name">项目名称&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="tv_detection_indicator">监测指标&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="tv_sate">状态&#160;&#160;&#160;&#160;&#160;&#160;</string>
+
+</resources>

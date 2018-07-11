@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_color">
+
+
+        <LinearLayout
+            android:id="@+id/rl_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_up_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/left"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@drawable/background_project_detail_btn"
+                    android:text="@string/tv_up"
+                    android:onClick="onClick"
+                    android:focusable="true"
+                    android:textColor="@color/white"
+                    android:layout_height="@dimen/MY_DP_40" />
+
+                <TextView
+                    android:id="@+id/tv_page_number"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/MY_SP_16"
+                    android:textColor="@color/white"
+                    android:background="@drawable/background_project_detail_btn"
+                    android:layout_height="@dimen/MY_DP_40" />
+
+                <Button
+                    android:id="@+id/right"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@drawable/background_project_detail_btn"
+                    android:text="@string/tv_down"
+                    android:onClick="onClick"
+                    android:focusable="true"
+                    android:textColor="@color/white"
+                    android:layout_height="@dimen/MY_DP_40" />
+            </LinearLayout>
+
+            <com.bin.david.form.core.SmartTable
+                android:id="@+id/warning_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_warning"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/theme_color"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/no_data"/>
+
+            <TextView
+                android:id="@+id/tv_warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/MY_DP_10"
+                android:text="@string/tv_warning"
+                android:textColor="@color/white"
+                android:textSize="@dimen/MY_SP_20" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</layout>
