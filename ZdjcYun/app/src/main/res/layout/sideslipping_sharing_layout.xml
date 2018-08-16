@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<ScrollView
+            android:layout_width="@dimen/MY_DP_268"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white"
+            android:scrollbars="none">
+
+
+    <!-- 侧滑菜单内容 -->
+    <LinearLayout
+        android:id="@+id/drawer_view"
+        android:layout_width="@dimen/MY_DP_268"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/change_head_image"
+            android:layout_width="@dimen/MY_DP_268"
+            android:layout_height="@dimen/MY_DP_120"
+            android:background="@color/theme_color">
+
+            <ImageView
+                android:id="@+id/heard_image"
+                android:layout_width="@dimen/MY_DP_80"
+                android:layout_height="@dimen/MY_DP_80"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/MY_DP_10"
+                android:src="@mipmap/logo_login"
+                android:clickable="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/heard_image"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/MY_DP_150"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/true_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/MY_DP_5"
+                        android:text="中大检测"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/MY_SP_19"/>
+
+                    <TextView
+                        android:id="@+id/view_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/MY_DP_5"
+                        android:text="云平台"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/MY_SP_13"/>
+
+
+                </LinearLayout>
+
+
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="@dimen/MY_DP_20"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:layout_marginRight="@dimen/MY_DP_10"-->
+                    <!--android:src="@drawable/more"/>-->
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_browse"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="#f0f0f0">
+
+            <ImageView
+                android:id="@+id/iv_browse"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/username"/>
+
+            <TextView
+                android:id="@+id/tv_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_browse"
+                android:text="中大检测"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/username"/>
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_search"
+                android:text="中大检测"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_notification"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/phone"/>
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_notification"
+                android:text="中大检测"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_shop_cart"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_shop_cart"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/email"/>
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_shop_cart"
+                android:text="中大检测"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_order_history"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_order_history"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/company"/>
+
+            <TextView
+                android:id="@+id/tv_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_order_history"
+                android:text="中大检测"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_logout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_logout"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"/>
+
+            <TextView
+                android:id="@+id/tv_token"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_logout"
+                android:text="退出登录"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>
+</layout>
