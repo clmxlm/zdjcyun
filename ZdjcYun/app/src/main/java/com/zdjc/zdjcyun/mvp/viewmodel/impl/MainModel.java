@@ -1,274 +1,339 @@
 package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 
 
-import android.app.Dialog;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.flyco.tablayout.listener.CustomTabEntity;
-import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.flyco.tablayout.utils.UnreadMsgUtils;
-import com.flyco.tablayout.widget.MsgView;
-import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.zdjc.zdjcyun.R;
-import com.zdjc.zdjcyun.app.BaseApplication;
+import com.zdjc.zdjcyun.app.Constant;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.ActivityMainBinding;
-import com.zdjc.zdjcyun.jpush.NewsActivity;
-import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
-import com.zdjc.zdjcyun.mvp.entity.TabEntity;
+import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
+import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.MainPresenterImpl;
+import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
-import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectListRecycViewAdapter;
-import com.zdjc.zdjcyun.mvp.ui.fragment.HomeFragment;
-import com.zdjc.zdjcyun.mvp.ui.fragment.ProjectDetailFragment;
-import com.zdjc.zdjcyun.mvp.ui.fragment.WarningMessageFragment;
+import com.zdjc.zdjcyun.mvp.ui.activities.ProjectListActivity;
+import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectTypeRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.viewmodel.IMainModel;
+import com.zdjc.zdjcyun.util.ImageLoaderUtils;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by ali on 2017/2/20.
  */
 
-public class MainModel extends BaseModel<ActivityMainBinding, MainPresenterImpl> implements
-        IMainModel, OnItemClickListener{
+public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> implements IMainModel,ViewPager.OnPageChangeListener{
 
-    private List<AllProjectListEntity.DataBean> dataBeanList;
-    private String[] mTitles = {"位置", "实时", "告警"};
-    private ProjectListRecycViewAdapter projectListRecycViewAdapter;
 
-    private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_unselect, R.mipmap.tab_more_unselect,
-            R.mipmap.tab_speech_unselect};
-    private int[] mIconSelectIds = {
-            R.mipmap.tab_home_select, R.mipmap.tab_more_select,
-            R.mipmap.tab_speech_select};
-    private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private int count = 0;
-    private Dialog dialog;
-    private boolean mapOnclick;
-    private int mapOnclickPosition;
-
+    private ViewPager viewPager;
+    private ArrayList<ImageView> imageViewList;
+    private LinearLayout ll_point_container;
+    private TextView tv_desc;
+    private int previousSelectedPosition = 0;
+    private boolean isRunning = false;
+    private BeginEntity.DataBean homeViewData;
+    private ProjectTypeRecycViewAdapter projectTypeRecycViewAdapter;
+//    private PDFRecycViewAdapter pdfRecycViewAdapter;
+    private DrawerLayout drawerLayout;
 
     @Override
     public void onCreate() {
-        PreferenceUtils.putInt(getContext(),"projectPosition",0);
-        mBinder.include.tvTitle.setText("项目详情");
-        mBinder.include.imgbtnBack.setVisibility(View.VISIBLE);
-        mBinder.include.imgbtnBack.setOnClickListener(v -> ((MainActivity)UI).finish());
-        initData();
-    }
 
-    @Override
-    public void onBeforeRequest(int tag) {
+        // 初始化布局 View视图
+        initViews();
 
-    }
-
-    @Override
-    public void onSuccess(Object bean, int tag) {
-        /**
-         * 成功后到这里
-         */
-        switch (tag) {
-            case 1:
-                break;
-        }
-    }
-    @Override
-    public void onError(String errorMsg, int tag) {
-
-    }
-
-    public void getAlcount(int alcount){
-        this.count = alcount;
-        PreferenceUtils.putInt(getContext(),"count",count);
-        mBinder.tl2.showMsg(2, count);
-        mBinder.tl2.setMsgMargin(2, -5, 5);
-    }
-
-    @Override
-    public void initData() {
-        NewsActivity newsActivity = new NewsActivity(getContext());
-        newsActivity.registerMessageReceiver();
-        projectListRecycViewAdapter = new ProjectListRecycViewAdapter((MainActivity)UI);
-        for (String title : mTitles) {
-            if ("位置".equals(title)){
-                mFragments.add(HomeFragment.newInstance(title));
-            }else if ("实时".equals(title)){
-                mFragments.add(ProjectDetailFragment.newInstance(title));
-            }else if ("告警".equals(title)){
-                mFragments.add(WarningMessageFragment.newInstance(title));
-            }
-        }
-
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
-        }
-
-        /** with Fragment */
-        mBinder.tl2.setTabData(mTabEntities, (MainActivity)UI, R.id.fl_change1, mFragments);
-        mBinder.tl2.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelect(int position) {
-                if (position==1){
-                    ProjectDetailFragment projectDetailFragment = (ProjectDetailFragment) mFragments.get(1);
-                    projectDetailFragment.mModel.requestData(false);
+        // 开启轮询
+        new Thread() {
+            public void run() {
+                isRunning = true;
+                while (isRunning) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    // 往下跳一位
+                    ((MainActivity) UI).runOnUiThread(() -> {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    });
                 }
             }
+        }.start();
+    }
 
-            @Override
-            public void onTabReselect(int position) {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isRunning = false;
+    }
 
-            }
-        });
+    private void initViews() {
+        drawerLayout = mBinder.drawer;
+        mBinder.include.imgbtnLeft.setVisibility(View.VISIBLE);
+        mBinder.include.imgbtnLeft.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
-        mBinder.tl2.setCurrentTab(0);
-        mBinder.tl2.showMsg(2, count);
-        mBinder.tl2.setMsgMargin(2, -5, 5);
+        projectTypeRecycViewAdapter = new ProjectTypeRecycViewAdapter((MainActivity) UI);
+//        pdfRecycViewAdapter = new PDFRecycViewAdapter((MainActivity) UI);
 
-        //设置未读消息红点
-//        mBinder.tl2.showDot(3);
-        MsgView rtv_2_2 =  mBinder.tl2.getMsgView(3);
-        if (rtv_2_2 != null) {
-            UnreadMsgUtils.setSize(rtv_2_2, dp2px(7.5f));
+        String token = PreferenceUtils.getString(getContext(),"token");
+        Map<String,String> map = new HashMap<>();
+        map.put("token",token);
+        mControl.getHomeViewMsg(this,map,1);
+
+        viewPager = mBinder.viewpager;
+        viewPager.setOnPageChangeListener(this);// 设置页面更新监听
+//		viewPager.setOffscreenPageLimit(1);// 左右各保留几个对象
+        ll_point_container = mBinder.llPointContainer;
+        tv_desc = mBinder.tvDesc;
+        if ("".equals(token)){
+            mBinder.includeLeft.tvToken.setText("请先登录");
+            ImageLoaderUtils.imageDisPlayRes(R.mipmap.username,mBinder.includeLeft.ivLogout);
+        }else {
+            mBinder.includeLeft.tvToken.setText("退出登录");
+            ImageLoaderUtils.imageDisPlayRes(R.mipmap.logout,mBinder.includeLeft.ivLogout);
         }
-
-        projectListRecycViewAdapter.setOnItemClickListener((view, position) -> {
-            dialog.dismiss();
-            if (mapOnclick){
-                mBinder.tl2.setCurrentTab(1);
-                ProjectDetailFragment projectDetailFragment = (ProjectDetailFragment) mFragments.get(1);
-                PreferenceUtils.putInt(getContext(),"projectPosition",mapOnclickPosition);
-                projectDetailFragment.mModel.requestData(false);
+        mBinder.includeLeft.rlLogout.setOnClickListener(v -> {
+            if (!"".equals(token)){
+                Map<String,String> map1 = new HashMap<>();
+                map1.put("zdjc","zdjc");
+                mControl.loginOut(MainModel.this, map1,3);
             }else {
-                PreferenceUtils.putInt(BaseApplication.getContext(),"projectId",dataBeanList.get(position).getProjectId());
-                PreferenceUtils.putString(getContext(),"projectName",dataBeanList.get(position).getProjectName());
-                PreferenceUtils.putInt(getContext(),"projectPosition",position);
-                //重新选择项目之前存下来的所有字段值全部清空
-                PreferenceUtils.putInt(getContext(),"topPosition",0);
-                PreferenceUtils.putInt(getContext(),"leftPosition",0);
-                PreferenceUtils.putString(getContext(),"tableName",null);
-                PreferenceUtils.putString(getContext(),"startTime",null);
-                PreferenceUtils.putString(getContext(),"endTime",null);
-                PreferenceUtils.putString(getContext(),"sensorNumber",null);
-                PreferenceUtils.putString(getContext(),"smuNumber",null);
-                PreferenceUtils.putString(getContext(),"smuChannel",null);
-                moveFragment(1);
+                ((MainActivity)UI).intent2Activity(LoginActivity.class);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                ((MainActivity)UI).finish();
             }
-
         });
-//        if (PreferenceUtils.getBoolean(getContext(),"push")){
-//            moveFragment(2);
-//            PreferenceUtils.putBoolean(getContext(),"push",false);
-//        }
-    }
-
-    public void moveFragment(int tag){
-        if (dialog!=null){
-            dialog.dismiss();
-        }
-        mBinder.tl2.setCurrentTab(tag);
-        ProjectDetailFragment projectDetailFragment = (ProjectDetailFragment) mFragments.get(1);
-        WarningMessageFragment warningMessageFragment = (WarningMessageFragment) mFragments.get(2);
-        if (tag==1){
-            projectDetailFragment.mModel.requestData(true);
-        }else if (tag == 2){
-//            PreferenceUtils.putInt(BaseApplication.getContext(),"projectId",dataBeanList.get(0).getProjectId());
-            warningMessageFragment.mModel.getData(true);
-            warningMessageFragment.mModel.getView(mBinder.tl2);
-            mBinder.tl2.showMsg(2, count);
-            mBinder.tl2.setMsgMargin(2, -5, 5);
-        }
-
-    }
-
-    @Override
-    public void initListener() {
-
-    }
-
-
-
-    public void mapClick(int i) {
-        mapOnclick = true;
-        List<AllProjectListEntity.DataBean> mapDataList = new ArrayList<>();
-        mapDataList.add(dataBeanList.get(i));
-        myProjectListDialog(mapDataList);
-        mapOnclickPosition = i;
-    }
-
-
-    @Override
-    public void allProjectClick(List<AllProjectListEntity.DataBean> dataBeanList) {
-        mapOnclick = false;
-        this.dataBeanList = dataBeanList;
-        myProjectListDialog(dataBeanList);
-    }
-
-
-    protected int dp2px(float dp) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
-    @Override
-    public void onItemClick(View view, int position) {
 
     }
 
 
     /**
-     * 自定义项目列表弹窗
+     * 初始化要显示的数据
      */
-    private void myProjectListDialog(List<AllProjectListEntity.DataBean> dataBeanList) {
+    private void initData() {
 
-        MainActivity mainActivity = (MainActivity)UI;
-        dialog = new Dialog(mainActivity, R.style.dialog);
-        // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.pop_project_list_drop_down, null);
-        // 设置我们自己定义的布局文件作为弹出框的Content
-        dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-        // 适配屏幕 screenAdaptive
-        WindowManager wm = ((MainActivity)UI).getWindowManager();
-        Display display = wm.getDefaultDisplay();
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = 99 * display.getWidth() / 100;
-        lp.height = FrameLayout.LayoutParams.WRAP_CONTENT;
-        dialog.getWindow().setAttributes(lp);
+        RecyclerView topRecyclerView = mBinder.topRecyclerView;
+//        RecyclerView pdfRecyclerView = mBinder.pdfRecyclerView;
 
-        RecyclerView popRecyclerView = view.findViewById(R.id.popRecyclerView);
+//        pdfRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+//        pdfRecycViewAdapter.setDataList(homeViewData.getFiles());
+//        pdfRecyclerView.setAdapter(pdfRecycViewAdapter);
 
-        // 如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        popRecyclerView.setHasFixedSize(true);
+        topRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
+        projectTypeRecycViewAdapter.setDataList(homeViewData.getProjecType());
+        topRecyclerView.setAdapter(projectTypeRecycViewAdapter);
 
-        // 确定每个item的排列方式
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext()) {
-            @Override
-            public RecyclerView.LayoutParams generateDefaultLayoutParams() {
-                // 这里要复写一下，因为默认宽高都是wrap_content
-                // 这个不复写，你点击的背景色就只充满你的内容
-                return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+        // 初始化要展示的5个ImageView
+        imageViewList = new ArrayList<>();
+
+        ImageView imageView;
+        View pointView;
+        LinearLayout.LayoutParams layoutParams;
+        for (int i = 0; i < homeViewData.getImage().size(); i++) {
+            // 初始化要显示的图片对象
+            imageView = new ImageView(getContext());
+            ImageLoaderUtils.imageDisPlay(Constant.IMAGE_URL+homeViewData.getImage().get(i).getUrl(),imageView);
+            imageViewList.add(imageView);
+
+            // 加小白点, 指示器
+            pointView = new View(getContext());
+            pointView.setBackgroundResource(R.drawable.selector_bg_point);
+            layoutParams = new LinearLayout.LayoutParams(5, 5);
+            if (i != 0)
+                layoutParams.leftMargin = 10;
+            // 设置默认所有都不可用
+            pointView.setEnabled(false);
+            ll_point_container.addView(pointView, layoutParams);
+        }
+        PreferenceUtils.putString(getContext(),"ceshi",Constant.IMAGE_URL+homeViewData.getImage().get(0).getUrl());
+
+        projectTypeRecycViewAdapter.setOnItemClickListener((view, position) -> {
+            if ("".equals(PreferenceUtils.getString(getContext(),"token"))){
+                ((MainActivity) UI).intent2Activity(LoginActivity.class);
+                ((MainActivity) UI).finish();
+            }else {
+                ((MainActivity) UI).intent2Activity(ProjectListActivity.class);
+                PreferenceUtils.putInt(getContext(),"projectType",homeViewData.getProjecType().get(position).getPtSc());
             }
-        };
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        popRecyclerView.setLayoutManager(layoutManager);
+        });
 
-        int projectPosition = PreferenceUtils.getInt(getContext(), "projectPosition");
-        projectListRecycViewAdapter.setDataList(dataBeanList);
-        projectListRecycViewAdapter.getPosition(projectPosition);
-        popRecyclerView.setAdapter(projectListRecycViewAdapter);
+//        pdfRecycViewAdapter.setOnItemClickListener((view, position) -> {
+//            if ("".equals(PreferenceUtils.getString(getContext(),"token"))){
+//                ((MainActivity) UI).intent2Activity(LoginActivity.class);
+//                ((MainActivity) UI).finish();
+//            }else {
+//                Intent intent = new Intent(getContext(),PDFActivity.class);
+//                intent.putExtra("reportUrl",homeViewData.getFiles().get(position).getFileUrl());
+//                intent.putExtra("report","free");
+//                getContext().startActivity(intent);
+//
+//            }
+//        });
     }
 
+    private void initAdapter() {
+        ll_point_container.getChildAt(0).setEnabled(true);
+        tv_desc.setText(homeViewData.getImage().get(0).getDescription());
+        previousSelectedPosition = 0;
+
+        // 设置适配器
+        viewPager.setAdapter(new MyAdapter());
+
+        // 默认设置到中间的某个位置
+        int pos = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % imageViewList.size());
+        // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
+        viewPager.setCurrentItem(5000000); // 设置到某个位置
+    }
+
+    class MyAdapter extends PagerAdapter {
+
+        @Override
+        public int getCount() {
+            return Integer.MAX_VALUE;
+        }
+
+        // 3. 指定复用的判断逻辑, 固定写法
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+//			System.out.println("isViewFromObject: "+(view == object));
+            // 当划到新的条目, 又返回来, view是否可以被复用.
+            // 返回判断规则
+            return view == object;
+        }
+
+        // 1. 返回要显示的条目内容, 创建条目
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            System.out.println("instantiateItem初始化: " + position);
+            // container: 容器: ViewPager
+            // position: 当前要显示条目的位置 0 -> 4
+
+//			newPosition = position % 5
+            int newPosition = position % imageViewList.size();
+
+            ImageView imageView = imageViewList.get(newPosition);
+            // a. 把View对象添加到container中
+            container.addView(imageView);
+            // b. 把View对象返回给框架, 适配器
+            return imageView; // 必须重写, 否则报异常
+        }
+
+        // 2. 销毁条目
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            // object 要销毁的对象
+            System.out.println("destroyItem销毁: " + position);
+            container.removeView((View) object);
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset,
+                               int positionOffsetPixels) {
+        // 滚动时调用
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        // 新的条目被选中时调用
+        System.out.println("onPageSelected: " + position);
+        int newPosition = position % imageViewList.size();
+
+        //设置文本
+        tv_desc.setText(homeViewData.getImage().get(newPosition).getDescription());
+
+//		for (int i = 0; i < ll_point_container.getChildCount(); i++) {
+//			View childAt = ll_point_container.getChildAt(position);
+//			childAt.setEnabled(position == i);
+//		}
+        // 把之前的禁用, 把最新的启用, 更新指示器
+        ll_point_container.getChildAt(previousSelectedPosition).setEnabled(false);
+        ll_point_container.getChildAt(newPosition).setEnabled(true);
+
+        // 记录之前的位置
+        previousSelectedPosition = newPosition;
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        // 滚动状态变化时调用
+    }
+
+    @Override
+    public void onBeforeRequest(int tag) {
+        UI.showWaitDialog();
+    }
+
+    @Override
+    public void onSuccess(Object bean, int tag) {
+        switch (tag) {
+            case 1:
+                homeViewData = (BeginEntity.DataBean) bean;
+                // Model数据
+                initData();
+                // Controller 控制器
+                initAdapter();
+
+                if (PreferenceUtils.getString(getContext(),"uesrName")!=null){
+                    Map<String,String> map = new HashMap<>();
+                    map.put("userName", PreferenceUtils.getString(getContext(),"uesrName"));
+                    mControl.getPersonMsg(this,map,2);
+                }
+                break;
+            case 2:
+                PersonMessageEntity.DataBean dataBean = (PersonMessageEntity.DataBean)bean;
+                String userName = getContext().getResources().getString(R.string.user_name)+" "+
+                        dataBean.getUserName();
+                String personertName = getContext().getResources().getString(R.string.personert_name)+" "+
+                        dataBean.getRealName();
+                String personertPhone = getContext().getResources().getString(R.string.personert_phone)+" "+
+                        dataBean.getPhone();
+                String personertEmail = getContext().getResources().getString(R.string.personert_email)+" "+
+                        dataBean.getEmail();
+                String personertCompany = getContext().getResources().getString(R.string.personert_company)+" "+
+                        dataBean.getCompany();
+
+                mBinder.includeLeft.tvUser.setText(userName);
+                mBinder.includeLeft.tvUsername.setText(personertName);
+                mBinder.includeLeft.tvPhone.setText(personertPhone);
+                mBinder.includeLeft.tvEmail.setText(personertEmail);
+                mBinder.includeLeft.tvCompany.setText(personertCompany);
+                PreferenceUtils.putString(getContext(),"userName",dataBean.getUserName());
+                break;
+            case 3:
+                PreferenceUtils.putInt(getContext(),"projectPosition",0);
+                PreferenceUtils.putInt(getContext(),"onePosition",0);
+                PreferenceUtils.putInt(getContext(),"twoPosition",0);
+                PreferenceUtils.putString(getContext(),"startTime",null);
+                PreferenceUtils.putString(getContext(),"endTime",null);
+                PreferenceUtils.putString(getContext(),"token","");
+                PreferenceUtils.putString(getContext(),"uesrName",null);
+                JPushInterface.stopPush(getContext());
+                ((MainActivity)UI).intent2Activity(LoginActivity.class);
+                ((MainActivity)UI).finish();
+                break;
+        }
+    }
+
+    @Override
+    public void onError(String errorMsg, int tag) {
+
+    }
 }

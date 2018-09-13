@@ -7,6 +7,7 @@ import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
 import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
+import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.ProjectDetailEntity;
@@ -82,6 +83,11 @@ public class HttpRequestImpl implements IHttpRequest {
     @Override
     public Observable<CurveDetailEntity> projectCurveDetail(Map<String, String> params) {
         return RetrofitManager.getInstance().getAppService().projectCurveDetail(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<DeepDispalcementEntity> projectDeepDispalcementDetail(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().projectDeepDispalcementDetail(getCacheControl(),"Bearer"+" "+getToken(), params);
     }
 
     @Override

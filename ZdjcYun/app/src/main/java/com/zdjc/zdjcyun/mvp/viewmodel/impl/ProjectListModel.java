@@ -9,7 +9,7 @@ import com.zdjc.zdjcyun.databinding.ActivityProjectListBinding;
 import com.zdjc.zdjcyun.event.PullLoadMoreRecyclerView;
 import com.zdjc.zdjcyun.mvp.entity.ProjectListEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.ProjectListPresenterImpl;
-import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.ProjectDetailActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.ProjectListActivity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.viewmodel.IProjectListModel;
@@ -62,8 +62,9 @@ public class ProjectListModel extends BaseModel<ActivityProjectListBinding,Proje
 
         adapter.setOnItemClickListener((view, position) -> {
             UI.showWaitDialog();
-            ((ProjectListActivity)UI).intent2Activity(MainActivity.class);
+            ((ProjectListActivity)UI).intent2Activity(ProjectDetailActivity.class);
             PreferenceUtils.putInt(getContext(),"projectId",typeProjectList.getRows().get(position).getProjectId());
+            PreferenceUtils.putString(getContext(),"projectName",typeProjectList.getRows().get(position).getProjectName());
         });
     }
 

@@ -13,7 +13,9 @@ import com.zdjc.zdjcyun.app.Constant;
 import com.zdjc.zdjcyun.base.BaseRecyclerAdapter;
 import com.zdjc.zdjcyun.base.RecyclerViewHolder;
 import com.zdjc.zdjcyun.mvp.entity.ProjectListEntity;
+import com.zdjc.zdjcyun.mvp.ui.activities.PictureActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.ReportActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.VideoActivity;
 import com.zdjc.zdjcyun.util.ImageLoaderUtils;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
@@ -23,6 +25,7 @@ import butterknife.Bind;
 public class ProjectRecycViewAdapter extends BaseRecyclerAdapter<ProjectListEntity.DataBean.RowsBean> {
 
     private Context context;
+    private boolean or = false;
 
     public ProjectRecycViewAdapter(Context context) {
         super(context);
@@ -57,6 +60,18 @@ public class ProjectRecycViewAdapter extends BaseRecyclerAdapter<ProjectListEnti
             PreferenceUtils.putInt(context,"projectId", data.getProjectId());
             context.startActivity(intent);
         });
+
+        holder.btn_video.setOnClickListener(v -> {
+            if (or){
+                Intent intent = new Intent(context,PictureActivity.class);
+                context.startActivity(intent);
+                or = false;
+            }else {
+                Intent intent = new Intent(context,VideoActivity.class);
+                context.startActivity(intent);
+                or = true;
+            }
+        });
     }
     class ViewHolder extends RecyclerViewHolder {
         @Bind(R.id.btn_video)
@@ -74,5 +89,6 @@ public class ProjectRecycViewAdapter extends BaseRecyclerAdapter<ProjectListEnti
             super(itemView);
         }
     }
+
 
 }

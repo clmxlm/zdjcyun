@@ -1,47 +1,34 @@
 package com.zdjc.zdjcyun.mvp.ui.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 
+import com.blankj.utilcode.utils.ToastUtils;
+import com.google.gson.Gson;
 import com.zdjc.zdjcyun.R;
-import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.base.BaseActivity;
 import com.zdjc.zdjcyun.databinding.ActivityMainBinding;
-import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
-import com.zdjc.zdjcyun.mvp.ui.fragment.HomeFragment;
+import com.zdjc.zdjcyun.mvp.entity.MessageEntity;
 import com.zdjc.zdjcyun.mvp.viewmodel.impl.MainModel;
-import com.zdjc.zdjcyun.util.PermissionUtils;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
-import java.util.List;
+import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainModel> implements HomeFragment.OnCallBackProjects,HomeFragment.OnCallBackMapTag{
-    private PermissionUtils permissionUtils;
-    private int alCount = 0;
-    private List<AllProjectListEntity.DataBean> dataBeanList;
+public class MainActivity extends BaseActivity<ActivityMainBinding, MainModel>{
 
+
+
+    private long mExitTime;
     @Override
     public int getLayoutId() {
+        setWindowStatusBarColor(this, R.color.theme_color);
         return R.layout.activity_main;
     }
 
     @Override
     public void initView() {
-        setWindowStatusBarColor(this,R.color.theme_color);
-        initPermission();
-    }
 
-    private void initPermission() {
-        if(permissionUtils==null){
-            permissionUtils=new PermissionUtils(this);
-        }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        this.mModel.moveFragment(2);
     }
 
     //对返回键进行监听
@@ -54,29 +41,32 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainModel> i
         return super.onKeyDown(keyCode, event);
     }
 
-    public void allProject(View view){
-        mModel.allProjectClick(dataBeanList);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Bundle bundle = intent.getExtras();
+        if (bundle!=null){
+            String kk = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            Gson gson = new Gson();
+            MessageEntity listType = gson.fromJson(kk, MessageEntity.class);
+            String projectId = listType.getProjectId();
+            PreferenceUtils.putBoolean(this,"push",true);
+            PreferenceUtils.putInt(this,"projectId",Integer.valueOf(projectId));
+            intent2Activity(ProjectDetailActivity.class);
+        }
+
+
     }
 
     public void exit() {
-        finish();
-    }
-
-    @Override
-    public void onProjects(List<AllProjectListEntity.DataBean> projects) {
-        this.dataBeanList = projects;
-        for (AllProjectListEntity.DataBean dataBean : dataBeanList) {
-            alCount = alCount + dataBean.getAlCount();
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            ToastUtils.showShortToast(getResources().getString(R.string.exit));
+            mExitTime = System.currentTimeMillis();
+        } else {
+            finish();
         }
-        PreferenceUtils.putInt(BaseApplication.getContext(),"projectId",dataBeanList.get(0).getProjectId());
-        PreferenceUtils.putString(this,"projectName",dataBeanList.get(0).getProjectName());
-
-        this.mModel.getAlcount(alCount);
-        this.mModel.allProjectClick(dataBeanList);
     }
 
-    @Override
-    public void onMaps(int position) {
-        this.mModel.mapClick(position);
-    }
+
 }

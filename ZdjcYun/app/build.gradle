@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'img-optimizer'
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+}
 android {
     signingConfigs {
         release {
@@ -10,19 +15,28 @@ android {
         }
     }
     compileSdkVersion 26
+
+    sourceSets{
+        main{
+            jniLibs.srcDir 'libs'
+            //说明so的路径为该libs路径，关联所有地图SDK的so文件
+        }
+    }
     defaultConfig {
         applicationId "com.zdjc.zdjcyun"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 3
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
 
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi-v7a'
             // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
+
         manifestPlaceholders = [
                 JPUSH_PKGNAME: "com.zdjc.zdjcyun",
                 JPUSH_APPKEY : "007c1936d3121195209f05a0", //JPush上注册的包名对应的appkey.
@@ -34,6 +48,7 @@ android {
     dataBinding {
         enabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -48,6 +63,7 @@ android {
     }
 
 
+
 }
 
 //img-optimizer
@@ -55,6 +71,8 @@ optimizerOptions {
     triggerSize 5
     type "lossy"
 }
+
+
 
 dependencies {
     /**
@@ -100,4 +118,8 @@ dependencies {
     implementation 'es.voghdev.pdfviewpager:library:1.0.3'
     implementation 'com.jakewharton:butterknife:7.0.1'
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
+
+    implementation 'com.shuyu:GSYVideoPlayer:6.0.0-beta'
+//    //更多ijk的编码支持
+//    implementation 'com.shuyu:gsyVideoPlayer-ex_so:6.0.0-beta'
 }

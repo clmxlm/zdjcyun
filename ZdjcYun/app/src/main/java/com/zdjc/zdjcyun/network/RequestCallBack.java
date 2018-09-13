@@ -10,5 +10,5 @@ public interface RequestCallBack<T> {
 
     void success(Object data, int tag);
 
-    void error(String errorMsg,int tag);
+    void error(String errorMsg,int code,int tag);
 }

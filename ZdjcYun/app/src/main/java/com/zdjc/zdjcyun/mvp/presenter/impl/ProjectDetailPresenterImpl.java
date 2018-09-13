@@ -3,6 +3,7 @@ package com.zdjc.zdjcyun.mvp.presenter.impl;
 
 import com.zdjc.zdjcyun.base.BaseNetControl;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
+import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.ProjectDetailEntity;
 import com.zdjc.zdjcyun.mvp.presenter.IProjectDetailPresenter;
 import com.zdjc.zdjcyun.network.RequestCallBack;
@@ -50,7 +51,7 @@ public class ProjectDetailPresenterImpl extends BaseNetControl implements IProje
                              */
                             callBack.success(value.getData(),tag);
                         }else {
-                            callBack.error(value.getMsg(),tag);
+                            callBack.error(value.getMsg(),value.getCode(),tag);
                         }
                     }
 
@@ -59,7 +60,7 @@ public class ProjectDetailPresenterImpl extends BaseNetControl implements IProje
                         /**
                          * 这里是回掉错误的
                          */
-                        callBack.error(e.getMessage(),tag);
+                        callBack.error(e.getMessage(),1,tag);
                     }
 
                     @Override
@@ -101,7 +102,7 @@ public class ProjectDetailPresenterImpl extends BaseNetControl implements IProje
                              */
                             callBack.success(value.getData(),tag);
                         }else {
-                            callBack.error(value.getMsg(),tag);
+                            callBack.error(value.getMsg(),value.getCode(),tag);
                         }
                     }
 
@@ -110,7 +111,57 @@ public class ProjectDetailPresenterImpl extends BaseNetControl implements IProje
                         /**
                          * 这里是回掉错误的
                          */
-                        callBack.error(e.getMessage(),tag);
+                        callBack.error(e.getMessage(),1,tag);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        /**
+                         * 完成不用管
+                         */
+                    }
+                });
+    }
+
+    @Override
+    public void getProjectDeepDispalcementDetailDetail(RequestCallBack callBack, Map<String, String> params, int tag) {
+        /**
+         * 请求前
+         */
+        callBack.beforeRequest(tag);
+        HttpRequestImpl.getInstance().projectDeepDispalcementDetail(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DeepDispalcementEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        /**
+                         * 这个就是rxjava的任务对象
+                         */
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(DeepDispalcementEntity value) {
+                        /**
+                         * 这里是回掉成功的
+                         */
+                        if(value.getCode()==0){
+                            /**
+                             * 这里是把自己想要的数据传过去，现在getData成功的话就是token啦，那边拿到的也是token
+                             */
+                            callBack.success(value.getData(),tag);
+                        }else {
+                            callBack.error(value.getMsg(),value.getCode(),tag);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        /**
+                         * 这里是回掉错误的
+                         */
+                        callBack.error(e.getMessage(),1,tag);
                     }
 
                     @Override

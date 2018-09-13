@@ -57,7 +57,7 @@ public class XAxis extends AxisBase {
      * enum for the position of the x-labels relative to the chart
      */
     public enum XAxisPosition {
-        TOP, BOTTOM, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
+        TOP, BOTTOM,LEFT,RIGHT, BOTH_SIDED, TOP_INSIDE, BOTTOM_INSIDE
     }
 
     public XAxis() {

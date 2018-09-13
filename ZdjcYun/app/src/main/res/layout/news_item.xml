@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#acacac"
+    android:background="#eeeeee"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp">
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         app:contentPadding="@dimen/MY_DP_5"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="2dp"
         app:cardElevation="8dp">
 
         <RelativeLayout
@@ -35,7 +35,7 @@
                     android:maxLines="1"
                     android:textSize="20sp"
                     android:padding="5dp"
-                    android:textColor="#ffffff"
+                    android:textColor="#000000"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -46,9 +46,9 @@
                 android:maxLines="2"
                 android:layout_below="@+id/news_header"
                 android:layout_margin="5dp"
+                android:textColor="#000000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -61,11 +61,12 @@
                     android:text="视频"
                     android:background="#00000000"
                     android:layout_width="wrap_content"
+                    android:textColor="#000000"
                     android:layout_height="wrap_content" />
                 <Button
                     android:id="@+id/btn_report"
                     android:background="#00000000"
-                    android:textColor="#7AD3E0"
+                    android:textColor="#000000"
                     android:text="报告"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

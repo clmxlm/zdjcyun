@@ -58,7 +58,7 @@ public class HomeModel extends BaseModel<FragmentHomeBinding,HomePresenterImpl> 
         mBaiduMap = mBinder.bmapView.getMap();
 
         ms = new MapStatus.Builder().target(new LatLng(Double.parseDouble(dataBeanList.get(0).getProjectLatitude()),
-                Double.parseDouble(dataBeanList.get(0).getProjectLongitude()))).zoom(4).build();
+                Double.parseDouble(dataBeanList.get(0).getProjectLongitude()))).zoom(6).build();
 
         mBaiduMap.setOnMapLoadedCallback(this);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
@@ -103,9 +103,15 @@ public class HomeModel extends BaseModel<FragmentHomeBinding,HomePresenterImpl> 
         switch (tag) {
             case 1:
                 dataBeanList = (List<AllProjectListEntity.DataBean>) bean;
-                HomeFragment homeFragment = (HomeFragment)UI;
-                homeFragment.getOnCallBackProjects().onProjects(dataBeanList);
-                inData(dataBeanList);
+                if (dataBeanList.size()==0){
+//                    ((HomeFragment)UI).finish();
+                    ToastUtils.showLongToast("该项目没有数据");
+                }else {
+                    HomeFragment homeFragment = (HomeFragment)UI;
+                    homeFragment.getOnCallBackProjects().onProjects(dataBeanList);
+                    inData(dataBeanList);
+                }
+
                 break;
         }
     }
@@ -201,7 +207,7 @@ public class HomeModel extends BaseModel<FragmentHomeBinding,HomePresenterImpl> 
     @Override
     public void onMapLoaded() {
         // TODO Auto-generated method stub
-        ms = new MapStatus.Builder().zoom(4).build();
+        ms = new MapStatus.Builder().zoom(6).build();
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(ms));
     }
 
@@ -214,7 +220,7 @@ public class HomeModel extends BaseModel<FragmentHomeBinding,HomePresenterImpl> 
     @Override
     public void getProjects() {
         Map<String,String> map = new HashMap<>();
-        map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId")+"");
+        map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId",0)+"");
         mControl.getProjectList(this,map,1);
     }
 

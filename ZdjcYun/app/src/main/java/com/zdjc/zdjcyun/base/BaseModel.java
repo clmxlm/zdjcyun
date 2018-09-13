@@ -1,6 +1,7 @@
 package com.zdjc.zdjcyun.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.ViewDataBinding;
 import android.graphics.Typeface;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.zdjc.zdjcyun.R;
+import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.network.RequestCallBack;
 
 import java.lang.reflect.ParameterizedType;
@@ -101,9 +103,14 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
     }
 
     @Override
-    public void error(String errorMsg,int tag) {
+    public void error(String errorMsg,int code,int tag) {
         UI.hideWaitDialog();
         onError(errorMsg,tag);
+        //token失效统一处理
+        if (code==4){
+            Intent intent = new Intent(UI.getConText(), LoginActivity.class);
+            UI.getConText().startActivity(intent);
+        }
         ToastUtils.showShortToast(errorMsg);
     }
 

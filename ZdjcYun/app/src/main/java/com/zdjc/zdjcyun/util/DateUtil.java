@@ -121,6 +121,12 @@ public class DateUtil {
         return format.format(date);
     }
 
+    public static String getDateToStringss(long milSecond) {
+        Date date = new Date(milSecond);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
+
     /**
      * 将Date转成指定格式
      * @param date

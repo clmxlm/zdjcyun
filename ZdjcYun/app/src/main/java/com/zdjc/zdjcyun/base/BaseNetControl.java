@@ -64,7 +64,7 @@ public class BaseNetControl implements IBaseControl {
 
                         @Override
                         public void onError(Throwable e) {
-                            callBack.error(e.toString(),tag);
+                            callBack.error(e.toString(),1,tag);
                         }
 
                         @Override
@@ -74,7 +74,7 @@ public class BaseNetControl implements IBaseControl {
                     });
 
         } catch (Exception e) {
-            callBack.error(e.toString(),tag);
+            callBack.error(e.toString(),1,tag);
         }
     }
 

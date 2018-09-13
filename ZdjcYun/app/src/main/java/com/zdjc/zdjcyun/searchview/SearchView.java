@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
@@ -139,41 +138,36 @@ public class SearchView extends LinearLayout {
         /**
          * "清空搜索历史"按钮
          */
-        tv_clear.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tv_clear.setOnClickListener(v -> {
 
-                // 清空数据库->>关注2
-                deleteData();
-                // 模糊搜索空字符 = 显示所有的搜索历史（此时是没有搜索记录的）
-                queryData("");
-            }
+            // 清空数据库->>关注2
+            deleteData();
+            // 模糊搜索空字符 = 显示所有的搜索历史（此时是没有搜索记录的）
+            queryData("");
         });
 
         /**
          * 监听输入键盘更换后的搜索按键
          * 调用时刻：点击键盘上的搜索键时
          */
-        et_search.setOnKeyListener(new OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+        et_search.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
 
-                    // 1. 点击搜索按键后，根据输入的搜索字段进行查询
-                    // 注：由于此处需求会根据自身情况不同而不同，所以具体逻辑由开发者自己实现，此处仅留出接口
-                    if (!(mCallBack == null)){
-                        mCallBack.SearchAciton(et_search.getText().toString());
-                    }
-
-                    // 2. 点击搜索键后，对该搜索字段在数据库是否存在进行检查（查询）->> 关注1
-                    boolean hasData = hasData(et_search.getText().toString().trim());
-                    // 3. 若存在，则不保存；若不存在，则将该搜索字段保存（插入）到数据库，并作为历史搜索记录
-                    if (!hasData) {
-                        insertData(et_search.getText().toString().trim());
-                        queryData("");
-                    }
+                // 1. 点击搜索按键后，根据输入的搜索字段进行查询
+                // 注：由于此处需求会根据自身情况不同而不同，所以具体逻辑由开发者自己实现，此处仅留出接口
+                if (!(mCallBack == null)){
+                    mCallBack.SearchAciton(et_search.getText().toString());
                 }
-                return false;
+
+                // 2. 点击搜索键后，对该搜索字段在数据库是否存在进行检查（查询）->> 关注1
+                boolean hasData = hasData(et_search.getText().toString().trim());
+                // 3. 若存在，则不保存；若不存在，则将该搜索字段保存（插入）到数据库，并作为历史搜索记录
+                if (!hasData) {
+                    insertData(et_search.getText().toString().trim());
+                    queryData("");
+                }
             }
+            return false;
         });
 
 
@@ -207,16 +201,13 @@ public class SearchView extends LinearLayout {
          * 搜索记录列表（ListView）监听
          * 即当用户点击搜索历史里的字段后,会直接将结果当作搜索字段进行搜索
          */
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        listView.setOnItemClickListener((parent, view, position, id) -> {
 
-                // 获取用户点击列表里的文字,并自动填充到搜索框内
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                String name = textView.getText().toString();
-                et_search.setText(name);
-                Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
-            }
+            // 获取用户点击列表里的文字,并自动填充到搜索框内
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            String name = textView.getText().toString();
+            et_search.setText(name);
+            Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
         });
 
         /**

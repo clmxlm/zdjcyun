@@ -15,4 +15,6 @@ public interface IProjectDetailPresenter {
 
 
     void getProjectCurveDetail(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getProjectDeepDispalcementDetailDetail(RequestCallBack callBack, Map<String, String> params, int tag);
 }

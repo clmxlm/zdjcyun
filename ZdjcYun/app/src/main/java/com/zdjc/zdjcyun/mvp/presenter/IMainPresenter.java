@@ -10,13 +10,11 @@ import java.util.Map;
  */
 
 public interface IMainPresenter {
+    void getHomeViewMsg(RequestCallBack callBack, Map<String, String> params, int tag);
 
-    /**
-     * 这里就是一个登录的抽象方法，具体实现在LoginPresenter里面实现
-     * @param callBack
-     * @param params
-     * @param tag
-     */
-    void getProjectList(RequestCallBack callBack, Map<String, String> params, int tag);
+    void getProjectTypeMsg(RequestCallBack callBack, Map<String, String> params, int tag);
 
+    void getPersonMsg(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void loginOut(RequestCallBack callBack, Map<String, String> params, int tag);
 }

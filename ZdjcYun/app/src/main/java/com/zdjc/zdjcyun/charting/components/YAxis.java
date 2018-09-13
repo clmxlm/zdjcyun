@@ -60,6 +60,10 @@ public class YAxis extends AxisBase {
     protected float mZeroLineWidth = 1f;
 
     /**
+     * This is the angle for drawing the Y axis labels (in degrees)
+     */
+    protected float mLabelRotationAngle = 0f;
+    /**
      * axis space from the largest value to the top in percent of the total axis range
      */
     protected float mSpacePercentTop = 10f;
@@ -149,7 +153,21 @@ public class YAxis extends AxisBase {
     public float getMaxWidth() {
         return mMaxWidth;
     }
+    /**
+     * returns the angle for drawing the X axis labels (in degrees)
+     */
+    public float getLabelRotationAngle() {
+        return mLabelRotationAngle;
+    }
 
+    /**
+     * sets the angle for drawing the X axis labels (in degrees)
+     *
+     * @param angle the angle in degrees
+     */
+    public void setLabelRotationAngle(float angle) {
+        mLabelRotationAngle = angle;
+    }
     /**
      * Sets the maximum width that the axis can take (in dp).
      *

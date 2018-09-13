@@ -2,7 +2,10 @@ package com.zdjc.zdjcyun.mvp.presenter.impl;
 
 
 import com.zdjc.zdjcyun.base.BaseNetControl;
-import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
+import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
+import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
+import com.zdjc.zdjcyun.mvp.entity.TypeProjectEntity;
+import com.zdjc.zdjcyun.mvp.entity.UserEntity;
 import com.zdjc.zdjcyun.mvp.presenter.IMainPresenter;
 import com.zdjc.zdjcyun.network.RequestCallBack;
 import com.zdjc.zdjcyun.network.request.HttpRequestImpl;
@@ -19,17 +22,16 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class MainPresenterImpl extends BaseNetControl implements IMainPresenter {
-
     @Override
-    public void getProjectList(RequestCallBack callBack, Map<String, String> params, int tag) {
+    public void getHomeViewMsg(RequestCallBack callBack, Map<String, String> params, int tag) {
         /**
          * 请求前
          */
         callBack.beforeRequest(tag);
-        HttpRequestImpl.getInstance().projectList(params)
+        HttpRequestImpl.getInstance().beginViewMsg(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AllProjectListEntity>() {
+                .subscribe(new Observer<BeginEntity>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         /**
@@ -39,7 +41,7 @@ public class MainPresenterImpl extends BaseNetControl implements IMainPresenter 
                     }
 
                     @Override
-                    public void onNext(AllProjectListEntity value) {
+                    public void onNext(BeginEntity value) {
                         /**
                          * 这里是回掉成功的
                          */
@@ -49,17 +51,16 @@ public class MainPresenterImpl extends BaseNetControl implements IMainPresenter 
                              */
                             callBack.success(value.getData(),tag);
                         }else {
-                            callBack.error(value.getMsg(),tag);
+                            callBack.error(value.getMsg(),value.getCode(),tag);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                         /**
                          * 这里是回掉错误的
                          */
-                        callBack.error(e.getMessage(),tag);
+                        callBack.error(e.getMessage(),1,tag);
                     }
 
                     @Override
@@ -71,4 +72,154 @@ public class MainPresenterImpl extends BaseNetControl implements IMainPresenter 
                 });
     }
 
+    @Override
+    public void getProjectTypeMsg(RequestCallBack callBack, Map<String, String> params, int tag) {
+        /**
+         * 请求前
+         */
+        callBack.beforeRequest(tag);
+        HttpRequestImpl.getInstance().projectTypeMsg(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TypeProjectEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        /**
+                         * 这个就是rxjava的任务对象
+                         */
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(TypeProjectEntity value) {
+                        /**
+                         * 这里是回掉成功的
+                         */
+                        if(value.getCode()==0){
+                            /**
+                             * 这里是把自己想要的数据传过去，现在getData成功的话就是token啦，那边拿到的也是token
+                             */
+                            callBack.success(value.getData(),tag);
+                        }else {
+                            callBack.error(value.getMsg(),value.getCode(),tag);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        /**
+                         * 这里是回掉错误的
+                         */
+                        callBack.error(e.getMessage(),1,tag);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        /**
+                         * 完成不用管
+                         */
+                    }
+                });
+    }
+
+
+    @Override
+    public void getPersonMsg(RequestCallBack callBack, Map<String, String> params, int tag) {
+        /**
+         * 请求前
+         */
+        callBack.beforeRequest(tag);
+        HttpRequestImpl.getInstance().personerMsg(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<PersonMessageEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        /**
+                         * 这个就是rxjava的任务对象
+                         */
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(PersonMessageEntity value) {
+                        /**
+                         * 这里是回掉成功的
+                         */
+                        if(value.getCode()==0){
+                            /**
+                             * 这里是把自己想要的数据传过去，现在getData成功的话就是token啦，那边拿到的也是token
+                             */
+                            callBack.success(value.getData(),tag);
+                        }else {
+                            callBack.error(value.getMsg(),value.getCode(),tag);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        /**
+                         * 这里是回掉错误的
+                         */
+                        callBack.error(e.getMessage(),1,tag);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        /**
+                         * 完成不用管
+                         */
+                    }
+                });
+    }
+
+    @Override
+    public void loginOut(RequestCallBack callBack, Map<String, String> params, int tag) {
+        /**
+         * 请求前
+         */
+        callBack.beforeRequest(tag);
+        HttpRequestImpl.getInstance().loginOut(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<UserEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        /**
+                         * 这个就是rxjava的任务对象
+                         */
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(UserEntity value) {
+                        /**
+                         * 这里是回掉成功的
+                         */
+                        if(value.getCode()==0){
+                            /**
+                             * 这里是把自己想要的数据传过去，现在getData成功的话就是token啦，那边拿到的也是token
+                             */
+                            callBack.success(value.getData(),tag);
+                        }else {
+                            callBack.error(value.getMsg(),value.getCode(),tag);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        /**
+                         * 这里是回掉错误的
+                         */
+                        callBack.error(e.getMessage(),1,tag);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        /**
+                         * 完成不用管
+                         */
+                    }
+                });
+    }
 }

@@ -3,7 +3,6 @@ package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.bin.david.form.core.SmartTable;
 import com.bin.david.form.core.TableConfig;
@@ -17,6 +16,7 @@ import com.blankj.utilcode.utils.ToastUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.zdjc.zdjcyun.R;
+import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.FragmentWarningMessageBinding;
 import com.zdjc.zdjcyun.mvp.entity.AlarmListBean;
@@ -24,6 +24,7 @@ import com.zdjc.zdjcyun.mvp.entity.WarningEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.WarningPresenterImpl;
 import com.zdjc.zdjcyun.mvp.ui.fragment.WarningMessageFragment;
 import com.zdjc.zdjcyun.mvp.viewmodel.IWarningMessageModel;
+import com.zdjc.zdjcyun.util.ScreenUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,29 +168,29 @@ public class WarningModel extends BaseModel<FragmentWarningMessageBinding,Warnin
     }
 
     public void setData(){
-        FontStyle.setDefaultTextSize(DensityUtils.sp2px(getContext(),15)); //设置全局字体大小
+        FontStyle.setDefaultTextSize(DensityUtils.sp2px(BaseApplication.getContext(),15)); //设置全局字体大小
         WarningMessageFragment warningMessageFragment = (WarningMessageFragment)UI;
-        WindowManager wm = warningMessageFragment.getActivity().getWindowManager();
-        int screenWith = wm.getDefaultDisplay().getWidth();
+//        WindowManager wm = warningMessageFragment.getActivity().getWindowManager();
+        int screenWith = ScreenUtil.getScreenWidth(BaseApplication.getContext());
         smartTable.getConfig().setMinTableWidth(screenWith); //设置最小宽度 屏幕宽度
 
         smartTable.getConfig().setColumnTitleBackground(
-                new BaseBackgroundFormat(getContext().getResources().getColor(R.color.theme_color)));
+                new BaseBackgroundFormat(BaseApplication.getContext().getResources().getColor(R.color.theme_color)));
 
         FontStyle fontTitleStyle = new FontStyle();
-        fontTitleStyle.setTextColor(getContext().getResources().getColor(R.color.white));
+        fontTitleStyle.setTextColor(BaseApplication.getContext().getResources().getColor(R.color.white));
 
         smartTable.getConfig().setColumnTitleStyle(fontTitleStyle);
 
 
         smartTable.getConfig().setColumnTitleBackground(
-                new BaseBackgroundFormat(getContext().getResources().getColor(R.color.theme_color))
+                new BaseBackgroundFormat(BaseApplication.getContext().getResources().getColor(R.color.theme_color))
         );
         smartTable.getConfig().setContentBackground(
-                new BaseBackgroundFormat(getContext().getResources().getColor(R.color.theme_color)));
+                new BaseBackgroundFormat(BaseApplication.getContext().getResources().getColor(R.color.theme_color)));
 
         smartTable.getConfig().setYSequenceBackground(
-                new BaseBackgroundFormat(getContext().getResources().getColor(R.color.theme_color)));
+                new BaseBackgroundFormat(BaseApplication.getContext().getResources().getColor(R.color.theme_color)));
 
         smartTable.getConfig().setShowXSequence(false);
 
@@ -197,7 +198,7 @@ public class WarningModel extends BaseModel<FragmentWarningMessageBinding,Warnin
             @Override
             public int getBackGroundColor(CellInfo position) {
                 if(position.row%2 == 0){
-                    return ContextCompat.getColor(getContext(),R.color.theme_deep_color);
+                    return ContextCompat.getColor(BaseApplication.getContext(),R.color.theme_deep_color);
                 }
                 return TableConfig.INVALID_COLOR;
 
@@ -207,9 +208,9 @@ public class WarningModel extends BaseModel<FragmentWarningMessageBinding,Warnin
             @Override
             public int getTextColor(CellInfo position) {
                 if(confirmed.contains(position.row)) {
-                    return ContextCompat.getColor(getContext(), R.color.white);
+                    return ContextCompat.getColor(BaseApplication.getContext(), R.color.white);
                 }else{
-                    return ContextCompat.getColor(getContext(), R.color.timepicker_toolbar_bg);
+                    return ContextCompat.getColor(BaseApplication.getContext(), R.color.timepicker_toolbar_bg);
                 }
             }
         };

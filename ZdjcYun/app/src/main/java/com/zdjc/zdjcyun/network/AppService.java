@@ -4,6 +4,7 @@ package com.zdjc.zdjcyun.network;
 import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
 import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
+import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.ProjectDetailEntity;
@@ -57,6 +58,11 @@ public interface AppService {
     Observable<CurveDetailEntity> projectCurveDetail(@Header("Cache-Control") String cacheControl,
                                                      @Header("Authorization") String token,
                                                      @QueryMap(encoded = true) Map<String, String> params);
+
+    @GET("androids/queryGraDatasPro")
+    Observable<DeepDispalcementEntity> projectDeepDispalcementDetail(@Header("Cache-Control") String cacheControl,
+                                                          @Header("Authorization") String token,
+                                                          @QueryMap(encoded = true) Map<String, String> params);
 
     @GET("alarm/queryAlarm")
     Observable<WarningEntity> warningDetail(@Header("Cache-Control") String cacheControl,

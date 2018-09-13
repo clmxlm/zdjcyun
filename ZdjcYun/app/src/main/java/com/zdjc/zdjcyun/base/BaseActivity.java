@@ -17,7 +17,7 @@ import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.app.SystemStatusManager;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
-import com.zdjc.zdjcyun.mvp.ui.activities.BeginActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.SplashActivity;
 import com.zdjc.zdjcyun.util.DialogUtil;
 import com.zdjc.zdjcyun.util.MyUtils;
@@ -86,7 +86,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseMode
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.white_touming), false);
         } else if (this instanceof SplashActivity){
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.white_touming), false);
-        }else if (this instanceof BeginActivity){
+        }else if (this instanceof MainActivity){
             // 设置状态栏的颜色
             StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.theme_color), false);
         }

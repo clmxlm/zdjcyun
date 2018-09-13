@@ -12,7 +12,7 @@ import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.ActivityLoginBinding;
 import com.zdjc.zdjcyun.mvp.presenter.impl.LoginPresenterImpl;
-import com.zdjc.zdjcyun.mvp.ui.activities.BeginActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.mvp.viewmodel.ILoginModel;
 import com.zdjc.zdjcyun.util.EditTextHolder;
@@ -73,7 +73,7 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
                 JPushInterface.resumePush(getContext());
                 JPushInterface.setAlias(getContext(), 0,mBinder.etUsername.getText().toString());//设置别名
                 LoginActivity activity=(LoginActivity)UI;
-                activity.intent2Activity(BeginActivity.class);
+                activity.intent2Activity(MainActivity.class);
                 activity.finish();
                 JPushInterface.resumePush(getContext());
                 break;

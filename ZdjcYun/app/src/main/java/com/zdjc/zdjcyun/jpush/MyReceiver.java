@@ -9,7 +9,7 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.utils.LogUtils;
 import com.blankj.utilcode.utils.ToastUtils;
-import com.zdjc.zdjcyun.mvp.ui.activities.BeginActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ public class MyReceiver extends BroadcastReceiver {
 				int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 				LogUtils.i(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
-				Intent i = new Intent(context, BeginActivity.class);
+				Intent i = new Intent(context, MainActivity.class);
 				i.putExtras(bundle);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -56,7 +56,7 @@ public class MyReceiver extends BroadcastReceiver {
 				LogUtils.i(TAG, "[MyReceiver] 用户点击打开了通知");
 				ToastUtils.showShortToast("用户点击打开了通知");
 				//打开自定义的Activity
-				Intent i = new Intent(context, BeginActivity.class);
+				Intent i = new Intent(context, MainActivity.class);
 				i.putExtras(bundle);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -112,7 +112,7 @@ public class MyReceiver extends BroadcastReceiver {
 		return sb.toString();
 	}
 
-	//send msg to BeginActivity
+	//send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
 		if (NewsActivity.isForeground) {
 			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
@@ -134,7 +134,7 @@ public class MyReceiver extends BroadcastReceiver {
 		}
 
 	}
-	//send msg to BeginActivity
+	//send msg to MainActivity
 	private void processNotification(Context context, Bundle bundle) {
 		if (NewsActivity.isForeground) {
 			String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);

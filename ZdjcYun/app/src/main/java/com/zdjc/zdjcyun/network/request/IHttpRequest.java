@@ -4,6 +4,7 @@ package com.zdjc.zdjcyun.network.request;
 import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
 import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
+import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.ProjectDetailEntity;
@@ -57,6 +58,13 @@ public interface IHttpRequest {
      * @return
      */
     Observable<CurveDetailEntity> projectCurveDetail(Map<String, String> params);
+
+    /**
+     * 项目深部位移曲线详情
+     *
+     * @return
+     */
+    Observable<DeepDispalcementEntity> projectDeepDispalcementDetail(Map<String, String> params);
 
     /**
      * 项目告警详情

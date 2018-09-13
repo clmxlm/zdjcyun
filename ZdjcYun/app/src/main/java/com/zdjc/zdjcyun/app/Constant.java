@@ -31,6 +31,7 @@ public class Constant {
      * 本地10.88.89.170:8081/茂平
      * 本地10.88.89.206:8081/胡超
      * 本地10.88.89.193:8081/孔成
+     * 本地10.88.89.101:8081/邓泽民
      */
     public static String HTTP_URL = null;
 
@@ -45,7 +46,6 @@ public class Constant {
         }
         IMAGE_URL = "http://123.207.88.210/";
     }
-
     public static final String DB_NAME = "weidu.db";
 
 

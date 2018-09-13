@@ -5,7 +5,7 @@ import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.ActivitySplashBinding;
 import com.zdjc.zdjcyun.mvp.presenter.impl.SplashPresenterImpl;
-import com.zdjc.zdjcyun.mvp.ui.activities.BeginActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.SplashActivity;
 import com.zdjc.zdjcyun.mvp.viewmodel.ISplashModel;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
@@ -46,9 +46,9 @@ public class SplashModel extends BaseModel<ActivitySplashBinding, SplashPresente
         if ("".equals(PreferenceUtils.getString(getContext(),"token"))){
             //没登录之前关掉极光推送
             JPushInterface.stopPush(getContext());
-            ((SplashActivity)UI).intent2Activity(BeginActivity.class);
+            ((SplashActivity)UI).intent2Activity(MainActivity.class);
         }else {
-            ((SplashActivity)UI).intent2Activity(BeginActivity.class);
+            ((SplashActivity)UI).intent2Activity(MainActivity.class);
         }
         ((SplashActivity)UI).finish();
     }

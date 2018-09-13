@@ -50,7 +50,7 @@ public class ReportPresenterImpl extends BaseNetControl implements IReportPresen
                              */
                             callBack.success(value.getData(),tag);
                         }else {
-                            callBack.error(value.getMsg(),tag);
+                            callBack.error(value.getMsg(),value.getCode(),tag);
                         }
                     }
 
@@ -59,7 +59,7 @@ public class ReportPresenterImpl extends BaseNetControl implements IReportPresen
                         /**
                          * 这里是回掉错误的
                          */
-                        callBack.error(e.getMessage(),tag);
+                        callBack.error(e.getMessage(),1,tag);
                     }
 
                     @Override

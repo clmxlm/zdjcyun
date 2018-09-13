@@ -3,7 +3,6 @@ package com.zdjc.zdjcyun.mvp.presenter.impl;
 
 import com.zdjc.zdjcyun.base.BaseNetControl;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
-import com.zdjc.zdjcyun.mvp.entity.UserBean;
 import com.zdjc.zdjcyun.mvp.entity.UserEntity;
 import com.zdjc.zdjcyun.mvp.presenter.IPersonerPresenter;
 import com.zdjc.zdjcyun.network.RequestCallBack;
@@ -51,7 +50,7 @@ public class PersonerPresenterImpl extends BaseNetControl implements IPersonerPr
                              */
                             callBack.success(value.getData(),tag);
                         }else {
-                            callBack.error(value.getMsg(),tag);
+                            callBack.error(value.getMsg(),value.getCode(),tag);
                         }
                     }
 
@@ -60,7 +59,7 @@ public class PersonerPresenterImpl extends BaseNetControl implements IPersonerPr
                         /**
                          * 这里是回掉错误的
                          */
-                        callBack.error(e.getMessage(),tag);
+                        callBack.error(e.getMessage(),1,tag);
                     }
 
                     @Override
@@ -101,7 +100,7 @@ public class PersonerPresenterImpl extends BaseNetControl implements IPersonerPr
                              */
                             callBack.success(value.getData(),tag);
                         }else {
-                            callBack.error(value.getMsg(),tag);
+                            callBack.error(value.getMsg(),value.getCode(),tag);
                         }
                     }
 
@@ -110,7 +109,7 @@ public class PersonerPresenterImpl extends BaseNetControl implements IPersonerPr
                         /**
                          * 这里是回掉错误的
                          */
-                        callBack.error(e.getMessage(),tag);
+                        callBack.error(e.getMessage(),1,tag);
                     }
 
                     @Override

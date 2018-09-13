@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/theme_color"
-        android:scrollbars="none">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,6 +26,69 @@
                     android:id="@+id/topRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/MY_DP_5"
+                    android:background="#0fffffff"
+                    android:layout_height="@dimen/MY_DP_0.5"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/MY_DP_5"
+                    android:background="@color/theme_color"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/deep_dispalcement_rg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/theme_color"
+                        android:orientation="horizontal" >
+
+                        <RadioButton
+                            android:id="@+id/rb_current_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="当前值"
+                            android:layout_marginRight="@dimen/MY_DP_20"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawableLeft="@drawable/radio_background"
+                            android:layout_weight="1"
+                             />
+
+                        <RadioButton
+                            android:id="@+id/rb_current_laser_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/MY_DP_20"
+                            android:text="当前变化量"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_background"
+                            android:layout_weight="1"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_speed_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_marginRight="@dimen/MY_DP_20"
+                            android:text="变化速率"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_background"
+                            android:layout_weight="1"/>
+                    </RadioGroup>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -83,7 +140,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/MY_DP_5"
-                    android:layout_marginBottom="@dimen/MY_DP_5"
                     android:background="#0fffffff"
                     android:layout_height="@dimen/MY_DP_0.5"/>
 
@@ -93,10 +149,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/MY_DP_320"/>
 
+                <com.zdjc.zdjcyun.charting.charts.LineChart
+                    android:id="@+id/chart2"
+                    android:layout_width="@dimen/MY_DP_330"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_height="@dimen/MY_DP_350"/>
+
                 <LinearLayout
                     android:id="@+id/ll_no_curvel"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/MY_DP_340"
+                    android:layout_height="@dimen/MY_DP_320"
                     android:gravity="center"
                     android:visibility="gone"
                     android:orientation="vertical">
@@ -127,9 +190,5 @@
 
 
         </RelativeLayout>
-
-
-    </ScrollView>
-
 
 </layout>

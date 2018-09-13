@@ -8,14 +8,14 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:focusableInTouchMode="true"
-    android:background="#acacac"
+    android:background="#eeeeee"
     android:orientation="vertical">
 
     <com.zdjc.zdjcyun.searchview.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textSizeSearch="5dp"
+        app:textSizeSearch="@dimen/MY_SP_6"
         app:textColorSearch="#ffffff"
         app:textHintSearch="输入查询关键字"
         app:searchBlockHeight="150"
