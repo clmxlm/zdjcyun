@@ -110,6 +110,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         PreferenceUtils.putInt(getContext(),"leftPosition",0);
         mVals1.add("测点描述");
         mVals1.add("数据信息");
+
         mVals2.add("测点描述");
         mVals2.add("数据信息");
         mVals2.add("对比分析");
@@ -139,6 +140,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                 .setDayText(getContext().getResources().getString(R.string.picker_day))
                 .setHourText(getContext().getResources().getString(R.string.picker_hour))
                 .setMinuteText(getContext().getResources().getString(R.string.picker_minute))
+                .setSecondsText("秒")
                 .setCyclic(true)
                 .setMinMillseconds(System.currentTimeMillis()-tenYears)
                 .setMaxMillseconds(System.currentTimeMillis() + tenYears)
@@ -170,7 +172,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
         topRecycViewAdapter.setDataList(list);
         topRecyclerView.setAdapter(topRecycViewAdapter);
-
+        //项目下检测指标点击事件
         topRecycViewAdapter.setOnItemClickListener((view, position) -> {
 
             leftPosition = PreferenceUtils.getInt(getContext(),"leftPosition");
@@ -387,7 +389,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                     PreferenceUtils.putString(getContext(),"smuChannel",data.get(topPosition).getSensorList().get(position).getSmuChannel());
                 }
             }
-
             monitorPoint = data.get(topPosition).getSensorList().get(position).getMonitorPoint();
             PreferenceUtils.putInt(getContext(),"leftPosition",position);
             detailPopWindow.dismiss();
@@ -972,8 +973,8 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                 data = (ArrayList< ProjectDetailEntity.DataBean >)bean;
                 if (data.size()>0){
                     //尾矿库数据手动添加
-                    if ("test01".equals(PreferenceUtils.getString(getContext(),"userName"))){
-
+                    String string = PreferenceUtils.getString(getContext(),"projectName");
+                    if ("黄金洞尾矿库".equals(string)){
                         ArrayList<ProjectDetailEntity.DataBean.SensorListBean> sensorList = new ArrayList<>();
                         ProjectDetailEntity.DataBean.SensorListBean sensorListBean = new ProjectDetailEntity.DataBean.SensorListBean();
                         sensorListBean.setMonitorPoint("GT01");
@@ -996,27 +997,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                     list.clear();
                     for (ProjectDetailEntity.DataBean datum : data) {
                         list.add(datum.getMonitorTypeName());
-                    }
-                    //尾矿库数据手动添加
-                    if ("test01".equals(PreferenceUtils.getString(getContext(),"userName"))){
-
-                        ArrayList<ProjectDetailEntity.DataBean.SensorListBean> sensorList = new ArrayList<>();
-                        ProjectDetailEntity.DataBean.SensorListBean sensorListBean = new ProjectDetailEntity.DataBean.SensorListBean();
-                        sensorListBean.setMonitorPoint("GT01");
-                        sensorListBean.setSensorNumber("02");
-                        sensorListBean.setSmuChannel("00");
-                        sensorListBean.setSmuNumber("2017100005");
-                        sensorListBean.setSpeedChange(0.000);
-                        sensorListBean.setTotalLaserChange(0.000);
-                        sensorList.add(sensorListBean);
-
-                        ProjectDetailEntity.DataBean dataBean = new ProjectDetailEntity.DataBean();
-                        dataBean.setMonitorType(15);
-                        dataBean.setMonitorTypeName("干滩高程");
-                        dataBean.setTableName("laser_data");
-                        dataBean.setSensorList(sensorList);
-                        data.add(dataBean);
-
                     }
                     inData(list);
                     if (PreferenceUtils.getString(getContext(),"monitorTypeName")==null
@@ -1163,6 +1143,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         }else {
             smuNumber = PreferenceUtils.getString(getContext(),"smuNumber");
         }
+
         if (PreferenceUtils.getString(getContext(),"smuChannel")==null){
             smuChannel = data.get(0).getSensorList().get(0).getSmuChannel();
         }else {
@@ -1223,9 +1204,13 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         if (endOrStart){
             startText = getDateToString(millseconds);
             mBinder.tvChooseStartTime.setText(startText);
+            //重新选择时间刷新数据
+            timeResetData();
         }else {
             endText = getDateToString(millseconds);
             mBinder.tvChooseEndTime.setText(endText);
+            //重新选择时间刷新数据
+            timeResetData();
         }
 
     }
@@ -1256,6 +1241,35 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         Map<String,String> map = new HashMap<>();
         map.put("projectId",String.valueOf(PreferenceUtils.getInt(BaseApplication.getContext(),"projectId",0)));
         mControl.getProjectDetail(this,map,1);
+    }
+
+    public void timeResetData(){
+        int leftPosition = PreferenceUtils.getInt(getContext(),"leftPosition");
+        int topPosition = PreferenceUtils.getInt(getContext(),"topPosition");
+        if (detailTag){
+            Map<String,String> map = new HashMap<>();
+            map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId",0)+"");
+            map.put("monitorPoint",data.get(topPosition).getSensorList().get(leftPosition).getMonitorPoint());
+            map.put("date",mBinder.tvChooseStartTime.getText().toString());
+            mControl.getProjectDeepDispalcementDetailDetail(ProjectDetailModel.this,map,3);
+        }else {
+            Map<String,String> map = new HashMap<>();
+            map.put("tableName",data.get(topPosition).getTableName());
+            map.put("sensorNumber",data.get(topPosition).getSensorList().get(leftPosition).getSensorNumber());
+            map.put("smuNumber",data.get(topPosition).getSensorList().get(leftPosition).getSmuNumber());
+            map.put("smuChannel",data.get(topPosition).getSensorList().get(leftPosition).getSmuChannel());
+            map.put("beginTime",startText);
+            map.put("endTime",endText);
+
+            if ("".equals(startText)||"".equals(endText)){
+                ToastUtils.showLongToast("请选择时间");
+            }else {
+                mControl.getProjectCurveDetail(ProjectDetailModel.this,map,2);
+                PreferenceUtils.putString(getContext(),"sensorNumber",data.get(topPosition).getSensorList().get(leftPosition).getSensorNumber());
+                PreferenceUtils.putString(getContext(),"smuNumber",data.get(topPosition).getSensorList().get(leftPosition).getSmuNumber());
+                PreferenceUtils.putString(getContext(),"smuChannel",data.get(topPosition).getSensorList().get(leftPosition).getSmuChannel());
+            }
+        }
     }
     //统一曲线图设值
     private void setData(ArrayList<CurveDetailEntity.DataBean> data1) {

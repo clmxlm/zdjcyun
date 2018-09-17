@@ -103,11 +103,11 @@ public class HomeModel extends BaseModel<FragmentHomeBinding,HomePresenterImpl> 
         switch (tag) {
             case 1:
                 dataBeanList = (List<AllProjectListEntity.DataBean>) bean;
+                HomeFragment homeFragment = (HomeFragment)UI;
                 if (dataBeanList.size()==0){
-//                    ((HomeFragment)UI).finish();
                     ToastUtils.showLongToast("该项目没有数据");
+                    homeFragment.getOnCallBackProjects().onProjects(dataBeanList);
                 }else {
-                    HomeFragment homeFragment = (HomeFragment)UI;
                     homeFragment.getOnCallBackProjects().onProjects(dataBeanList);
                     inData(dataBeanList);
                 }

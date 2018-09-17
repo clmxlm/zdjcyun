@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/iv"
-        android:layout_width="@dimen/MY_DP_25"
-        android:layout_height="@dimen/MY_DP_25" />
+        android:layout_width="@dimen/MY_DP_50"
+        android:layout_height="@dimen/MY_DP_50" />
 
     <TextView
         android:id="@+id/tv"

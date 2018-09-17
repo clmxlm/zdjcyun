@@ -28,6 +28,7 @@ public class PickerConfig {
     public String mDay = DefaultConfig.DAY;
     public String mHour = DefaultConfig.HOUR;
     public String mMinute = DefaultConfig.MINUTE;
+    public String mSeconds = DefaultConfig.SECONDS;
 
     /**
      * The min timeMillseconds

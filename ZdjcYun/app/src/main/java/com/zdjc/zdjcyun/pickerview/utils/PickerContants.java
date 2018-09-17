@@ -15,4 +15,6 @@ public class PickerContants {
     public static final int MAX_HOUR = 23;
     public static final int MIN_MINUTE = 0;
     public static final int MAX_MINUTE = 59;
+    public static final int MIN_SECONDS = 0;
+    public static final int MAX_SECONDS = 59;
 }

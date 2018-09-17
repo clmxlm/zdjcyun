@@ -67,23 +67,24 @@
                 android:layout_height="@dimen/MY_DP_0.5"
                 android:background="#acacac"/>
 
-            <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:id="@+id/pdfRecyclerView"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--/>-->
-            <ImageView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/tim"/>
-            <!--<TextView-->
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_margin="@dimen/MY_DP_5"
+                android:text="传统检测"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/pdfRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:layout_height="match_parent"
+                />
+            <!--<ImageView-->
                 <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:gravity="center"-->
-                <!--android:textColor="@color/black"-->
-                <!--android:textSize="@dimen/MY_SP_18"-->
-                <!--android:text="非在线监测模块(开发中...)"/>-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@mipmap/tim"/>-->
 
         </LinearLayout>
 

@@ -117,7 +117,7 @@ public class DateUtil {
 
     public static String getDateToString(long milSecond) {
         Date date = new Date(milSecond);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
 

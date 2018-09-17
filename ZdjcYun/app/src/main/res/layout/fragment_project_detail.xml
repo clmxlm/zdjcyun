@@ -178,6 +178,16 @@
                         android:layout_marginTop="@dimen/MY_DP_10"
                         android:textColor="@color/white"
                         android:text="所选项目指标下的测点没有数据" />
+
+                    <TextView
+                        android:id="@+id/tv_no_curvel1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/MY_SP_18"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/MY_DP_10"
+                        android:textColor="@color/white"
+                        android:text="请重新选择时间试试！" />
                 </LinearLayout>
 
 

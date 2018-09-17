@@ -28,6 +28,10 @@ public interface TimeDataSource {
 
     int getMaxMinute(int year, int month, int day, int hour);
 
+    int getMinSeconds(int year, int month, int day, int hour,int minute);
+
+    int getMaxSeconds(int year, int month, int day, int hour,int minute);
+
     boolean isMinYear(int year);
 
     boolean isMinMonth(int year, int month);
@@ -35,6 +39,8 @@ public interface TimeDataSource {
     boolean isMinDay(int year, int month, int day);
 
     boolean isMinHour(int year, int month, int day, int hour);
+
+    boolean isMinMinute(int year, int month, int day, int hour,int minute);
 //
 //    boolean isMaxYear(int year);
 //

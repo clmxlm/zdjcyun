@@ -112,6 +112,22 @@ public class TimeRepository implements TimeDataSource {
     }
 
     @Override
+    public int getMinSeconds(int year, int month, int day, int hour, int minute) {
+        if (!mIsMinNoRange && Utils.isTimeEquals(mCalendarMin, year, month, day, hour,minute))
+            return mCalendarMin.seconds + 1;
+        else
+            return PickerContants.MIN_SECONDS;
+    }
+
+    @Override
+    public int getMaxSeconds(int year, int month, int day, int hour, int minute) {
+        if (!mIsMaxNoRange && Utils.isTimeEquals(mCalendarMax, year, month, day, hour,minute))
+            return mCalendarMax.seconds;
+
+        return PickerContants.MAX_SECONDS;
+    }
+
+    @Override
     public boolean isMinYear(int year) {
         return Utils.isTimeEquals(mCalendarMin, year);
     }
@@ -129,6 +145,11 @@ public class TimeRepository implements TimeDataSource {
     @Override
     public boolean isMinHour(int year, int month, int day, int hour) {
         return Utils.isTimeEquals(mCalendarMin, year, month, day, hour);
+    }
+
+    @Override
+    public boolean isMinMinute(int year, int month, int day, int hour, int minute) {
+        return Utils.isTimeEquals(mCalendarMin, year, month, day, hour,minute);
     }
 
 

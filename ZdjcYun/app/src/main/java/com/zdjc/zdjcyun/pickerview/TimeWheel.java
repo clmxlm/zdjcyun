@@ -20,8 +20,8 @@ import java.util.Calendar;
 public class TimeWheel {
     Context mContext;
 
-    WheelView year, month, day, hour, minute;
-    NumericWheelAdapter mYearAdapter, mMonthAdapter, mDayAdapter, mHourAdapter, mMinuteAdapter;
+    WheelView year, month, day, hour, minute ,seconds;
+    NumericWheelAdapter mYearAdapter, mMonthAdapter, mDayAdapter, mHourAdapter, mMinuteAdapter,mSecondsAdapter;
 
     PickerConfig mPickerConfig;
     TimeRepository mRepository;
@@ -50,6 +50,13 @@ public class TimeWheel {
         }
     };
 
+    OnWheelChangedListener secondsListener = new OnWheelChangedListener() {
+        @Override
+        public void onChanged(WheelView wheel, int oldValue, int newValue) {
+            updateSeconds();
+        }
+    };
+
     public TimeWheel(View view, PickerConfig pickerConfig) {
         mPickerConfig = pickerConfig;
 
@@ -65,6 +72,7 @@ public class TimeWheel {
         initDay();
         initHour();
         initMinute();
+        initSeconds();
     }
 
 
@@ -74,6 +82,7 @@ public class TimeWheel {
         day = view.findViewById(R.id.day);
         hour = view.findViewById(R.id.hour);
         minute =  view.findViewById(R.id.minute);
+        seconds =  view.findViewById(R.id.second);
 
         switch (mPickerConfig.mType) {
             case ALL:
@@ -100,12 +109,16 @@ public class TimeWheel {
         year.addChangingListener(monthListener);
         year.addChangingListener(dayListener);
         year.addChangingListener(minuteListener);
+        year.addChangingListener(secondsListener);
         month.addChangingListener(monthListener);
         month.addChangingListener(dayListener);
         month.addChangingListener(minuteListener);
+        month.addChangingListener(secondsListener);
         day.addChangingListener(dayListener);
         day.addChangingListener(minuteListener);
+        day.addChangingListener(secondsListener);
         hour.addChangingListener(minuteListener);
+        hour.addChangingListener(secondsListener);
     }
 
     void initYear() {
@@ -157,6 +170,20 @@ public class TimeWheel {
 
         minute.setCurrentItem(mRepository.getDefaultCalendar().minute - minMinute);
         minute.setCyclic(mPickerConfig.cyclic);
+
+    }
+
+    void initSeconds() {
+        updateSeconds();
+        int curYear = getCurrentYear();
+        int curMonth = getCurrentMonth();
+        int curDay = getCurrentDay();
+        int curHour = getCurrentHour();
+        int curMinute = getCurrentMinute();
+        int minSeconds = mRepository.getMinSeconds(curYear, curMonth, curDay, curHour,curMinute);
+
+        seconds.setCurrentItem(mRepository.getDefaultCalendar().seconds - minSeconds);
+        seconds.setCyclic(mPickerConfig.cyclic);
 
     }
 
@@ -242,6 +269,27 @@ public class TimeWheel {
             minute.setCurrentItem(0, false);
     }
 
+    void updateSeconds() {
+        if (seconds.getVisibility() == View.GONE)
+            return;
+
+        int curYear = getCurrentYear();
+        int curMonth = getCurrentMonth();
+        int curDay = getCurrentDay();
+        int curHour = getCurrentHour();
+        int curMinute = getCurrentMinute();
+
+        int minSeconds = mRepository.getMinSeconds(curYear, curMonth, curDay, curHour,curMinute);
+        int maxSeconds = mRepository.getMaxSeconds(curYear, curMonth, curDay, curHour,curMinute);
+
+        mSecondsAdapter = new NumericWheelAdapter(mContext, minSeconds, maxSeconds, PickerContants.FORMAT, mPickerConfig.mSeconds);
+        mSecondsAdapter.setConfig(mPickerConfig);
+        seconds.setViewAdapter(mSecondsAdapter);
+
+        if (mRepository.isMinMinute(curYear, curMonth, curDay, curHour,curMinute))
+            seconds.setCurrentItem(0, false);
+    }
+
     public int getCurrentYear() {
         return year.getCurrentItem() + mRepository.getMinYear();
     }
@@ -271,6 +319,16 @@ public class TimeWheel {
         int curHour = getCurrentHour();
 
         return minute.getCurrentItem() + mRepository.getMinMinute(curYear, curMonth, curDay, curHour);
+    }
+
+    public int getCurrentSeconds() {
+        int curYear = getCurrentYear();
+        int curMonth = getCurrentMonth();
+        int curDay = getCurrentDay();
+        int curHour = getCurrentHour();
+        int curMinute = getCurrentMinute();
+
+        return seconds.getCurrentItem() + mRepository.getMinSeconds(curYear, curMonth, curDay, curHour,curMinute);
     }
 
 

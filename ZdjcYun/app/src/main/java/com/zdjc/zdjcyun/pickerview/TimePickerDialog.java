@@ -26,6 +26,7 @@ import java.util.Calendar;
  * Created by jzxiang on 16/4/19.
  */
 public class TimePickerDialog extends DialogFragment implements View.OnClickListener {
+
     PickerConfig mPickerConfig;
     private TimeWheel mTimeWheel;
     private long mCurrentMillSeconds;
@@ -126,6 +127,7 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
         calendar.set(Calendar.DAY_OF_MONTH, mTimeWheel.getCurrentDay());
         calendar.set(Calendar.HOUR_OF_DAY, mTimeWheel.getCurrentHour());
         calendar.set(Calendar.MINUTE, mTimeWheel.getCurrentMinute());
+        calendar.set(Calendar.SECOND, mTimeWheel.getCurrentSeconds());
 
         mCurrentMillSeconds = calendar.getTimeInMillis();
         if (mPickerConfig.mCallBack != null) {
@@ -228,6 +230,11 @@ public class TimePickerDialog extends DialogFragment implements View.OnClickList
 
         public Builder setMinuteText(String minute){
             mPickerConfig.mMinute = minute;
+            return this;
+        }
+
+        public Builder setSecondsText(String seconds){
+            mPickerConfig.mSeconds = seconds;
             return this;
         }
 

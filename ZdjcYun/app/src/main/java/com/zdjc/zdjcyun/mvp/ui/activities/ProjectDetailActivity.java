@@ -65,14 +65,19 @@ public class ProjectDetailActivity extends BaseActivity<ActivityProjectDetailBin
     @Override
     public void onProjects(List<AllProjectListEntity.DataBean> projects) {
         this.dataBeanList = projects;
-        for (AllProjectListEntity.DataBean dataBean : dataBeanList) {
-            alCount = alCount + dataBean.getAlCount();
-        }
-        PreferenceUtils.putInt(BaseApplication.getContext(),"projectId",dataBeanList.get(0).getProjectId());
-        PreferenceUtils.putString(this,"projectName",dataBeanList.get(0).getProjectName());
+        if (projects.size()>0){
+            for (AllProjectListEntity.DataBean dataBean : dataBeanList) {
+                alCount = alCount + dataBean.getAlCount();
+            }
+            PreferenceUtils.putInt(BaseApplication.getContext(),"projectId",dataBeanList.get(0).getProjectId());
+            PreferenceUtils.putString(this,"projectName",dataBeanList.get(0).getProjectName());
 
-        this.mModel.getAlcount(alCount);
-        this.mModel.allProjectClick(dataBeanList);
+            this.mModel.getAlcount(alCount);
+            this.mModel.allProjectClick(dataBeanList);
+        }else {
+            finish();
+        }
+
     }
 
     @Override

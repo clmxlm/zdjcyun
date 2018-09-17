@@ -24,12 +24,14 @@ import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.ProjectListActivity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectTypeRecycViewAdapter;
+import com.zdjc.zdjcyun.mvp.ui.adapter.base.PDFRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.viewmodel.IMainModel;
 import com.zdjc.zdjcyun.util.ImageLoaderUtils;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
@@ -49,7 +51,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
     private boolean isRunning = false;
     private BeginEntity.DataBean homeViewData;
     private ProjectTypeRecycViewAdapter projectTypeRecycViewAdapter;
-//    private PDFRecycViewAdapter pdfRecycViewAdapter;
+    private PDFRecycViewAdapter pdfRecycViewAdapter;
     private DrawerLayout drawerLayout;
 
     @Override
@@ -89,7 +91,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         mBinder.include.imgbtnLeft.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
         projectTypeRecycViewAdapter = new ProjectTypeRecycViewAdapter((MainActivity) UI);
-//        pdfRecycViewAdapter = new PDFRecycViewAdapter((MainActivity) UI);
+        pdfRecycViewAdapter = new PDFRecycViewAdapter((MainActivity) UI);
 
         String token = PreferenceUtils.getString(getContext(),"token");
         Map<String,String> map = new HashMap<>();
@@ -128,12 +130,13 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
      */
     private void initData() {
 
-        RecyclerView topRecyclerView = mBinder.topRecyclerView;
-//        RecyclerView pdfRecyclerView = mBinder.pdfRecyclerView;
 
-//        pdfRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
-//        pdfRecycViewAdapter.setDataList(homeViewData.getFiles());
-//        pdfRecyclerView.setAdapter(pdfRecycViewAdapter);
+        RecyclerView topRecyclerView = mBinder.topRecyclerView;
+        RecyclerView pdfRecyclerView = mBinder.pdfRecyclerView;
+
+        pdfRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
+        pdfRecycViewAdapter.setDataList(homeViewData.getFiles());
+        pdfRecyclerView.setAdapter(pdfRecycViewAdapter);
 
         topRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
         projectTypeRecycViewAdapter.setDataList(homeViewData.getProjecType());
@@ -170,6 +173,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
             }else {
                 ((MainActivity) UI).intent2Activity(ProjectListActivity.class);
                 PreferenceUtils.putInt(getContext(),"projectType",homeViewData.getProjecType().get(position).getPtSc());
+                PreferenceUtils.putString(getContext(),"projectName",homeViewData.getProjecType().get(position).getProjectTypeName());
             }
         });
 
@@ -286,6 +290,11 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         switch (tag) {
             case 1:
                 homeViewData = (BeginEntity.DataBean) bean;
+                List<BeginEntity.DataBean.FilesBean> files = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    files.add(new BeginEntity.DataBean.FilesBean());
+                }
+                homeViewData.setFiles(files);
                 // Model数据
                 initData();
                 // Controller 控制器
