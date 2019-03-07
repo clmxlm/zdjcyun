@@ -73,8 +73,6 @@
 
         </LinearLayout>
 
-
-
         <ScrollView
             android:id="@+id/sl_tablelayout"
             android:layout_width="match_parent"

@@ -35,7 +35,8 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
     };
     protected Typeface mTfLight;
     protected ArrayList<Fragment> mFragments = new ArrayList<>();
-    public View mNotWorkView;//无网络图片
+    //无网络图片
+    public View mNotWorkView;
 
     public void setView(IModelActivitiy activity) {
 
@@ -68,6 +69,11 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
 
     @Override
     public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
 
     }
 
@@ -105,13 +111,16 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
     @Override
     public void error(String errorMsg,int code,int tag) {
         UI.hideWaitDialog();
-        onError(errorMsg,tag);
+        onError(errorMsg,code,tag);
         //token失效统一处理
-        if (code==4){
+        if (code==100){
             Intent intent = new Intent(UI.getConText(), LoginActivity.class);
             UI.getConText().startActivity(intent);
+        }else if(code==1){
+            ToastUtils.showShortToast(errorMsg);
+        }else {
+            ToastUtils.showShortToast(errorMsg);
         }
-        ToastUtils.showShortToast(errorMsg);
     }
 
 
@@ -144,12 +153,13 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
     /**
      * 请求失败
      */
-    public abstract void onError(String errorMsg ,int tag);
+    public abstract void onError(String errorMsg ,int code,int tag);
 
 
     public Context getContext() {
         return UI.getConText();
     }
+
 
 
 

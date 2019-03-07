@@ -4,7 +4,7 @@
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_bg"
+        android:background="@color/theme_color"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -38,27 +38,19 @@
 
 
             <TextView
-                android:id="@+id/tv_tt_project"
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/tv_change_account"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/MY_DP_10"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:textColor="@color/white"
-                android:onClick="allProject"
+                android:onClick="chooseTime"
                 android:visibility="gone"
                 android:text="@string/all_project"
-                android:textSize="@dimen/MY_SP_14"/>
+                android:textSize="@dimen/MY_SP_16"/>
 
-            <ImageView
-                android:id="@+id/tv_change_account"
-                android:layout_width="@dimen/MY_DP_20"
-                android:layout_height="@dimen/MY_DP_20"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/arrow_down"
-                android:visibility="gone"
-                android:gravity="center_vertical"/>
         </RelativeLayout>
 
     </LinearLayout>

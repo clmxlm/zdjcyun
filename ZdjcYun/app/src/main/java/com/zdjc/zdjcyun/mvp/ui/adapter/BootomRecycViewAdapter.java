@@ -38,6 +38,5 @@ public class BootomRecycViewAdapter extends BaseRecyclerViewAdapter<String> {
         if (selectedPosition==position){
         }else {
         }
-
     }
 }

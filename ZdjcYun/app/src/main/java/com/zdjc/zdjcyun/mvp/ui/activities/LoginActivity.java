@@ -29,7 +29,5 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding,LoginModel>
         mModel.login();
     }
 
-//    public void imageBack(View view){
-//        finish();
-//    }
+
 }

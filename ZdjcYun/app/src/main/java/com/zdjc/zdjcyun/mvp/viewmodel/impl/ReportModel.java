@@ -21,16 +21,19 @@ import com.zdjc.zdjcyun.mvp.viewmodel.IReportModel;
 
 import java.util.ArrayList;
 
-/**
- * Created by ali on 2017/2/20.
- */
 
 public class ReportModel extends BaseModel<ActivityReportBinding,ReportPresenterImpl> implements IReportModel {
 
-    private String tabTags[]=new String[]{"Day","Week","Month","Quarter","Year"};
-    private ArrayList<PageFragment> reportListingFragments = new ArrayList<>();//根据分类数量生成相对应的fragment
+    private String[] tabTags = new String[]{"Day", "Week", "Month", "Quarter", "Year"};
+    /**
+     * 根据分类数量生成相对应的fragment
+     */
+    private ArrayList<PageFragment> reportListingFragments = new ArrayList<>();
     private PagerSlidingTabStrip mPagerSlidingTabStrip;
-    private DisplayMetrics dm; // 获取当前屏幕密度
+    /**
+     * 获取当前屏幕密度
+     */
+    private DisplayMetrics dm;
 
     @Override
     public void onCreate() {
@@ -94,7 +97,7 @@ public class ReportModel extends BaseModel<ActivityReportBinding,ReportPresenter
     }
 
     @Override
-    public void onError(String errorMsg, int tag) {
+    public void onError(String errorMsg, int code,int tag) {
 
     }
 

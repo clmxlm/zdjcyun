@@ -6,5 +6,5 @@ package com.zdjc.zdjcyun.mvp.viewmodel;
 
 public interface IProjectDetailModel {
     void initListener();
-    void ChooseTime();
+    void chooseTime();
 }

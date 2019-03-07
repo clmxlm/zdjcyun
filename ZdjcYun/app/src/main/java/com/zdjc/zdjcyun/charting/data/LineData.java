@@ -4,7 +4,7 @@ package com.zdjc.zdjcyun.charting.data;
 
 import com.zdjc.zdjcyun.charting.interfaces.datasets.ILineDataSet;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Data object that encapsulates all data associated with a LineChart.
@@ -21,7 +21,7 @@ public class LineData extends BarLineScatterCandleBubbleData<ILineDataSet> {
         super(dataSets);
     }
 
-    public LineData(List<ILineDataSet> dataSets) {
+    public LineData(ArrayList<ILineDataSet> dataSets) {
         super(dataSets);
     }
 }

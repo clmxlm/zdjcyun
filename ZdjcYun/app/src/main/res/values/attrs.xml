@@ -22,4 +22,56 @@
         <attr name="pstsShouldExpand" format="boolean" />
         <attr name="pstsTextAllCaps" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="Banner">
+        <attr name="delay_time" format="integer" />
+        <attr name="scroll_time" format="integer" />
+        <attr name="is_auto_play" format="boolean" />
+        <attr name="title_background" format="color|reference" />
+        <attr name="title_textcolor" format="color" />
+        <attr name="title_textsize" format="dimension" />
+        <attr name="title_height" format="dimension" />
+        <attr name="indicator_width" format="dimension" />
+        <attr name="indicator_height" format="dimension" />
+        <attr name="indicator_margin" format="dimension" />
+        <attr name="indicator_drawable_selected" format="reference" />
+        <attr name="indicator_drawable_unselected" format="reference" />
+        <attr name="banner_layout" format="reference"/>
+        <attr name="banner_default_image" format="reference"/>
+        <attr name="image_scale_type" format="enum">
+            <enum name="center" value="0" />
+            <enum name="center_crop" value="1" />
+            <enum name="center_inside" value="2" />
+            <enum name="fit_center" value="3" />
+            <enum name="fit_end" value="4" />
+            <enum name="fit_start" value="5" />
+            <enum name="fit_xy" value="6" />
+            <enum name="matrix" value="7" />
+        </attr>
+        <!--<attr name="indicator_animator" format="reference" />-->
+        <!--<attr name="indicator_animator_reverse" format="reference" />-->
+    </declare-styleable>
+
+    <declare-styleable name="PercentProgressBar">
+        <attr name="lifeCostColor" format="color|reference" />
+        <attr name="communicateCostColor" format="color|reference" />
+        <attr name="trafficCostColor" format="color|reference" />
+        <attr name="entertainmentCostColor" format="color|reference" />
+        <attr name="circleWidth" format="dimension" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="DownloadProgressButton">
+        <attr name="progress_btn_radius" format="dimension" />
+        <attr name="progress_btn_background_color" format="color" />
+        <attr name="progress_btn_background_second_color" format="color" />
+        <attr name="progress_btn_text_color" format="color" />
+        <attr name="progress_btn_text_cover_color" format="color" />
+        <attr name="progress_btn_border_width" format="dimension" />
+        <attr name="progress_btn_ball_style" format="enum">
+            <enum name="STYLE_BALL_PULSE" value="1" />
+            <enum name="STYLE_BALL_JUMP" value="2" />
+        </attr>
+    </declare-styleable>
+
 </resources>

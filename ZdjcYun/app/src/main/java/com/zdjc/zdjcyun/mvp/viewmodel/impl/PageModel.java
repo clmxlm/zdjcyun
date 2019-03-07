@@ -4,7 +4,6 @@ package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zdjc.zdjcyun.app.BaseApplication;
@@ -22,9 +21,7 @@ import com.zdjc.zdjcyun.util.PreferenceUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by ali on 2017/2/20.
- */
+
 
 public class PageModel extends BaseModel<FragmentPageBinding, PagePresenterImpl> implements IPageModel {
 
@@ -34,19 +31,14 @@ public class PageModel extends BaseModel<FragmentPageBinding, PagePresenterImpl>
     private int page = 1;
     private PageFragment pageFragment;
     private String id;
-    private TextView tv_no_report;
-
     @Override
     public void onCreate() {
         pageFragment = (PageFragment) UI;
         id = PreferenceUtils.getInt(BaseApplication.getContext(),"projectId")+"";
         intView();
-
     }
 
     private void intView() {
-
-        tv_no_report = mBinder.tvNoReport;
         mPullLoadMoreRecyclerView = mBinder.pullLoadMoreRecyclerView;
         adapter = new ReportRecycleViewAdapter(getContext());
         mPullLoadMoreRecyclerView.setGridLayout(1);
@@ -96,24 +88,25 @@ public class PageModel extends BaseModel<FragmentPageBinding, PagePresenterImpl>
                     }
                 }else if (dataBean.getDataList().size()==0){
                     if (page>1){
-                        tv_no_report.setVisibility(View.GONE);
+                        mBinder.tvNoReport.setVisibility(View.GONE);
                         mPullLoadMoreRecyclerView.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(),"已经是最后一页了!",Toast.LENGTH_SHORT).show();
-//                        ToastUtils.showLongToast();
                     }else {
                         mPullLoadMoreRecyclerView.setVisibility(View.GONE);
-                        tv_no_report.setVisibility(View.VISIBLE);
+                        mBinder.tvNoReport.setVisibility(View.VISIBLE);
                     }
                 }
                 if (mPullLoadMoreRecyclerView != null) {
                     mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                 }
                 break;
+                default:
+                    break;
         }
     }
 
     @Override
-    public void onError(String errorMsg, int tag) {
+    public void onError(String errorMsg,int code, int tag) {
         if (mPullLoadMoreRecyclerView != null) {
             mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
         }
@@ -132,7 +125,7 @@ public class PageModel extends BaseModel<FragmentPageBinding, PagePresenterImpl>
     }
 
     private  void request(int page){
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(0);
         map.put("projectId", id);
         map.put("pageIndex", page+"");
         map.put("pageSize", "10");

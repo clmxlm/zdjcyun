@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
 public class PreferenceUtils {
 
 	private static SharedPreferences sp;
-	private static String DEFAULT_SHARED="cheers";
+	private static String DEFAULT_SHARED="zdjc";
 	private static SharedPreferences getPreferences(Context context) {
 		if (sp == null) {
 			sp = context.getSharedPreferences(DEFAULT_SHARED, Context.MODE_PRIVATE);
@@ -70,7 +70,7 @@ public class PreferenceUtils {
 	 * @param context
 	 * @param key
 	 * @param defValue
-	 *            ： 没有时的默认值
+	 * 没有时的默认值
 	 * @return
 	 */
 	public static String getString(Context context, String key, String defValue) {

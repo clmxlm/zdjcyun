@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tl="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/MY_DP_10"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/MY_DP_40"
+                android:layout_marginLeft="@dimen/MY_DP_10"
+                android:layout_marginRight="@dimen/MY_DP_10"
+                android:hint="请输入作业活动/场所"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_13"
+                android:textColorHint="#9b9b9b"
+                android:background="@drawable/background_sign_in_dialog" />
+
+            <EditText
+                android:id="@+id/et2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/MY_DP_40"
+                android:layout_marginLeft="@dimen/MY_DP_10"
+                android:layout_marginRight="@dimen/MY_DP_10"
+                android:hint="请选择危险类型"
+                android:paddingLeft="@dimen/MY_DP_10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_13"
+                android:textColorHint="#9b9b9b"
+                android:background="@drawable/background_sign_in_dialog" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_30"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/MY_DP_21"
+                android:paddingLeft="@dimen/MY_DP_8"
+                android:paddingRight="@dimen/MY_DP_8"
+                android:paddingTop="@dimen/MY_DP_2"
+                android:paddingBottom="@dimen/MY_DP_2"
+                android:textAllCaps="false"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/background_search_btn"
+                android:layout_marginRight="@dimen/MY_DP_10"
+                android:layout_marginLeft="@dimen/MY_DP_10"
+                android:text="搜索"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/MY_DP_21"
+                android:paddingLeft="@dimen/MY_DP_8"
+                android:paddingRight="@dimen/MY_DP_8"
+                android:paddingTop="@dimen/MY_DP_2"
+                android:paddingBottom="@dimen/MY_DP_2"
+                android:textAllCaps="false"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/background_upload_btn"
+                android:layout_marginRight="@dimen/MY_DP_10"
+                android:text="上传"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_risk"
+            android:layout_width="match_parent"
+            android:background="#f7f7fc"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+</layout>
+

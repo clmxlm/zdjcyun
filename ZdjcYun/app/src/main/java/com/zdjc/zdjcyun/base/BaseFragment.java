@@ -26,10 +26,10 @@ import java.lang.reflect.Type;
  */
 
 public abstract class BaseFragment<T extends ViewDataBinding, M extends BaseModel> extends Fragment implements IModelActivitiy<T> {
-    public T mBinder = null;//binder
+    public T mBinder = null;
     public M mModel = null;
     private DialogUtil dialogUtil;
-
+    protected Activity activity;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +66,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, M extends BaseMode
 
     @Override
     public Context getConText() {
-        return this.getActivity();
+        return activity;
     }
 
     @Override
@@ -100,7 +100,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, M extends BaseMode
         mModel.onDestroy();
     }
 
-    /*
+    /**
      * Deprecated on API 23
      * Use onAttachToContext instead
      */
@@ -113,10 +113,14 @@ public abstract class BaseFragment<T extends ViewDataBinding, M extends BaseMode
         }
     }
 
-    /*
-     * Called when the fragment attaches to the context
+    /**
+     * 因为在fragment里面直接getactivity获取是不安全的会出现空指针有时候，在低内存的时候复现100%
+     * 这样获取activity不会出现异常getactivity报空
+     * @param context
      */
     protected void onAttachToContext(Context context) {
+        activity=(Activity) context;
+
         //do something
     }
 
@@ -184,6 +188,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, M extends BaseMode
     /**
      * 显示进度条
      */
+    @Override
     public void showWaitDialog() {
         if (dialogUtil == null) {
             dialogUtil = new DialogUtil(getActivity());
@@ -194,6 +199,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, M extends BaseMode
     /**
      * 隐藏进度条
      */
+    @Override
     public void hideWaitDialog() {
         if (dialogUtil != null) {
             dialogUtil.dismiss();

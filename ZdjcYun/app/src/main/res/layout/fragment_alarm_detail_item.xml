@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/MY_DP_10"
+    android:layout_marginLeft="@dimen/MY_DP_10"
+    android:layout_marginTop="@dimen/MY_DP_10"
+    android:background="@drawable/ceshi"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/MY_DP_10"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4a4a4a"
+            android:textSize="@dimen/MY_SP_12"
+            android:text="所在测点"/>
+
+        <TextView
+            android:id="@+id/tv_alarm_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/MY_SP_18"
+            android:textColor="#161617"
+            android:textStyle="bold"
+            android:text="KG-98"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_1"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginRight="@dimen/MY_DP_10"
+        android:background="#e6e6e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginRight="@dimen/MY_DP_10"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_alarm_sensor_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="20189831"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="#4a4a4a"
+                android:text="传感器编号"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_alarm_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="XT67"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="#4a4a4a"
+                android:text="采集终端编号"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginRight="@dimen/MY_DP_10"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_alarm_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="2018-9-21 21:53"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="#4a4a4a"
+                android:text="告警时间"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_alarm_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="沉降"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="#4a4a4a"
+                android:text="告警类型"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_1"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginRight="@dimen/MY_DP_10"
+        android:background="#e6e6e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/MY_DP_10"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4a4a4a"
+            android:textSize="@dimen/MY_SP_12"
+            android:text="告警内容"/>
+
+        <TextView
+            android:id="@+id/tv_alarm_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/MY_SP_12"
+            android:textStyle="bold"
+            android:textColor="#161617"
+            android:text="总变化值：296.9650，大于最大警戒值：30.0000，正常值范围-30.0000〜30.0000"/>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_50"
+        android:layout_margin="@dimen/MY_DP_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tv_status_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textColor="#4a4a4a"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/MY_SP_12"
+            android:text="告警状态"/>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/MY_SP_12"
+            android:gravity="center"
+            android:layout_toRightOf="@+id/tv_status_tag"
+            android:layout_marginLeft="@dimen/MY_DP_10"
+            android:textColor="#fe7231"
+            android:textStyle="bold"
+            android:text="待确认"/>
+
+        <Button
+            android:id="@+id/btn_confirm_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/MY_DP_32"
+            android:textAllCaps="false"
+            android:layout_marginBottom="@dimen/MY_DP_5"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/background_alarm_btn"
+            android:layout_marginRight="@dimen/MY_DP_10"
+            android:text="确认"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+</LinearLayout>
+
+</layout>
+

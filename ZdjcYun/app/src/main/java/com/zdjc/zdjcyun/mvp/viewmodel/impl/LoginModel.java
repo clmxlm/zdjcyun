@@ -1,58 +1,37 @@
 package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 
 
-import android.os.Handler;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.blankj.utilcode.utils.ToastUtils;
-import com.zdjc.zdjcyun.R;
+import com.google.gson.Gson;
 import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.ActivityLoginBinding;
+import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
+import com.zdjc.zdjcyun.mvp.entity.VersionEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.LoginPresenterImpl;
-import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.viewmodel.ILoginModel;
 import com.zdjc.zdjcyun.util.EditTextHolder;
 import com.zdjc.zdjcyun.util.EdtCheckEntity;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import cn.jpush.android.api.JPushInterface;
 
-/**
- * Created by ali on 2017/2/20.
- */
+
 
 public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterImpl> implements ILoginModel,
         EditTextHolder.OnEditTextFocusChangeListener {
 
-    private Animation animation, animation1;
     @Override
     public void onCreate() {
-        init();
     }
 
-    public void init(){
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(() -> {
-            animation = AnimationUtils.loadAnimation(getContext(), R.anim.translate_anim);
-            animation.setRepeatMode(Animation.RESTART);
-            if(mBinder.deImgBackgroud!=null){
-                mBinder.deImgBackgroud.startAnimation(animation);
-            }
-        }, 0);
-        mHandler.postDelayed(() -> {
-            animation1 = AnimationUtils.loadAnimation(getContext(), R.anim.translate_anim_down);
-            animation1.setRepeatMode(Animation.RESTART);
-            if(mBinder.imgBackgroud!=null){
-                mBinder.imgBackgroud.startAnimation(animation1);
-            }
-        }, 0);
-    }
     @Override
     public void onBeforeRequest(int tag) {
         UI.showWaitDialog();
@@ -71,18 +50,47 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
                  * UI是activity或者fragment
                  */
                 JPushInterface.resumePush(getContext());
-                JPushInterface.setAlias(getContext(), 0,mBinder.etUsername.getText().toString());//设置别名
+                //设置别名
+                JPushInterface.setAlias(getContext(), 0,mBinder.etUsername.getText().toString());
+
+                JPushInterface.resumePush(getContext());
+
+                HashMap<String, String> params = new HashMap<>(0);
+                params.put("zdjc","zdjc");
+                mControl.queryMonitorUnit(this,params,2);
+
+                HashMap<String, String> paramsVersion = new HashMap<>(0);
+                paramsVersion.put("appType",61+"");
+                paramsVersion.put("version","3.0.2");
+                mControl.queryVersion(this,paramsVersion,3);
+                break;
+            case 2:
+                /**
+                 * 存储所有指标的集合
+                 */
+                ArrayList<MonitorUnitEntity.DataBean> data = (ArrayList<MonitorUnitEntity.DataBean>)bean;
+                Gson gson = new Gson();
+                String monitorUnitData = gson.toJson(data);
+                PreferenceUtils.putString(getContext(),"monitorUnit",monitorUnitData);
+                break;
+
+            case 3:
+                VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
+                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.isNewVersion());
+                PreferenceUtils.putString(getContext(),"version",dataVersion.getVersion());
+                PreferenceUtils.putString(getContext(),"apkUrl",dataVersion.getUrl());
+
                 LoginActivity activity=(LoginActivity)UI;
                 activity.intent2Activity(MainActivity.class);
                 activity.finish();
-                JPushInterface.resumePush(getContext());
+                break;
+             default:
                 break;
         }
     }
 
     @Override
-    public void onError(String errorMsg, int tag) {
-        ToastUtils.showShortToast(errorMsg);
+    public void onError(String errorMsg, int code,int tag) {
     }
 
     @Override
@@ -93,7 +101,7 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
     @Override
     public void login() {
 
-        HashMap<String, String> params = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>(0);
         String pwd = mBinder.etPassword.getText().toString();
         String name = mBinder.etUsername.getText().toString();
 

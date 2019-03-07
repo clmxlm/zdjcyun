@@ -6,42 +6,333 @@
         android:layout_height="match_parent"
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/theme_color">
 
     <include
         android:id="@+id/include"
         layout="@layout/activity_title_one" />
 
         <RelativeLayout
-            android:id="@+id/rl_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/theme_color">
 
-            <FrameLayout
-                android:id="@+id/fl_change1"
+            <LinearLayout
+                android:id="@+id/ll_detail_project"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusableInTouchMode="false"
-                android:focusable="false"
-                android:layout_above="@+id/tl_2"/>
+                android:layout_height="wrap_content"
+                android:background="@color/theme_color"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_project"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/timepicker_toolbar_bg"
+                    android:textSize="@dimen/MY_SP_14"
+                    android:layout_marginLeft="@dimen/MY_DP_5"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/topRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/MY_DP_5"
+                    android:background="#0fffffff"
+                    android:layout_height="@dimen/MY_DP_0.5"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/MY_DP_5"
+                    android:background="@color/theme_color"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+
+                    <RadioGroup
+                        android:id="@+id/deep_dispalcement_rg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/theme_color"
+                        android:orientation="horizontal" >
+
+                        <RadioButton
+                            android:id="@+id/rb_current_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:text="当前值"
+                            android:layout_marginRight="@dimen/MY_DP_20"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawableLeft="@drawable/radio_background"
+                            android:layout_weight="1"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/rb_current_laser_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/MY_DP_20"
+                            android:text="当前变化量"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_background"
+                            android:layout_weight="1"/>
+
+                        <RadioButton
+                            android:id="@+id/rb_speed_change"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_marginRight="@dimen/MY_DP_20"
+                            android:text="变化速率"
+                            android:gravity="center"
+                            android:button="@null"
+                            android:drawableLeft="@drawable/radio_background"
+                            android:layout_weight="1"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <com.zdjc.zdjcyun.charting.charts.LineChart
+                    android:id="@+id/chart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/MY_DP_320"/>
+
+                <com.zdjc.zdjcyun.charting.charts.LineChart
+                    android:id="@+id/chart2"
+                    android:layout_width="@dimen/MY_DP_330"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_height="@dimen/MY_DP_350"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_no_curvel"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/MY_DP_320"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/no_data"/>
+
+                    <TextView
+                        android:id="@+id/tv_no_curvel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/MY_SP_18"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/MY_DP_10"
+                        android:textColor="@color/white"
+                        android:text="所选项目指标下的测点没有数据" />
+
+                    <TextView
+                        android:id="@+id/tv_no_curvel1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/MY_SP_18"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/MY_DP_10"
+                        android:textColor="@color/white"
+                        android:text="请重新选择时间试试！" />
+                </LinearLayout>
 
 
-            <com.flyco.tablayout.CommonTabLayout
-                android:id="@+id/tl_2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/MY_DP_60"
-                android:background="@drawable/bottom_bg"
-                android:layout_alignParentBottom="true"
-                tl:tl_iconHeight="@dimen/MY_DP_23"
-                tl:tl_iconWidth="@dimen/MY_DP_23"
-                tl:tl_indicator_color="@color/indicator_color"
-                tl:tl_indicator_height="0dp"
-                tl:tl_textSelectColor="@color/indicator_color"
-                tl:tl_textUnselectColor="#666666"
-                tl:tl_textsize="@dimen/MY_SP_12"
-                tl:tl_underline_color="@color/theme_color"
-                tl:tl_underline_height="@dimen/MY_DP_1"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/bootomRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/MY_DP_10"
+                    android:background="#0fffffff"
+                    android:layout_height="@dimen/MY_DP_0.5"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/MY_DP_10"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_sensor"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/select_ll_lable"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="@dimen/MY_DP_5"
+                            android:textColor="@color/timepicker_toolbar_bg"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="传感器异常"
+                            android:layout_marginBottom="@dimen/MY_DP_5"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_terminal"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/select_ll_lable"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="@dimen/MY_DP_5"
+                            android:textColor="@color/timepicker_toolbar_bg"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="终端异常"
+                            android:layout_marginBottom="@dimen/MY_DP_5"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_alarm"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/select_ll_lable"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="@dimen/MY_DP_5"
+                            android:textColor="@color/timepicker_toolbar_bg"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="项目告警"
+                            android:layout_marginBottom="@dimen/MY_DP_5"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/MY_DP_10"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/select_ll_lable"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="@dimen/MY_DP_5"
+                            android:textColor="@color/timepicker_toolbar_bg"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="异常变化量"
+                            android:layout_marginBottom="@dimen/MY_DP_5"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/select_ll_lable"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="@dimen/MY_DP_5"
+                            android:textColor="@color/timepicker_toolbar_bg"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="异常单次变化量"
+                            android:layout_marginBottom="@dimen/MY_DP_5"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/select_ll_lable"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_marginTop="@dimen/MY_DP_5"
+                            android:textColor="@color/timepicker_toolbar_bg"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="异常累计变化量"
+                            android:layout_marginBottom="@dimen/MY_DP_5"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
 
         </RelativeLayout>

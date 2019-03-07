@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zdjc.zdjcyun.R;
 
@@ -99,20 +98,20 @@ public class SearchView extends LinearLayout {
         // 搜索框字体大小（dp）
         textSizeSearch = typedArray.getDimension(R.styleable.Search_View_textSizeSearch, 20);
 
-        // 搜索框字体颜色（使用十六进制代码，如#333、#8e8e8e）
-        int defaultColor = context.getResources().getColor(R.color.colorText); // 默认颜色 = 灰色
+        // 搜索框字体颜色（使用十六进制代码，如#333、#8e8e8e）// 默认颜色 = 灰色
+        int defaultColor = context.getResources().getColor(R.color.colorText);
         textColorSearch = typedArray.getColor(R.styleable.Search_View_textColorSearch, defaultColor);
 
-        // 搜索框提示内容（String）
+        // 搜索框提示内容（String）// 默认颜色 = 灰色
         textHintSearch = typedArray.getString(R.styleable.Search_View_textHintSearch);
-        int color = context.getResources().getColor(R.color.colorText); // 默认颜色 = 灰色
+        int color = context.getResources().getColor(R.color.colorText);
         textHintColorSearch = typedArray.getColor(R.styleable.Search_View_textHintColorSearch,color);
 
         // 搜索框高度
         searchBlockHeight = typedArray.getInteger(R.styleable.Search_View_searchBlockHeight, 150);
 
-        // 搜索框颜色
-        int defaultColor2 = context.getResources().getColor(R.color.white); // 默认颜色 = 白色
+        // 搜索框颜色 // 默认颜色 = 白色
+        int defaultColor2 = context.getResources().getColor(R.color.white);
         searchBlockColor = typedArray.getColor(R.styleable.Search_View_searchBlockColor, defaultColor2);
 
         // 释放资源
@@ -204,10 +203,21 @@ public class SearchView extends LinearLayout {
         listView.setOnItemClickListener((parent, view, position, id) -> {
 
             // 获取用户点击列表里的文字,并自动填充到搜索框内
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            TextView textView = view.findViewById(android.R.id.text1);
             String name = textView.getText().toString();
             et_search.setText(name);
-            Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+            if (!(mCallBack == null)){
+                mCallBack.SearchAciton(et_search.getText().toString());
+            }
+
+            // 2. 点击搜索键后，对该搜索字段在数据库是否存在进行检查（查询）->> 关注1
+            boolean hasData = hasData(et_search.getText().toString().trim());
+            // 3. 若存在，则不保存；若不存在，则将该搜索字段保存（插入）到数据库，并作为历史搜索记录
+            if (!hasData) {
+                insertData(et_search.getText().toString().trim());
+                queryData("");
+            }
+
         });
 
         /**
@@ -291,7 +301,7 @@ public class SearchView extends LinearLayout {
     /**
      * 关注2：清空数据库
      */
-    private void deleteData() {
+    public void deleteData() {
 
         db = helper.getWritableDatabase();
         db.execSQL("delete from records");

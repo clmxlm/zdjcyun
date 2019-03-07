@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_pop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ll_bottom"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_selected_data"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/MY_DP_43"
+                android:background="@drawable/ceshi"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="选择对比数据"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/MY_DP_16"
+                    android:textSize="@dimen/MY_SP_14"
+                    android:textColor="#161617"/>
+
+                <ImageView
+                    android:id="@+id/iv_cancel"
+                    android:layout_width="@dimen/MY_DP_16"
+                    android:layout_height="@dimen/MY_DP_16"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/MY_DP_16"
+                    android:src="@mipmap/cancel"/>
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/bt_item1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="监测指标" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/flowlayout1"
+                    zhy:max_select="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+                </com.zhy.view.flowlayout.TagFlowLayout>
+
+            </ScrollView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="测点数据" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/flowlayout2"
+                    zhy:max_select="-1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+                </com.zhy.view.flowlayout.TagFlowLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bt_item3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/background_login_change"
+                android:textColor="@color/white"
+                android:text="重置数据" />
+
+            <Button
+                android:id="@+id/btn_compared_data"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:textColor="@color/white"
+                android:background="@drawable/background_login_change"
+                android:text="确认对比" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+
+</layout>

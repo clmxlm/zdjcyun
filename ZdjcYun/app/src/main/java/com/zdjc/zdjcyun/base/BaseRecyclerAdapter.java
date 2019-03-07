@@ -24,8 +24,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     protected Context context;
     protected LayoutInflater mInflater;
 
-    private OnItemClickListener onItemClickListener;
-    private OnItemLongClickListener onItemLongClickListener;
+    protected OnItemClickListener onItemClickListener;
+    protected OnItemLongClickListener onItemLongClickListener;
 
     public BaseRecyclerAdapter(Context context) {
         this.context = context;

@@ -1,92 +1,87 @@
 package com.zdjc.zdjcyun.mvp.ui.activities;
 
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.shuyu.gsyvideoplayer.GSYVideoManager;
-import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.zdjc.zdjcyun.R;
+import com.zdjc.zdjcyun.mvp.ui.fragment.TabFragment;
 
 import static com.zdjc.zdjcyun.base.BaseActivity.setWindowStatusBarColor;
 
 
 public class VideoActivity extends AppCompatActivity {
 
-    StandardGSYVideoPlayer videoPlayer;
 
-    OrientationUtils orientationUtils;
+
+    private TabLayout tabLayout = null;
+
+    private ViewPager viewPager;
+
+    private Fragment[] mFragmentArrays = new Fragment[2];
+
+    private String[] mTabTitles = new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setWindowStatusBarColor(this, R.color.theme_color);
         setContentView(R.layout.activity_simple_play);
-        init();
+        tabLayout = findViewById(R.id.tablayout);
+        viewPager = findViewById(R.id.tab_viewpager);
+        intView();
     }
 
-    private void init() {
-        videoPlayer =  findViewById(R.id.video_player);
-        //rtmp://112.74.35.181:10244/oflaDemo/test  rtsp:admin:hnzdjc123@10.88.89.108:554/cam/realmonitor?channel=1&subtype=0
-        String source1 = "rtmp://112.74.35.181:10244/oflaDemo/test";
-        videoPlayer.setUp(source1, true, "直播监控");
+    private void intView() {
+        TextView textView = findViewById(R.id.tv_title);
+        textView.setText("视频监控");
+        ImageView imageView = findViewById(R.id.imgbtn_back);
+        imageView.setVisibility(View.VISIBLE);
+        imageView.setOnClickListener(v -> finish());
 
-        //增加封面
-        ImageView imageView = new ImageView(this);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setImageResource(R.mipmap.error);
-        videoPlayer.setThumbImageView(imageView);
-        //增加title
-        videoPlayer.getTitleTextView().setVisibility(View.VISIBLE);
-        //设置返回键
-        videoPlayer.getBackButton().setVisibility(View.VISIBLE);
-        //设置旋转
-        orientationUtils = new OrientationUtils(this, videoPlayer);
-        //设置全屏按键功能,这是使用的是选择屏幕，而不是全屏
-        videoPlayer.getFullscreenButton().setOnClickListener(v -> orientationUtils.resolveByClick());
-        //是否可以滑动调整
-        videoPlayer.setIsTouchWiget(true);
-        //设置返回按键功能
-        videoPlayer.getBackButton().setOnClickListener(v -> onBackPressed());
-        videoPlayer.startPlayLogic();
+        mTabTitles[0] = "实时预览";
+        mTabTitles[1] = "历史回放";
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        //设置tablayout距离上下左右的距离
+        //tab_title.setPadding(20,20,20,20);
+        mFragmentArrays[0] = TabFragment.newInstance("");
+        mFragmentArrays[1] = TabFragment.newInstance("");
+        PagerAdapter pagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        //将ViewPager和TabLayout绑定
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        videoPlayer.onVideoPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        videoPlayer.onVideoResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        GSYVideoManager.releaseAllVideos();
-        if (orientationUtils != null)
-            orientationUtils.releaseListener();
-    }
-
-    @Override
-    public void onBackPressed() {
-        //先返回正常状态
-        if (orientationUtils.getScreenType() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            videoPlayer.getFullscreenButton().performClick();
-            return;
+    final class MyViewPagerAdapter extends FragmentPagerAdapter {
+        public MyViewPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
-        //释放所有
-        videoPlayer.setVideoAllCallBack(null);
-        super.onBackPressed();
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentArrays[position];
+        }
+
+
+        @Override
+        public int getCount() {
+            return mFragmentArrays.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTabTitles[position];
+
+        }
     }
 
 }

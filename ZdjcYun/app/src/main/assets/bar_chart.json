@@ -1,0 +1,56 @@
+{
+  "eFinType": 3,
+  "stFinDate": {
+    "fVal": -21.7467,
+    "sDtSecCode": "0001000063",
+    "sFinanceDesc": "净资产收益率-21.75%，行业排名100/101",
+    "stIndSTRank": {
+      "iDtNum": 101,
+      "iRank": 100
+    },
+    "vtDateValue": [
+      {
+        "fValue": 15.7467,
+        "sYearMonth": "收敛"
+      },
+      {
+        "fValue": 14.4348,
+        "sYearMonth": "沉降"
+      },
+      {
+        "fValue": 12.6504,
+        "sYearMonth": "水平位移"
+      },
+      {
+        "fValue": 7.9092,
+        "sYearMonth": "深部位移"
+      },
+      {
+        "fValue": 4.3995,
+        "sYearMonth": "干滩高程"
+      }
+    ],
+    "vtDateValueAvg": [
+      {
+        "fValue": 0.95137,
+        "sYearMonth": "收敛"
+      },
+      {
+        "fValue": 3.50875,
+        "sYearMonth": "沉降"
+      },
+      {
+        "fValue": 4.62725,
+        "sYearMonth": "水平位移"
+      },
+      {
+        "fValue": 1.38761,
+        "sYearMonth": "深部位移"
+      },
+      {
+        "fValue": 0.61198,
+        "sYearMonth": "干滩高程"
+      }
+    ]
+  }
+}

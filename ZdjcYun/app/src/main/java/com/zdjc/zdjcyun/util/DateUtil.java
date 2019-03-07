@@ -1,5 +1,7 @@
 package com.zdjc.zdjcyun.util;
 
+import android.annotation.SuppressLint;
+
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.ParseException;
@@ -29,6 +31,9 @@ public class DateUtil {
     public static final SimpleDateFormat DATE_FORMAT_DOT = new SimpleDateFormat("yyyy.MM.dd - HH:mm");
 
     public static final SimpleDateFormat DATE_FORMAT_DATE2 = new SimpleDateFormat("yyMM");
+    @SuppressLint("SimpleDateFormat")
+    private
+    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private DateUtil() {
     }
 
@@ -115,6 +120,21 @@ public class DateUtil {
         return millionSeconds;
     }
 
+    //字符串转时间戳
+    public static long getTime(String timeString){
+        long timeStamp = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d;
+        try{
+            d = sdf.parse(timeString);
+            long l = d.getTime();
+            timeStamp = l;
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+        return timeStamp;
+    }
+
     public static String getDateToString(long milSecond) {
         Date date = new Date(milSecond);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -123,7 +143,7 @@ public class DateUtil {
 
     public static String getDateToStringss(long milSecond) {
         Date date = new Date(milSecond);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
 

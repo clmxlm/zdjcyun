@@ -20,6 +20,16 @@ public class AlarmListBean {
      */
     private int projectId;
     private int alarmId;
+    private String monitorTypeName;
+
+    public String getMonitorTypeName() {
+        return monitorTypeName;
+    }
+
+    public void setMonitorTypeName(String monitorTypeName) {
+        this.monitorTypeName = monitorTypeName;
+    }
+
     @SmartColumn(id =1,name="所属项目")
     private String projectName;
 //    @SmartColumn(id =2,name="所在测点")

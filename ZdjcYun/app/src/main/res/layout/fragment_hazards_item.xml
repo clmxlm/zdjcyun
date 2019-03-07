@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/MY_DP_10"
+    android:layout_marginLeft="@dimen/MY_DP_10"
+    android:layout_marginTop="@dimen/MY_DP_10"
+    android:background="@drawable/ceshi"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/MY_DP_10"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4a4a4a"
+            android:textSize="@dimen/MY_SP_12"
+            android:text="作业活动/场所"/>
+
+        <TextView
+            android:id="@+id/tv_activity_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/MY_SP_18"
+            android:textColor="#161617"
+            android:textStyle="bold"
+            android:text="钻孔桩施工"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_1"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginRight="@dimen/MY_DP_10"
+        android:background="#e6e6e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginRight="@dimen/MY_DP_10"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="危险源"/>
+
+            <TextView
+                android:id="@+id/tv_risk_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="#4a4a4a"
+                android:textStyle="bold"
+                android:text="脚手架搭设时候未系安全带"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="导致风险"/>
+
+            <TextView
+                android:id="@+id/tv_risk_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="#4a4a4a"
+                android:textStyle="bold"
+                android:text="施工人员坠落伤亡"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            android:layout_marginBottom="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_12"
+                android:text="作业条件危险性评价"/>
+
+            <TextView
+                android:id="@+id/tv_risk_assessment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textStyle="bold"
+                android:textColor="#4a4a4a"
+                android:text="1"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+</layout>
+

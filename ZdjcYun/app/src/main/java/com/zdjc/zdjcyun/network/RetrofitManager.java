@@ -3,6 +3,7 @@ package com.zdjc.zdjcyun.network;
 import com.blankj.utilcode.utils.LogUtils;
 import com.blankj.utilcode.utils.NetworkUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.zdjc.zdjcyun.BuildConfig;
 import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.util.ConstantUtil;
 
@@ -17,6 +18,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,13 +51,19 @@ public class RetrofitManager {
                 Cache cache = new Cache(new File(BaseApplication.getContext().getCacheDir(), "HttpCache"),
                         1024 * 1024 * 100);
                 if (sOkHttpClient == null) {
-                    sOkHttpClient = new OkHttpClient.Builder().cache(cache)
-                            .connectTimeout(6, TimeUnit.SECONDS)
-                            .readTimeout(6, TimeUnit.SECONDS)
-                            .writeTimeout(6, TimeUnit.SECONDS)
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(cache)
+                            .connectTimeout(20, TimeUnit.SECONDS)
+                            .readTimeout(20, TimeUnit.SECONDS)
+                            .writeTimeout(20, TimeUnit.SECONDS)
                             .addInterceptor(mRewriteCacheControlInterceptor)
                             .addNetworkInterceptor(mRewriteCacheControlInterceptor)
-                            .addInterceptor(mLoggingInterceptor).build();
+                            .addInterceptor(mLoggingInterceptor);
+                    if (BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+                        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                        builder.addInterceptor(interceptor);
+                    }
+                    sOkHttpClient=builder.build();
                 }
             }
         }
@@ -98,7 +106,6 @@ public class RetrofitManager {
             /**
              * 加入缓存策略，有网路哦就直接返回服务器的最新 数据
              */
-
             return originalResponse.newBuilder()
                     .header("Cache-Control", cacheControl)
                     .removeHeader("Pragma")
@@ -128,7 +135,6 @@ public class RetrofitManager {
             return response;
         }
     };
-
 
     public static RetrofitManager getInstance() {
         if (retrofitManager == null) {

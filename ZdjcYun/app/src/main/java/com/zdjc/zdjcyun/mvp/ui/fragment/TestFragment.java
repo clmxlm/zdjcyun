@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.base.BaseFragment;
 import com.zdjc.zdjcyun.databinding.FragmentTestBinding;
-import com.zdjc.zdjcyun.mvp.viewmodel.impl.TestModel;
+import com.zdjc.zdjcyun.mvp.viewmodel.impl.TabModel;
 
 
 /**
@@ -18,7 +18,7 @@ import com.zdjc.zdjcyun.mvp.viewmodel.impl.TestModel;
  * Use the {@link TestFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TestFragment extends BaseFragment<FragmentTestBinding,TestModel> {
+public class TestFragment extends BaseFragment<FragmentTestBinding,TabModel> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

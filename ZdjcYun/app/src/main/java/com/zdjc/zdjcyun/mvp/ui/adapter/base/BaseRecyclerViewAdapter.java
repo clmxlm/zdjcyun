@@ -100,8 +100,8 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Su
     public void remove(int position) {
         this.mDataList.remove(position);
         notifyItemRemoved(position);
-
-        if(position != (getDataList().size())){ // 如果移除的是最后一个，忽略
+        // 如果移除的是最后一个，忽略
+        if(position != (getDataList().size())){
             notifyItemRangeChanged(position,this.mDataList.size()-position);
         }
     }

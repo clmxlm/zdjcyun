@@ -18,4 +18,8 @@ public interface ILoginPresenter {
          * @param tag
          */
         void login(RequestCallBack callBack, Map<String, String> params, int tag);
+
+        void queryMonitorUnit(RequestCallBack callBack, Map<String, String> params, int tag);
+
+        void queryVersion(RequestCallBack callBack, Map<String, String> params, int tag);
 }

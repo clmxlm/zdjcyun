@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:background="#f7f7fc"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_title_one" />
+
+        <RelativeLayout
+            android:id="@+id/rl_selected_data"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_43"
+            android:background="@drawable/ceshi"
+            android:gravity="center_vertical"
+            android:layout_margin="@dimen/MY_DP_10">
+
+            <TextView
+                android:id="@+id/tv_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="选择对比数据"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/MY_DP_16"
+                android:textSize="@dimen/MY_SP_14"
+                android:textColor="#161617"/>
+
+            <TextView
+                android:id="@+id/tv_selected_monitor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/tv_selected"
+                android:layout_marginLeft="@dimen/MY_DP_16"
+                android:textSize="@dimen/MY_SP_14"
+                android:textColor="#161617"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_16"
+                android:layout_height="@dimen/MY_DP_16"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/MY_DP_16"
+                android:src="@mipmap/icon_more"/>
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <com.zdjc.zdjcyun.event.SegmentTabLayout
+                android:id="@+id/segmentTabLayout"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:layout_marginRight="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_32"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/MY_DP_10"
+                android:layout_marginBottom="@dimen/MY_DP_10"
+                tl:tl_bar_color="#ffffff"
+                tl:tl_indicator_color="@color/theme_color"
+                tl:tl_indicator_corner_radius="2dp"
+                tl:tl_tab_padding="20dp"/>
+
+
+            <com.zdjc.zdjcyun.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/MY_DP_320"/>
+
+
+
+            <com.zdjc.zdjcyun.event.SegmentTabLayout
+                android:id="@+id/segmentTabLayout_time"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:layout_marginRight="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_32"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/MY_DP_10"
+                android:layout_marginBottom="@dimen/MY_DP_10"
+                tl:tl_bar_color="#ffffff"
+                tl:tl_indicator_color="@color/theme_color"
+                tl:tl_indicator_corner_radius="2dp"
+                tl:tl_tab_padding="20dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#2a364c">
@@ -10,14 +10,7 @@
             android:id="@+id/de_img_backgroud"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/login_background" />
-
-        <ImageView
-            android:id="@+id/img_backgroud"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@mipmap/login_background" />
-
+            android:background="@mipmap/login_src" />
 
         <LinearLayout
             android:id="@+id/ll_dialog"
@@ -25,7 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/background_sign_in_dialog"
-            android:layout_margin="@dimen/MY_DP_70"
+            android:layout_marginTop="@dimen/MY_DP_140"
+            android:layout_marginLeft="@dimen/MY_DP_24"
+            android:layout_marginRight="@dimen/MY_DP_24"
             android:orientation="vertical">
 
             <ImageView
@@ -56,6 +51,7 @@
                 android:paddingLeft="@dimen/MY_DP_10"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white_tou"
+                android:drawableLeft="@mipmap/icon_username"
                 android:background="@drawable/background_sign_in_dialog" />
 
             <EditText
@@ -70,6 +66,7 @@
                 android:paddingLeft="@dimen/MY_DP_10"
                 android:textColor="@color/white"
                 android:inputType="textPassword"
+                android:drawableLeft="@mipmap/icon_password"
                 android:background="@drawable/background_sign_in_dialog" />
 
 
@@ -88,6 +85,17 @@
 
         </LinearLayout>
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/MY_DP_5"
+            android:gravity="center"
+            android:text="-中大检测客户端V3.0-"
+            android:layout_alignParentBottom="true"
+            android:textColor="#ffffff"
+            android:layout_marginBottom="@dimen/MY_DP_60"
+            android:textSize="@dimen/MY_SP_12" />
+
+    </RelativeLayout>
 
 </layout>

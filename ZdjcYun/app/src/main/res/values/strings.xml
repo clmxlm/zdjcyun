@@ -1,13 +1,15 @@
 <resources>
-    <string name="app_name">中大检测云</string>
+    <string name="app_name">中大智能监测云平台</string>
     <string name="load">加载中...</string>
+    <string name="monitoring">监测中</string>
+    <string name="all">全部</string>
     <string name="exit">再按一次退出</string>
     <string name="tv_no_data">该项目没有数据!</string>
     <string name="tv_network_error_one">您的网络好像在开小差</string>
     <string name="tv_network_error_two">请检查网络设置,点击屏幕重新加载</string>
 
     <string name="project_name">项目名称:</string>
-    <string name="all_project">所有项目</string>
+    <string name="all_project">时间筛选</string>
     <string name="project_address">地址:</string>
     <string name="project_principal">负责人:</string>
     <string name="project_time">进度条:</string>

@@ -35,20 +35,20 @@ public class ProjectDetailRecycViewAdapter extends BaseRecyclerViewAdapter<Proje
         this.selectedPosition = selectedPosition;
     }
     private void fillValue(int position, SuperViewHolder viewHolder) {
-        TextView tv_measuring_point = viewHolder.getView(R.id.tv_measuring_point);
-        TextView tv_current_value = viewHolder.getView(R.id.tv_current_value);
-        TextView tv_change_value = viewHolder.getView(R.id.tv_change_value);
-        tv_measuring_point.setText(mDataList.get(position).getMonitorPoint());
-        tv_current_value.setText(formatFloatNumber(mDataList.get(position).getTotalLaserChange()));
-        tv_change_value.setText(formatFloatNumber(mDataList.get(position).getSpeedChange()));
+        TextView tvMeasuringPoint = viewHolder.getView(R.id.tv_measuring_point);
+        TextView tvCurrentValue = viewHolder.getView(R.id.tv_current_value);
+        TextView tvChangeValue = viewHolder.getView(R.id.tv_change_value);
+        tvMeasuringPoint.setText(mDataList.get(position).getMonitorPoint());
+        tvCurrentValue.setText(formatFloatNumber(mDataList.get(position).getTotalLaserChange()));
+        tvChangeValue.setText(formatFloatNumber(mDataList.get(position).getSpeedChange()));
         if (selectedPosition==position){
-            tv_measuring_point.setTextColor(context.getResources().getColor(R.color.timepicker_toolbar_bg));
-            tv_current_value.setTextColor(context.getResources().getColor(R.color.timepicker_toolbar_bg));
-            tv_change_value.setTextColor(context.getResources().getColor(R.color.timepicker_toolbar_bg));
+            tvMeasuringPoint.setTextColor(context.getResources().getColor(R.color.timepicker_toolbar_bg));
+            tvCurrentValue.setTextColor(context.getResources().getColor(R.color.timepicker_toolbar_bg));
+            tvChangeValue.setTextColor(context.getResources().getColor(R.color.timepicker_toolbar_bg));
         }else {
-            tv_measuring_point.setTextColor(context.getResources().getColor(R.color.white));
-            tv_current_value.setTextColor(context.getResources().getColor(R.color.white));
-            tv_change_value.setTextColor(context.getResources().getColor(R.color.white));
+            tvMeasuringPoint.setTextColor(context.getResources().getColor(R.color.white));
+            tvCurrentValue.setTextColor(context.getResources().getColor(R.color.white));
+            tvChangeValue.setTextColor(context.getResources().getColor(R.color.white));
         }
 
     }

@@ -17,4 +17,6 @@ public interface IMainPresenter {
     void getPersonMsg(RequestCallBack callBack, Map<String, String> params, int tag);
 
     void loginOut(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getHomeAlarmCounts(RequestCallBack callBack, Map<String, String> params, int tag);
 }

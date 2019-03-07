@@ -1,20 +1,20 @@
 package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
-import com.bin.david.form.data.column.Column;
-import com.bin.david.form.data.format.bg.BaseBackgroundFormat;
-import com.bin.david.form.data.style.FontStyle;
-import com.bin.david.form.data.table.TableData;
-import com.bin.david.form.utils.DensityUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.github.jdsjlzx.interfaces.OnItemClickListener;
 import com.zdjc.zdjcyun.R;
@@ -31,51 +31,38 @@ import com.zdjc.zdjcyun.charting.formatter.DefaultValueFormatter;
 import com.zdjc.zdjcyun.charting.highlight.Highlight;
 import com.zdjc.zdjcyun.charting.listener.OnChartValueSelectedListener;
 import com.zdjc.zdjcyun.charting.utils.ColorTemplate;
-import com.zdjc.zdjcyun.databinding.FragmentProjectDetailBinding;
-import com.zdjc.zdjcyun.event.BottomPopWindow;
+import com.zdjc.zdjcyun.databinding.ActivityProjectDetailBinding;
 import com.zdjc.zdjcyun.event.DetailPopWindow;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
 import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.ProjectDetailEntity;
-import com.zdjc.zdjcyun.mvp.entity.UserInfo;
 import com.zdjc.zdjcyun.mvp.presenter.impl.ProjectDetailPresenterImpl;
+import com.zdjc.zdjcyun.mvp.ui.activities.MeasuringPointActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.ProjectDetailActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.WarningMessageActivity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.BootomRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectDetailRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.ui.adapter.TopRecycViewAdapter;
-import com.zdjc.zdjcyun.mvp.ui.fragment.ProjectDetailFragment;
 import com.zdjc.zdjcyun.mvp.viewmodel.IProjectDetailModel;
-import com.zdjc.zdjcyun.pickerview.TimePickerDialog;
-import com.zdjc.zdjcyun.pickerview.data.Type;
-import com.zdjc.zdjcyun.pickerview.listener.OnDateSetListener;
 import com.zdjc.zdjcyun.util.DateUtil;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-/**
- * Created by ali on 2017/2/20.
- */
-
-public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,ProjectDetailPresenterImpl> implements IProjectDetailModel,
-        OnItemClickListener, View.OnClickListener, OnDateSetListener {
+import static com.zdjc.zdjcyun.util.DateUtil.getDateToString;
 
 
-    private TimePickerDialog mDialogAll;
-    @SuppressLint("SimpleDateFormat")
-    private
-    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private ProjectDetailFragment projectDetailFragment;
+
+public class ProjectDetailModel extends BaseModel<ActivityProjectDetailBinding,ProjectDetailPresenterImpl> implements IProjectDetailModel,
+        OnItemClickListener{
+
+
     private LineChart mChart;
-    private boolean endOrStart;
     private DetailPopWindow detailPopWindow;
-    private BottomPopWindow bottomPopWindow;
     private ProjectDetailRecycViewAdapter projectDetailRecycViewAdapter;
     private TopRecycViewAdapter topRecycViewAdapter;
     private BootomRecycViewAdapter bootomRecycViewAdapter;
@@ -83,7 +70,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
     private String[] xValue2 = new String[]{};
     private String[] xValue3 = new String[]{};
 
-    private ArrayList<String> mVals1 = new ArrayList<>();
     private ArrayList<String> mVals2 = new ArrayList<>();
 
     private  ArrayList<ProjectDetailEntity.DataBean> data = new ArrayList<>();
@@ -98,59 +84,134 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
     private boolean detailTag;
     private ArrayList<DeepDispalcementEntity.DataBean> deepDispalcementEntity;
     private int radioTag = 1;
+    private String st;
+    private String et;
+    private long time;
+    private long time1;
 
 
     @Override
     public void onCreate() {
-        startText = mBinder.tvChooseStartTime.getText().toString();
-        endText = mBinder.tvChooseEndTime.getText().toString();
-        requestData(false);
+        //默认时间是当前时间往前推一天
+        time = System.currentTimeMillis();
+        time1 = time-7200000*12;
+        mBinder.include.tvTime.setVisibility(View.VISIBLE);
+        mBinder.include.tvTime.setOnClickListener(v -> showDialogTwo());
+
+        requestData();
         initListener();
         PreferenceUtils.putInt(getContext(),"topPosition",0);
         PreferenceUtils.putInt(getContext(),"leftPosition",0);
-        mVals1.add("测点描述");
-        mVals1.add("数据信息");
 
-        mVals2.add("测点描述");
-        mVals2.add("数据信息");
         mVals2.add("对比分析");
         mVals2.add("返回图表");
     }
 
+    /**
+     * 时间选择框
+     */
+    private void showDialogTwo() {
+        View view = LayoutInflater.from(((ProjectDetailActivity)UI)).inflate(R.layout.dialog_date, null);
+        final DatePicker startTime = view.findViewById(R.id.st);
+        final DatePicker endTime = view.findViewById(R.id.et);
+        final TextView tvSt = view.findViewById(R.id.tv_st);
+        final TextView tvEt = view.findViewById(R.id.tv_et);
+        final TimePicker timePicker = view.findViewById(R.id.myTimePicker);
+        final String[] stringMonth = {""};
+        final String[] strinDayOfMonth = {""};
+        AlertDialog.Builder builder = new AlertDialog.Builder(((ProjectDetailActivity)UI));
+        builder.setView(view);
+        if ("深部位移".equals(PreferenceUtils.getString(getContext(),"monitorTypeName"))){
+            tvEt.setText("选择时分秒");
+            tvSt.setText("选择年月日");
+            timePicker.setVisibility(View.VISIBLE);
+            endTime.setVisibility(View.GONE);
+            startTime.updateDate(startTime.getYear(), startTime.getMonth(), 01);
+            builder.setPositiveButton("确定", (dialog, which) -> {
+                int month = startTime.getMonth() + 1;
+                if (month<10){
+                    stringMonth[0] = "0" + String.valueOf(month);
+                }else {
+                    stringMonth[0] = String.valueOf(month);
+                }
+                if (startTime.getDayOfMonth()<10){
+                    strinDayOfMonth[0] = "0" + String.valueOf(startTime.getDayOfMonth());
+                }else {
+                    strinDayOfMonth[0] = String.valueOf(startTime.getDayOfMonth());
+                }
+                st = "" + startTime.getYear() +"-"+ stringMonth[0] +"-"+ strinDayOfMonth[0];
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    et = "" + timePicker.getHour() +":"+ timePicker.getMinute() +":"+ "00";
+                }
+                startText = st;
+                endText = et;
+                String chooseTime = st+"  "+et;
+                mBinder.include.tvTime.setText(chooseTime);
+                PreferenceUtils.putString(getContext(),"singleTime",chooseTime);
+                timeResetData();
+            });
+        }else {
+            tvSt.setText("开始时间");
+            tvEt.setText("结束时间");
+            timePicker.setVisibility(View.GONE);
+            endTime.setVisibility(View.VISIBLE);
+            startTime.updateDate(startTime.getYear(), startTime.getMonth(), 01);
+            builder.setPositiveButton("确定", (dialog, which) -> {
+                int month = startTime.getMonth() + 1;
+                String stringStartMonth;
+                String strinStartDayOfMonth;
+                if (month<10){
+                    stringStartMonth = "0" + String.valueOf(month);
+                }else {
+                    stringStartMonth = String.valueOf(month);
+                }
+                if (startTime.getDayOfMonth()<10){
+                    strinStartDayOfMonth = "0" + String.valueOf(startTime.getDayOfMonth());
+                }else {
+                    strinStartDayOfMonth = String.valueOf(startTime.getDayOfMonth());
+                }
+                st = "" + startTime.getYear() +"-"+ stringStartMonth +"-"+ strinStartDayOfMonth;
+
+                int month1 = endTime.getMonth() + 1;
+                String stringEndMonth;
+                String strinEndDayOfMonth;
+                if (month1<10){
+                    stringEndMonth = "0" + String.valueOf(month1);
+                }else {
+                    stringEndMonth = String.valueOf(month1);
+                }
+                if (endTime.getDayOfMonth()<10){
+                    strinEndDayOfMonth = "0" + String.valueOf(endTime.getDayOfMonth());
+                }else {
+                    strinEndDayOfMonth = String.valueOf(endTime.getDayOfMonth());
+                }
+                et = "" + endTime.getYear() +"-"+ stringEndMonth +"-"+ strinEndDayOfMonth;
+                startText = st;
+                endText = et;
+                String chooseTime = st+"  "+et;
+                mBinder.include.tvTime.setText(chooseTime);
+                PreferenceUtils.putString(getContext(),"doubleTime",chooseTime);
+                timeResetData();
+            });
+        }
+        builder.setNegativeButton("取消", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        //自动弹出键盘问题解决
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
     private void inData(ArrayList<String> list) {
         mBinder.tvProject.setText(PreferenceUtils.getString(getContext(),"projectName"));
-        projectDetailFragment=(ProjectDetailFragment)UI;
         if (projectDetailRecycViewAdapter == null){
-            projectDetailRecycViewAdapter = new ProjectDetailRecycViewAdapter(projectDetailFragment.getActivity());
+            projectDetailRecycViewAdapter = new ProjectDetailRecycViewAdapter(getContext());
         }
         if (topRecycViewAdapter == null){
-            topRecycViewAdapter = new TopRecycViewAdapter(projectDetailFragment.getActivity());
+            topRecycViewAdapter = new TopRecycViewAdapter(getContext());
         }
         if (bootomRecycViewAdapter == null){
-            bootomRecycViewAdapter = new BootomRecycViewAdapter(projectDetailFragment.getActivity());
+            bootomRecycViewAdapter = new BootomRecycViewAdapter(getContext());
         }
-        long tenYears = 20L * 365 * 1000 * 60 * 60 * 24L;
-        mDialogAll = new TimePickerDialog.Builder()
-                .setCallBack(this)
-                .setCancelStringId(BaseApplication.getContext().getResources().getString(R.string.picker_cancel))
-                .setSureStringId(getContext().getResources().getString(R.string.picker_sure))
-                .setTitleStringId(getContext().getResources().getString(R.string.picker_title))
-                .setYearText(getContext().getResources().getString(R.string.picker_year))
-                .setMonthText(getContext().getResources().getString(R.string.picker_month))
-                .setDayText(getContext().getResources().getString(R.string.picker_day))
-                .setHourText(getContext().getResources().getString(R.string.picker_hour))
-                .setMinuteText(getContext().getResources().getString(R.string.picker_minute))
-                .setSecondsText("秒")
-                .setCyclic(true)
-                .setMinMillseconds(System.currentTimeMillis()-tenYears)
-                .setMaxMillseconds(System.currentTimeMillis() + tenYears)
-                .setCurrentMillseconds(System.currentTimeMillis())
-                .setThemeColor(getContext().getResources().getColor(R.color.timepicker_dialog_bg))
-                .setType(Type.ALL)
-                .setWheelItemTextNormalColor(getContext().getResources().getColor(R.color.timetimepicker_default_text_color))
-                .setWheelItemTextSelectorColor(getContext().getResources().getColor(R.color.timepicker_toolbar_bg))
-                .setWheelItemTextSize(12)
-                .build();
 
         RecyclerView topRecyclerView = mBinder.topRecyclerView;
 
@@ -167,6 +228,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                         ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         };
+
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         topRecyclerView.setLayoutManager(layoutManager);
 
@@ -180,6 +242,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
             //切换不同指标的不同传感器的集合
             projectDetailRecycViewAdapter.setDataList(data.get(position).getSensorList());
+
             if (topPosition == position){
                 if (PreferenceUtils.getInt(getContext(),"requestSelectedPosition") == position){
                     projectDetailRecycViewAdapter.getPosition(leftPosition);
@@ -195,22 +258,36 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                     topRecycViewAdapter.getProjectName("");
                 }
             }
-            detailPopWindow = new DetailPopWindow(projectDetailFragment.getActivity());
+
+            detailPopWindow = new DetailPopWindow((ProjectDetailActivity)UI);
             detailPopWindow.popRecyclerView.setAdapter(projectDetailRecycViewAdapter);
             //刷新指标选中颜色
             topRecycViewAdapter.getPosition(position);
             topRecycViewAdapter.notifyDataSetChanged();
 
             if ("深部位移".equals(data.get(position).getMonitorTypeName())){
-                startText = mBinder.tvChooseStartTime.getText().toString();
+                startText = st;
                 detailTag = true;
-                mBinder.tvChooseEndTime.setVisibility(View.GONE);
-                mBinder.tvChooseStartTime.setVisibility(View.VISIBLE);
                 mBinder.bootomRecyclerView.setVisibility(View.GONE);
+                if ("".equals(PreferenceUtils.getString(getContext(),"singleTime"))){
+                    mBinder.include.tvTime.setText("时间筛选");
+                }else {
+                    mBinder.include.tvTime.setText(PreferenceUtils.getString(getContext(),"singleTime"));
+                }
             }else {
                 detailTag = false;
-                mBinder.tvChooseEndTime.setVisibility(View.VISIBLE);
                 mBinder.bootomRecyclerView.setVisibility(View.VISIBLE);
+                if ("".equals(PreferenceUtils.getString(getContext(),"doubleTime"))){
+                    if ("".equals(PreferenceUtils.getString(getContext(),"firstStartTime"))){
+                        mBinder.include.tvTime.setText("时间筛选");
+                    }else {
+                        String time = PreferenceUtils.getString(getContext(),"firstStartTime")+" "+
+                                PreferenceUtils.getString(getContext(),"firstEndTime");
+                        mBinder.include.tvTime.setText(time);
+                    }
+                }else {
+                    mBinder.include.tvTime.setText(PreferenceUtils.getString(getContext(),"doubleTime"));
+                }
             }
             //展示数据popupwindow
             detailPopWindow.showAtLocation(mBinder.topRecyclerView, Gravity.START,0,0);
@@ -221,10 +298,8 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             PreferenceUtils.putString(getContext(),"monitorTypeName",data.get(position).getMonitorTypeName());
         });
 
-
-        RecyclerView bootomRecyclerView = mBinder.bootomRecyclerView;
         // 如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        bootomRecyclerView.setHasFixedSize(true);
+        mBinder.bootomRecyclerView.setHasFixedSize(true);
 
         // 确定每个item的排列方式
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext()) {
@@ -237,116 +312,12 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             }
         };
         layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
-        bootomRecyclerView.setLayoutManager(layoutManager1);
+        mBinder.bootomRecyclerView.setLayoutManager(layoutManager1);
 
-        bootomRecycViewAdapter.setDataList(mVals1);
-        bootomRecyclerView.setAdapter(bootomRecycViewAdapter);
+
         //为点击标签设置点击事件.
         bootomRecycViewAdapter.setOnItemClickListener((view, position) -> {
             if (position==0){
-                //展示数据popupwindow
-                bottomPopWindow = new BottomPopWindow(projectDetailFragment.getActivity());
-                bottomPopWindow.showAtLocation(mBinder.bootomRecyclerView, Gravity.BOTTOM,0,0);
-                topPosition = PreferenceUtils.getInt(getContext(),"topPosition");
-                leftPosition = PreferenceUtils.getInt(getContext(),"leftPosition");
-                bottomPopWindow.ll_description.setVisibility(View.VISIBLE);
-                bottomPopWindow.sl_tablelayout.setVisibility(View.GONE);
-                String tvProjectName = getContext().getResources().getString(R.string.tv_project_name)+PreferenceUtils.getString(getContext(),"projectName");
-                String tvDetectionIndicator = getContext().getResources().getString(R.string.tv_detection_indicator)+data.get(topPosition).getMonitorTypeName();
-                String tvSurveysPointName = getContext().getResources().getString(R.string.tv_surveys_point_name)+data.get(topPosition).getSensorList()
-                        .get(leftPosition).getMonitorPoint();
-                String tvTerminalNumber = getContext().getResources().getString(R.string.tv_terminal_number)+data.get(topPosition).getSensorList()
-                        .get(leftPosition).getSmuNumber();
-                String tvSensorNumber = getContext().getResources().getString(R.string.tv_sensor_number)+data.get(topPosition).getSensorList()
-                        .get(leftPosition).getSensorNumber();
-                String tvSate = "";
-                if (curvelData.size()>0){
-                    int status = curvelData.get(leftPosition).getSensorStatus();
-
-                    if (status==1){
-                        tvSate = getContext().getResources().getString(R.string.tv_sate)+"正常";
-                    }else if (status == 0){
-                        tvSate = getContext().getResources().getString(R.string.tv_sate)+"不正常";
-                    }
-                }else {
-                    tvSate = getContext().getResources().getString(R.string.tv_sate)+"未知";
-                }
-                bottomPopWindow.tv_sate.setText(tvSate);
-                bottomPopWindow.tv_project_name.setText(tvProjectName);
-                bottomPopWindow.tv_detection_indicator.setText(tvDetectionIndicator);
-                bottomPopWindow.tv_surveys_point_name.setText(tvSurveysPointName);
-                bottomPopWindow.tv_terminal_number.setText(tvTerminalNumber);
-                bottomPopWindow.tv_sensor_number.setText(tvSensorNumber);
-
-            }else if (position==1){
-                if (curvelData.size()>0){
-                    //展示数据popupwindow
-                    bottomPopWindow = new BottomPopWindow(projectDetailFragment.getActivity());
-                    bottomPopWindow.showAtLocation(mBinder.bootomRecyclerView, Gravity.BOTTOM,0,0);
-                    bottomPopWindow.ll_description.setVisibility(View.GONE);
-                    bottomPopWindow.sl_tablelayout.setVisibility(View.VISIBLE);
-
-                    FontStyle.setDefaultTextSize(DensityUtils.sp2px(getContext(),15)); //设置全局字体大小
-
-                    WindowManager wm = projectDetailFragment.getActivity().getWindowManager();
-                    int screenWith = wm.getDefaultDisplay().getWidth();
-                    bottomPopWindow.table.getConfig().setMinTableWidth(screenWith); //设置最小宽度 屏幕宽度
-                    bottomPopWindow.table.getConfig().setShowTableTitle(false);
-                    //生成数据
-                    final List<UserInfo> testData = new ArrayList<>();
-                    for(int i = curvelData.size()-1;i >=0; i--) {
-                        UserInfo userData = new UserInfo(
-                                monitorPoint,
-                                curvelData.get(i).getPreviousTime(),
-                                formatFloatNumber(curvelData.get(i).getTotalLaserChange()),
-                                formatFloatNumber(curvelData.get(i).getCurrentLaserChange()),
-                                formatFloatNumber(curvelData.get(i).getSpeedChange()),
-                                curvelData.get(i).getSmuNumber(),
-                                curvelData.get(i).getSmuChannel());
-                        testData.add(userData);
-                    }
-
-                    final Column<String> nameColumn = new Column<>("测点名称", "name");
-                    nameColumn.setAutoCount(true);
-                    final Column<Integer> ageColumn = new Column<>("本次时间", "time");
-                    ageColumn.setAutoCount(true);
-                    ageColumn.setAutoCount(true);
-                    final Column<String> column2 = new Column<>("累计变化量", "totalChange");
-                    column2.setAutoCount(true);
-                    final Column<Integer> column3 = new Column<>("单次变化量", "singleChange");
-                    column3.setAutoCount(true);
-                    final Column<Integer> column4 = new Column<>("变化速率", "speedChange");
-                    column4.setAutoCount(true);
-                    final Column<String> column5 = new Column<>("终端编号", "sunNum");
-                    column5.setAutoCount(true);
-                    final Column<Integer> column6 = new Column<>("采集器通道", "sunChancel");
-                    column6.setAutoCount(true);
-
-                    final TableData<UserInfo> tableData = new TableData<>
-                            ("",testData,nameColumn,ageColumn,column2,column3,column4,column5,column6);
-                    tableData.setShowCount(false);
-
-                    bottomPopWindow.table.getConfig().setColumnTitleBackground(new BaseBackgroundFormat(getContext().getResources().getColor(R.color.windows_bg)));
-                    bottomPopWindow.table.getConfig().setCountBackground(new BaseBackgroundFormat(getContext().getResources().getColor(R.color.windows_bg)));
-
-
-                    FontStyle fontStyle = new FontStyle();
-                    fontStyle.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                    bottomPopWindow.table.getConfig().setContentStyle(fontStyle);
-                    bottomPopWindow.table.getConfig().setColumnTitleStyle(fontStyle);
-
-                    bottomPopWindow.table.setTableData(tableData);
-                    bottomPopWindow.table.getConfig().setContentBackground(
-                            new BaseBackgroundFormat(getContext().getResources().getColor(R.color.theme_color)));
-                    bottomPopWindow.table.getConfig().setColumnTitleBackground(
-                            new BaseBackgroundFormat(getContext().getResources().getColor(R.color.theme_color))
-                    );
-                    bottomPopWindow.table.getConfig().setShowXSequence(false);
-                    bottomPopWindow.table.getConfig().setShowYSequence(false);
-                }else {
-                    ToastUtils.showLongToast("所选项目指标下的测点没有数据!");
-                }
-            }else if(position==2){
                 ArrayList<String> list2= new ArrayList<>(Arrays.asList(xValue3));
                 list2.clear();
                 for (int i = 0; i < data.size(); i++) {
@@ -358,7 +329,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                 }
                 xValue3 = list2.toArray(new String[list2.size()]);
                 curvelData4(xValue3);
-            }else if(position==3){
+            }else if (position==1){
                 curvelData3(xValue1,curvelData);
             }
         });
@@ -366,31 +337,41 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         projectDetailRecycViewAdapter.setOnItemClickListener((view, position) -> {
             topPosition = PreferenceUtils.getInt(getContext(),"topPosition");
             if (detailTag){
-                Map<String,String> map = new HashMap<>();
-                map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId",0)+"");
-                map.put("monitorPoint",data.get(topPosition).getSensorList().get(position).getMonitorPoint());
-                map.put("date",mBinder.tvChooseStartTime.getText().toString());
-                mControl.getProjectDeepDispalcementDetailDetail(ProjectDetailModel.this,map,3);
+                //深部位移
+                if ("时间筛选".equals(mBinder.include.tvTime.getText().toString())){
+                    ToastUtils.showShortToast("请先选择时间!");
+                }else {
+                    Map<String,String> map = new HashMap<>(0);
+                    map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId",0)+"");
+                    map.put("monitorPoint",data.get(topPosition).getSensorList().get(position).getMonitorPoint());
+                    map.put("date",mBinder.include.tvTime.getText().toString());
+                    mControl.getProjectDeepDispalcementDetailDetail(ProjectDetailModel.this,map,3);
+                }
             }else {
-                Map<String,String> map = new HashMap<>();
+                String doubleTime = PreferenceUtils.getString(getContext(),"doubleTime");
+                if (!"".equals(doubleTime)){
+                    st = doubleTime.substring(0,doubleTime.indexOf(" "));
+                    et = doubleTime.substring(doubleTime.indexOf(" "),doubleTime.length());
+                }else {
+                    st = PreferenceUtils.getString(getContext(),"firstStartTime");
+                    et = PreferenceUtils.getString(getContext(),"firstEndTime");
+                }
+                Map<String,String> map = new HashMap<>(0);
                 map.put("tableName",data.get(topPosition).getTableName());
                 map.put("sensorNumber",data.get(topPosition).getSensorList().get(position).getSensorNumber());
                 map.put("smuNumber",data.get(topPosition).getSensorList().get(position).getSmuNumber());
                 map.put("smuChannel",data.get(topPosition).getSensorList().get(position).getSmuChannel());
-                map.put("beginTime",startText);
-                map.put("endTime",endText);
-
-                if ("".equals(startText)||"".equals(endText)){
-                    ToastUtils.showLongToast("请选择时间");
-                }else {
-                    mControl.getProjectCurveDetail(ProjectDetailModel.this,map,2);
-                    PreferenceUtils.putString(getContext(),"sensorNumber",data.get(topPosition).getSensorList().get(position).getSensorNumber());
-                    PreferenceUtils.putString(getContext(),"smuNumber",data.get(topPosition).getSensorList().get(position).getSmuNumber());
-                    PreferenceUtils.putString(getContext(),"smuChannel",data.get(topPosition).getSensorList().get(position).getSmuChannel());
-                }
+                map.put("beginTime",st);
+                map.put("endTime",et);
+                mControl.getProjectCurveDetail(ProjectDetailModel.this,map,2);
+                mBinder.include.tvTime.setText(st+"|"+et);
+                PreferenceUtils.putString(getContext(),"sensorNumber",data.get(topPosition).getSensorList().get(position).getSensorNumber());
+                PreferenceUtils.putString(getContext(),"smuNumber",data.get(topPosition).getSensorList().get(position).getSmuNumber());
+                PreferenceUtils.putString(getContext(),"smuChannel",data.get(topPosition).getSensorList().get(position).getSmuChannel());
             }
             monitorPoint = data.get(topPosition).getSensorList().get(position).getMonitorPoint();
             PreferenceUtils.putInt(getContext(),"leftPosition",position);
+            PreferenceUtils.putString(getContext(),"monitorPoint",data.get(topPosition).getSensorList().get(position).getMonitorPoint());
             detailPopWindow.dismiss();
         });
 
@@ -410,9 +391,17 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             }
         });
 
+        mBinder.llSensor.setOnClickListener(v -> ((ProjectDetailActivity)UI).intent2Activity(MeasuringPointActivity.class));
+
+        mBinder.llAlarm.setOnClickListener(v -> ((ProjectDetailActivity)UI).intent2Activity(WarningMessageActivity.class));
+
+        mBinder.llTerminal.setOnClickListener(v -> ((ProjectDetailActivity)UI).intent2Activity(MeasuringPointActivity.class));
     }
 
-    //曲线信息
+    /**
+     * 曲线信息
+     * @param data1
+     */
     private void curvelData(String[] xValue,ArrayList<CurveDetailEntity.DataBean> data1){
         mBinder.chart1.setVisibility(View.VISIBLE);
         mBinder.chart2.setVisibility(View.GONE);
@@ -428,11 +417,8 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         mChart.setDrawGridBackground(false);
         mChart.setHighlightPerDragEnabled(true);
         mChart.setDrawBorders(false);
-        // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
-        // set an alternative background color
-//        mChart.setBackgroundColor(Color.parseColor("#eeeeee"));
         mChart.setBackgroundColor(Color.parseColor("#192531"));
 
         setData(data1);
@@ -448,18 +434,17 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
-//        xAxis.setEnabled(false);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         if (xValue.length>0){
             xAxis.setValueFormatter((value, axis) -> xValue[(int) value % xValue.length]);
         }
+
         YAxis yAxis = mChart.getAxisLeft();
         yAxis.setDrawGridLines(false);
         yAxis.setTextColor(Color.WHITE);
@@ -526,8 +511,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
-        // set an alternative background color
-//        mChart.setBackgroundColor(Color.parseColor("#eeeeee"));
         mChart.setBackgroundColor(Color.parseColor("#192531"));
         // add data
         setData1(data2);
@@ -543,13 +526,10 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
-
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
-//        xAxis.setEnabled(false);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setLabelRotationAngle(-90);
         xAxis.setDrawGridLines(false);
@@ -599,7 +579,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-//        mChart.setBackgroundColor(Color.parseColor("#eeeeee"));
         mChart.setBackgroundColor(Color.parseColor("#192531"));
         // add data
         setData2(data1);
@@ -615,13 +594,11 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
-//        xAxis.setEnabled(false);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         if (xValue.length>0){
@@ -693,7 +670,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-//        mChart.setBackgroundColor(Color.parseColor("#eeeeee"));
         mChart.setBackgroundColor(Color.parseColor("#192531"));
 
         setData3(data1);
@@ -710,13 +686,11 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
-//        xAxis.setEnabled(false);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         if (xValue.length>0){
@@ -788,7 +762,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-//        mChart.setBackgroundColor(Color.parseColor("#eeeeee"));
         mChart.setBackgroundColor(Color.parseColor("#192531"));
         // add data
         setData4();
@@ -804,13 +777,11 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
-//        xAxis.setEnabled(false);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         if (xValueA.length>0){
@@ -885,7 +856,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         mChart.setPinchZoom(true);
 
         // set an alternative background color
-//        mChart.setBackgroundColor(Color.parseColor("#eeeeee"));
         mChart.setBackgroundColor(Color.parseColor("#192531"));
 
         setData5(data1);
@@ -901,13 +871,11 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
         l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
-//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setAxisMinimum(0f);
         xAxis.setGranularity(1f);
-//        xAxis.setEnabled(false);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         if (xValue.length>0){
@@ -991,7 +959,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                         dataBean.setTableName("laser_data");
                         dataBean.setSensorList(sensorList);
                         data.add(dataBean);
-
                     }
                     ArrayList<String> list= new ArrayList<>();
                     list.clear();
@@ -1014,10 +981,16 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                             }else {
                                 startText = DateUtil.getDateToStringss(time1);
                             }
-                            mBinder.tvChooseStartTime.setText(startText);
-                            Map<String,String> map = new HashMap<>();
+                            String monitorPoint;
+                            if (PreferenceUtils.getString(getContext(),"monitorPoint")==null||
+                                    "".equals(PreferenceUtils.getString(getContext(),"monitorPoint"))){
+                                monitorPoint = data.get(0).getSensorList().get(0).getMonitorPoint();
+                            }else {
+                                monitorPoint = PreferenceUtils.getString(getContext(),"monitorPoint");
+                            }
+                            Map<String,String> map = new HashMap<>(0);
                             map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId",0)+"");
-                            map.put("monitorPoint",data.get(0).getSensorList().get(0).getMonitorPoint());
+                            map.put("monitorPoint",monitorPoint);
                             map.put("date",startText);
                             mControl.getProjectDeepDispalcementDetailDetail(ProjectDetailModel.this,map,3);
                         }else {
@@ -1029,7 +1002,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                 }
                 break;
             case 2:
-                mBinder.tvChooseEndTime.setVisibility(View.VISIBLE);
                 mBinder.bootomRecyclerView.setVisibility(View.VISIBLE);
                 mBinder.llRadio.setVisibility(View.GONE);
                 curvelData = (ArrayList< CurveDetailEntity.DataBean >)bean;
@@ -1046,24 +1018,16 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                     String monitorTypeName = PreferenceUtils.getString(getContext(),"monitorTypeName");
                     if ("雨量".equals(monitorTypeName)){
                         curvelData2(xValue1,curvelData);
-                        bootomRecycViewAdapter.setDataList(mVals1);
-                        bootomRecycViewAdapter.notifyDataSetChanged();
                     }else if ("渗流压力".equals(monitorTypeName)){
                         curvelData3(xValue1,curvelData);
                         bootomRecycViewAdapter.setDataList(mVals2);
-                        bootomRecycViewAdapter.notifyDataSetChanged();
+                        mBinder.bootomRecyclerView.setAdapter(bootomRecycViewAdapter);
                     }else if ("干滩高程".equals(monitorTypeName)){
                         curvelData5(xValue1,curvelData);
-                        bootomRecycViewAdapter.setDataList(mVals1);
-                        bootomRecycViewAdapter.notifyDataSetChanged();
                     }else if ("库水位".equals(monitorTypeName)){
                         curvelData3(xValue1,curvelData);
-                        bootomRecycViewAdapter.setDataList(mVals1);
-                        bootomRecycViewAdapter.notifyDataSetChanged();
                     }else {
                         curvelData(xValue1,curvelData);
-                        bootomRecycViewAdapter.setDataList(mVals1);
-                        bootomRecycViewAdapter.notifyDataSetChanged();
                     }
                     //记录用户选择的时间段
                     PreferenceUtils.putString(getContext(),"startTime",startText);
@@ -1079,7 +1043,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                 }
                 break;
             case 3:
-                mBinder.tvChooseEndTime.setVisibility(View.GONE);
                 mBinder.bootomRecyclerView.setVisibility(View.GONE);
                 mBinder.llRadio.setVisibility(View.VISIBLE);
                 deepDispalcementEntity = (ArrayList<DeepDispalcementEntity.DataBean>)bean;
@@ -1100,31 +1063,19 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                     mBinder.chart1.setVisibility(View.GONE);
                 }
                 break;
+                default:
+                    break;
         }
 
     }
 
-    public void requestCurvelData(){
-        //默认时间是当前时间往前推两个小时
-        long time = System.currentTimeMillis();
-        long time1 = time-7200000;
+    private void requestCurvelData(){
+
         String tableName;
         String sensorNumber;
         String smuNumber;
         String smuChannel;
-        String start = PreferenceUtils.getString(getContext(),"startTime");
-        String end = PreferenceUtils.getString(getContext(),"endTime");
-        if (!"".equals(startText)&&!"".equals(endText)
-                &&start!=null&&end!=null){
-            startText = start;
-            endText = end;
-        }else {
-            startText = DateUtil.getDateToString(time1);
-            endText = DateUtil.getDateToString(time);
-        }
 
-        mBinder.tvChooseStartTime.setText(startText);
-        mBinder.tvChooseEndTime.setText(endText);
         if ("".equals(PreferenceUtils.getString(getContext(),"tableName"))
                 ||PreferenceUtils.getString(getContext(),"tableName")==null){
             tableName = data.get(0).getTableName();
@@ -1150,20 +1101,22 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             smuChannel = PreferenceUtils.getString(getContext(),"smuChannel");
         }
 
-        Map<String,String> map = new HashMap<>();
+        Map<String,String> map = new HashMap<>(0);
         map.put("tableName",tableName);
         map.put("sensorNumber",sensorNumber);
         map.put("smuNumber",smuNumber);
         map.put("smuChannel",smuChannel);
-        map.put("beginTime",startText);
-        map.put("endTime",endText);
+        map.put("beginTime",getDateToString(time1));
+        map.put("endTime",getDateToString(time));
         mControl.getProjectCurveDetail(ProjectDetailModel.this,map,2);
-
-        monitorPoint = data.get(0).getSensorList().get(0).getMonitorPoint();
+        mBinder.include.tvTime.setText(getDateToString(time1)+" "+getDateToString(time));
+        PreferenceUtils.putString(getContext(),"firstStartTime",getDateToString(time1));
+        PreferenceUtils.putString(getContext(),"firstEndTime",getDateToString(time));
+        monitorPoint = data.get(PreferenceUtils.getInt(getContext(),"topPosition")).getSensorList().get(PreferenceUtils.getInt(getContext(),"leftPosition")).getMonitorPoint();
     }
 
     @Override
-    public void onError(String errorMsg, int tag) {
+    public void onError(String errorMsg, int code,int tag) {
 
     }
 
@@ -1174,94 +1127,56 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
     @Override
     public void initListener() {
-        mBinder.tvChooseStartTime.setOnClickListener(this);
-        mBinder.tvChooseEndTime.setOnClickListener(this);
    }
 
     @Override
-    public void ChooseTime() {
+    public void chooseTime() {
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_choose_start_time:
-                endOrStart = true;
-                mDialogAll.show(projectDetailFragment.getActivity().getSupportFragmentManager(), "all");
-                break;
-            case R.id.tv_choose_end_time:
-                endOrStart = false;
-                mDialogAll.show(projectDetailFragment.getActivity().getSupportFragmentManager(), "all");
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onDateSet(TimePickerDialog timePickerDialog, long millseconds) {
-        if (endOrStart){
-            startText = getDateToString(millseconds);
-            mBinder.tvChooseStartTime.setText(startText);
-            //重新选择时间刷新数据
-            timeResetData();
-        }else {
-            endText = getDateToString(millseconds);
-            mBinder.tvChooseEndTime.setText(endText);
-            //重新选择时间刷新数据
-            timeResetData();
-        }
-
-    }
-
-    public String getDateToString(long time) {
-        Date d = new Date(time);
-        return sf.format(d);
     }
 
     @Override
     public void onResume() {
-        requestData(false);
+        requestData();
     }
 
     public  void getPosition(int i){
         this.defaultPosition = i;
     }
 
-    public  void requestData(boolean isReduction){
+    private void requestData(){
         mBinder.tvProject.setText(PreferenceUtils.getString(getContext(),"projectName"));
-        if (isReduction){
-            if (topRecycViewAdapter!=null){
-                //刷新指标选中颜色
-                topRecycViewAdapter.getPosition(0);
-                topRecycViewAdapter.notifyDataSetChanged();
-            }
+
+        if (topRecycViewAdapter!=null){
+            //刷新指标选中颜色
+            topRecycViewAdapter.getPosition(topPosition);
+            String d = PreferenceUtils.getString(getContext(),"monitorPoint");
+            topRecycViewAdapter.getProjectName(d);
+            topRecycViewAdapter.notifyDataSetChanged();
         }
-        Map<String,String> map = new HashMap<>();
+        Map<String,String> map = new HashMap<>(0);
         map.put("projectId",String.valueOf(PreferenceUtils.getInt(BaseApplication.getContext(),"projectId",0)));
         mControl.getProjectDetail(this,map,1);
     }
 
-    public void timeResetData(){
+    private void timeResetData(){
         int leftPosition = PreferenceUtils.getInt(getContext(),"leftPosition");
         int topPosition = PreferenceUtils.getInt(getContext(),"topPosition");
         if (detailTag){
-            Map<String,String> map = new HashMap<>();
+            Map<String,String> map = new HashMap<>(0);
             map.put("projectId",PreferenceUtils.getInt(getContext(),"projectId",0)+"");
             map.put("monitorPoint",data.get(topPosition).getSensorList().get(leftPosition).getMonitorPoint());
-            map.put("date",mBinder.tvChooseStartTime.getText().toString());
+            map.put("date",PreferenceUtils.getString(getContext(),"singleTime"));
             mControl.getProjectDeepDispalcementDetailDetail(ProjectDetailModel.this,map,3);
         }else {
-            Map<String,String> map = new HashMap<>();
+            Map<String,String> map = new HashMap<>(0);
             map.put("tableName",data.get(topPosition).getTableName());
             map.put("sensorNumber",data.get(topPosition).getSensorList().get(leftPosition).getSensorNumber());
             map.put("smuNumber",data.get(topPosition).getSensorList().get(leftPosition).getSmuNumber());
             map.put("smuChannel",data.get(topPosition).getSensorList().get(leftPosition).getSmuChannel());
-            map.put("beginTime",startText);
-            map.put("endTime",endText);
+            map.put("beginTime",st);
+            map.put("endTime",et);
 
-            if ("".equals(startText)||"".equals(endText)){
+            if ("".equals(st)||"".equals(et)){
                 ToastUtils.showLongToast("请选择时间");
             }else {
                 mControl.getProjectCurveDetail(ProjectDetailModel.this,map,2);
@@ -1271,7 +1186,9 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             }
         }
     }
-    //统一曲线图设值
+    /**
+     * 统一曲线图设值
+     */
     private void setData(ArrayList<CurveDetailEntity.DataBean> data1) {
 
         ArrayList<Entry> yVals1 = new ArrayList<>();
@@ -1289,24 +1206,10 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
         LineDataSet set1, set2, set3;
 
-//        if (mChart.getData() != null &&
-//                mChart.getData().getDataSetCount() > 0) {
-//            set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-//            set2 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
-//            set3 = (LineDataSet) mChart.getData().getDataSetByIndex(2);
-//            set1.setValues(yVals1);
-//            set2.setValues(yVals2);
-//            set3.setValues(yVals3);
-//            mChart.getData().notifyDataChanged();
-//            mChart.notifyDataSetChanged();
-//        } else {
-            // create a dataset and give it a type
             set1 = new LineDataSet(yVals1, "累计变化量(mm)");
             set1.setAxisDependency(YAxis.AxisDependency.LEFT);
             set1.setColor(Color.parseColor("#00FFFF"));
-//            set1.setCircleColor(Color.WHITE);
             set1.setLineWidth(2f);
-//            set1.setCircleRadius(3f);
             set1.setFillAlpha(65);
             set1.setFillColor(ColorTemplate.getHoloBlue());
             set1.setDrawCircleHole(false);
@@ -1321,27 +1224,21 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             set2 = new LineDataSet(yVals2, "单次变化量(mm)");
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
             set2.setColor(Color.parseColor("#89289c"));
-//            set2.setCircleColor(Color.WHITE);
             set2.setValueTextColor(Color.WHITE);
             set2.setLineWidth(2f);
-//            set2.setCircleRadius(3f);
             set2.setFillAlpha(65);
             set2.setFillColor(Color.RED);
             set2.setDrawCircleHole(false);
             set2.setDrawCircles(false);
             set2.setHighLightColor(Color.rgb(90,153,255));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
-            //设置小数点后面位数
             set2.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
 
             set3 = new LineDataSet(yVals3, "变化速率(mm/min)");
             set3.setAxisDependency(YAxis.AxisDependency.LEFT);
             set3.setColor(Color.parseColor("#2096F2"));
-//            set3.setCircleColor(Color.WHITE);
             set3.setValueTextColor(Color.WHITE);
             set3.setLineWidth(2f);
             set3.setDrawCircles(false);
-//            set3.setCircleRadius(3f);
             set3.setFillAlpha(65);
             set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
             set3.setDrawCircleHole(false);
@@ -1354,8 +1251,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             //不显示圆点上的数值
             data.setDrawValues(false);
 //            data.setValueTextColor(Color.WHITE);
-//            data.setValueTextSize(9f);
-            //去掉科学计数法保留四位小数
             data.setValueFormatter(new DefaultValueFormatter(3));
             // set data
             mChart.setData(data);
@@ -1363,7 +1258,9 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 //        }
     }
 
-    //雨量曲线图设值
+    /**
+     * 雨量曲线图设值
+     */
     private void setData2(ArrayList<CurveDetailEntity.DataBean> data1) {
 
         ArrayList<Entry> yVals2 = new ArrayList<>();
@@ -1377,40 +1274,24 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
         LineDataSet set2, set3;
 
-//        if (mChart.getData() != null &&
-//                mChart.getData().getDataSetCount() > 0) {
-//            set2 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-//            set3 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
-//            set2.setValues(yVals2);
-//            set3.setValues(yVals3);
-//            mChart.getData().notifyDataChanged();
-//            mChart.notifyDataSetChanged();
-//        } else {
-            // create a dataset and give it a type
             set2 = new LineDataSet(yVals2, "单次变化量(mm)");
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
             set2.setColor(Color.parseColor("#89289c"));
-//            set2.setCircleColor(Color.WHITE);
             set2.setValueTextColor(Color.WHITE);
             set2.setLineWidth(2f);
-//            set2.setCircleRadius(3f);
             set2.setFillAlpha(65);
             set2.setFillColor(Color.RED);
             set2.setDrawCircleHole(false);
             set2.setDrawCircles(false);
             set2.setHighLightColor(Color.rgb(90,153,255));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
-            //设置小数点后面位数
             set2.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
 
             set3 = new LineDataSet(yVals3, "变化速率(mm/min)");
             set3.setAxisDependency(YAxis.AxisDependency.LEFT);
             set3.setColor(Color.parseColor("#2096F2"));
-//            set3.setCircleColor(Color.WHITE);
             set3.setValueTextColor(Color.WHITE);
             set3.setLineWidth(2f);
             set3.setDrawCircles(false);
-//            set3.setCircleRadius(3f);
             set3.setFillAlpha(65);
             set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
             set3.setDrawCircleHole(false);
@@ -1418,13 +1299,9 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             //设置小数点后面位数
             set3.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "    "+value);
 
-            // create a data object with the datasets
             LineData data = new LineData(set2,set3);
             //不显示圆点上的数值
             data.setDrawValues(false);
-//            data.setValueTextColor(Color.WHITE);
-//            data.setValueTextSize(9f);
-            //去掉科学计数法保留四位小数
             data.setValueFormatter(new DefaultValueFormatter(3));
             // set data
             mChart.setData(data);
@@ -1432,7 +1309,9 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 //        }
     }
 
-    //渗流压力和库水位曲线图设值
+    /**
+     * 渗流压力和库水位曲线图设值
+     */
     private void setData3(ArrayList<CurveDetailEntity.DataBean> data1) {
 
         ArrayList<Entry> yVals2 = new ArrayList<>();
@@ -1446,40 +1325,24 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
         LineDataSet set2, set3;
 
-//        if (mChart.getData() != null &&
-//                mChart.getData().getDataSetCount() > 0) {
-//            set2 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-//            set3 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
-//            set2.setValues(yVals2);
-//            set3.setValues(yVals3);
-//            mChart.getData().notifyDataChanged();
-//            mChart.notifyDataSetChanged();
-//        } else {
-            // create a dataset and give it a type
             set2 = new LineDataSet(yVals2, "当前值(mm)");
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
             set2.setColor(Color.parseColor("#89289c"));
-//            set2.setCircleColor(Color.WHITE);
             set2.setValueTextColor(Color.WHITE);
             set2.setLineWidth(2f);
-//            set2.setCircleRadius(3f);
             set2.setFillAlpha(65);
             set2.setFillColor(Color.RED);
             set2.setDrawCircleHole(false);
             set2.setDrawCircles(false);
             set2.setHighLightColor(Color.rgb(90,153,255));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
-            //设置小数点后面位数
             set2.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
 
             set3 = new LineDataSet(yVals3, "单次变化量(mm/min)");
             set3.setAxisDependency(YAxis.AxisDependency.LEFT);
             set3.setColor(Color.parseColor("#2096F2"));
-//            set3.setCircleColor(Color.WHITE);
             set3.setValueTextColor(Color.WHITE);
             set3.setLineWidth(2f);
             set3.setDrawCircles(false);
-//            set3.setCircleRadius(3f);
             set3.setFillAlpha(65);
             set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
             set3.setDrawCircleHole(false);
@@ -1491,9 +1354,6 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             LineData data = new LineData(set2,set3);
             //不显示圆点上的数值
             data.setDrawValues(false);
-//            data.setValueTextColor(Color.WHITE);
-//            data.setValueTextSize(9f);
-            //去掉科学计数法保留四位小数
             data.setValueFormatter(new DefaultValueFormatter(3));
             // set data
             mChart.setData(data);
@@ -1501,7 +1361,9 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 //        }
     }
 
-    //渗流压力对比分析曲线图设值
+    /**
+     * 渗流压力对比分析曲线图设值
+     */
     private void setData4() {
 
         ArrayList<Entry> yVals2 = new ArrayList<>();
@@ -1512,46 +1374,29 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
                 yVals2.add(new Entry(i, (float) 7.824));
             }else if (i==2){
                 yVals2.add(new Entry(i, (float) 10.757));
-            }else if (i==3){
+            }else {
                 yVals2.add(new Entry(i, (float) 12.835));
             }
 
         }
         LineDataSet set2;
 
-//        if (mChart.getData() != null &&
-//                mChart.getData().getDataSetCount() > 0) {
-//            set2 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-//            set3 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
-//            set2.setValues(yVals2);
-//            set3.setValues(yVals3);
-//            mChart.getData().notifyDataChanged();
-//            mChart.notifyDataSetChanged();
-//        } else {
-        // create a dataset and give it a type
         set2 = new LineDataSet(yVals2, "当前值(mm)");
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
         set2.setColor(Color.parseColor("#89289c"));
-//            set2.setCircleColor(Color.WHITE);
         set2.setValueTextColor(Color.WHITE);
         set2.setLineWidth(2f);
-//            set2.setCircleRadius(3f);
         set2.setFillAlpha(65);
         set2.setFillColor(Color.RED);
         set2.setDrawCircleHole(false);
         set2.setDrawCircles(false);
         set2.setHighLightColor(Color.rgb(90,153,255));
-        //set2.setFillFormatter(new MyFillFormatter(900f));
-        //设置小数点后面位数
         set2.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
 
         // create a data object with the datasets
         LineData data = new LineData(set2);
         //不显示圆点上的数值
         data.setDrawValues(false);
-//            data.setValueTextColor(Color.WHITE);
-//            data.setValueTextSize(9f);
-        //去掉科学计数法保留四位小数
         data.setValueFormatter(new DefaultValueFormatter(3));
         // set data
         mChart.setData(data);
@@ -1559,7 +1404,9 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 //        }
     }
 
-    //深部位移曲线图设值
+    /**
+     * 深部位移曲线图设值
+     */
     private void setData1(ArrayList<DeepDispalcementEntity.DataBean> data2) {
 
         ArrayList<Entry> yVals1 = new ArrayList<>();
@@ -1608,9 +1455,7 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
 
             set1.setAxisDependency(YAxis.AxisDependency.LEFT);
             set1.setColor(Color.parseColor("#89289c"));
-//            set1.setCircleColor(Color.WHITE);
             set1.setLineWidth(2f);
-//            set1.setCircleRadius(3f);
             set1.setFillAlpha(65);
             set1.setFillColor(ColorTemplate.getHoloBlue());
             set1.setDrawCircleHole(false);
@@ -1626,17 +1471,13 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             set2 = new LineDataSet(yVals2, "Y通道");
             set2.setAxisDependency(YAxis.AxisDependency.LEFT);
             set2.setColor(Color.parseColor("#2096F2"));
-//            set2.setCircleColor(Color.WHITE);
             set2.setValueTextColor(Color.WHITE);
             set2.setLineWidth(2f);
-//            set2.setCircleRadius(3f);
             set2.setFillAlpha(65);
             set2.setFillColor(Color.RED);
             set2.setDrawCircleHole(false);
             set2.setDrawCircles(false);
             set2.setHighLightColor(Color.rgb(90,153,255));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
-            //设置小数点后面位数
             set2.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
 
             // create a data object with the datasets
@@ -1645,15 +1486,15 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
             data.setDrawValues(false);
 
 //            data.setValueTextColor(Color.WHITE);
-//            data.setValueTextSize(9f);
-            //去掉科学计数法保留四位小数
             data.setValueFormatter(new DefaultValueFormatter(3));
             // set data
             mChart.setData(data);
 
         }
     }
-    //干滩高程曲线图设值
+    /**
+     * 干滩高程曲线图设值
+     */
     private void setData5(ArrayList<CurveDetailEntity.DataBean> data1) {
 
         ArrayList<Entry> yVals1 = new ArrayList<>();
@@ -1666,24 +1507,10 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         }
         LineDataSet set1, set2;
 
-//        if (mChart.getData() != null &&
-//                mChart.getData().getDataSetCount() > 0) {
-//            set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
-//            set2 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
-//            set3 = (LineDataSet) mChart.getData().getDataSetByIndex(2);
-//            set1.setValues(yVals1);
-//            set2.setValues(yVals2);
-//            set3.setValues(yVals3);
-//            mChart.getData().notifyDataChanged();
-//            mChart.notifyDataSetChanged();
-//        } else {
-        // create a dataset and give it a type
         set1 = new LineDataSet(yVals1, "高度(m)");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setColor(Color.parseColor("#00FFFF"));
-//            set1.setCircleColor(Color.WHITE);
         set1.setLineWidth(2f);
-//            set1.setCircleRadius(3f);
         set1.setFillAlpha(65);
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setDrawCircleHole(false);
@@ -1698,38 +1525,30 @@ public class ProjectDetailModel extends BaseModel<FragmentProjectDetailBinding,P
         set2 = new LineDataSet(yVals2, "宽度(m)");
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
         set2.setColor(Color.parseColor("#89289c"));
-//            set2.setCircleColor(Color.WHITE);
         set2.setValueTextColor(Color.WHITE);
         set2.setLineWidth(2f);
-//            set2.setCircleRadius(3f);
         set2.setFillAlpha(65);
         set2.setFillColor(Color.RED);
         set2.setDrawCircleHole(false);
         set2.setDrawCircles(false);
         set2.setHighLightColor(Color.rgb(90,153,255));
-        //set2.setFillFormatter(new MyFillFormatter(900f));
-        //设置小数点后面位数
         set2.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
 
         // create a data object with the datasets
         LineData data = new LineData(set1,set2);
         //不显示圆点上的数值
         data.setDrawValues(false);
-//            data.setValueTextColor(Color.WHITE);
-//            data.setValueTextSize(9f);
-        //去掉科学计数法保留四位小数
         data.setValueFormatter(new DefaultValueFormatter(3));
         // set data
         mChart.setData(data);
 
 //        }
     }
+
     /**
      * 数据变成科学计数法显示。用此方法可以使其正常显示。
-     * @param value
-     * @return Sting
      */
-    private   String formatFloatNumber(double value) {
+    private  String formatFloatNumber(double value) {
         DecimalFormat df = new DecimalFormat("0.000");
         return df.format(value);
     }

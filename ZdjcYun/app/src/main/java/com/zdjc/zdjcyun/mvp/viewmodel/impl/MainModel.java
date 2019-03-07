@@ -1,108 +1,95 @@
 package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.utils.LogUtils;
+import com.blankj.utilcode.utils.ToastUtils;
+import com.vector.update_app.UpdateAppBean;
+import com.vector.update_app.UpdateAppManager;
+import com.vector.update_app.UpdateCallback;
+import com.vector.update_app.service.DownloadService;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.PermissionListener;
 import com.zdjc.zdjcyun.R;
+import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.app.Constant;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.ActivityMainBinding;
-import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
+import com.zdjc.zdjcyun.event.ConfirmPopWindow;
+import com.zdjc.zdjcyun.mvp.entity.AlarmEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
+import com.zdjc.zdjcyun.mvp.entity.ProjecTypeEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.MainPresenterImpl;
+import com.zdjc.zdjcyun.mvp.ui.activities.ChangePasswordActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.ProjectListActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.WarningMessageActivity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectTypeRecycViewAdapter;
-import com.zdjc.zdjcyun.mvp.ui.adapter.base.PDFRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.viewmodel.IMainModel;
 import com.zdjc.zdjcyun.util.ImageLoaderUtils;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
+import com.zdjc.zdjcyun.util.UpdateAppHttpUtil;
+import com.zdjc.zdjcyun.widget.HProgressDialogUtils;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.jpush.android.api.JPushInterface;
 
-/**
- * Created by ali on 2017/2/20.
- */
 
-public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> implements IMainModel,ViewPager.OnPageChangeListener{
+public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> implements IMainModel{
 
 
-    private ViewPager viewPager;
-    private ArrayList<ImageView> imageViewList;
-    private LinearLayout ll_point_container;
-    private TextView tv_desc;
-    private int previousSelectedPosition = 0;
-    private boolean isRunning = false;
-    private BeginEntity.DataBean homeViewData;
+    private List<ProjecTypeEntity.DataBean>  homeViewData;
     private ProjectTypeRecycViewAdapter projectTypeRecycViewAdapter;
-    private PDFRecycViewAdapter pdfRecycViewAdapter;
     private DrawerLayout drawerLayout;
+    private String token;
+    private ConfirmPopWindow confirmPopWindow;
+    private boolean isShowDownloadProgress = true;
 
     @Override
     public void onCreate() {
-
+        confirmPopWindow = new ConfirmPopWindow((MainActivity)UI);
         // 初始化布局 View视图
         initViews();
-
-        // 开启轮询
-        new Thread() {
-            public void run() {
-                isRunning = true;
-                while (isRunning) {
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    // 往下跳一位
-                    ((MainActivity) UI).runOnUiThread(() -> {
-                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                    });
-                }
-            }
-        }.start();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        isRunning = false;
     }
 
     private void initViews() {
+        token = PreferenceUtils.getString(getContext(),"token");
+        Map<String,String> map = new HashMap<>(0);
+        map.put("token",token);
+        mControl.getHomeAlarmCounts(this,map,4);
+
         drawerLayout = mBinder.drawer;
         mBinder.include.imgbtnLeft.setVisibility(View.VISIBLE);
         mBinder.include.imgbtnLeft.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
-
+        mBinder.include.tvTitle.setOnClickListener(v -> confirmPopWindow.showAtBottom(v));
         projectTypeRecycViewAdapter = new ProjectTypeRecycViewAdapter((MainActivity) UI);
-        pdfRecycViewAdapter = new PDFRecycViewAdapter((MainActivity) UI);
 
-        String token = PreferenceUtils.getString(getContext(),"token");
-        Map<String,String> map = new HashMap<>();
-        map.put("token",token);
-        mControl.getHomeViewMsg(this,map,1);
-
-        viewPager = mBinder.viewpager;
-        viewPager.setOnPageChangeListener(this);// 设置页面更新监听
-//		viewPager.setOffscreenPageLimit(1);// 左右各保留几个对象
-        ll_point_container = mBinder.llPointContainer;
-        tv_desc = mBinder.tvDesc;
         if ("".equals(token)){
             mBinder.includeLeft.tvToken.setText("请先登录");
             ImageLoaderUtils.imageDisPlayRes(R.mipmap.username,mBinder.includeLeft.ivLogout);
@@ -112,7 +99,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         }
         mBinder.includeLeft.rlLogout.setOnClickListener(v -> {
             if (!"".equals(token)){
-                Map<String,String> map1 = new HashMap<>();
+                Map<String,String> map1 = new HashMap<>(0);
                 map1.put("zdjc","zdjc");
                 mControl.loginOut(MainModel.this, map1,3);
             }else {
@@ -122,162 +109,173 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
             }
         });
 
+        mBinder.includeLeft.rlChangePassword.setOnClickListener(v -> {
+            ((MainActivity)UI).intent2Activity(ChangePasswordActivity.class);
+            drawerLayout.closeDrawer(GravityCompat.START);
+
+        });
+
+        mBinder.llAlarm.setOnClickListener(v -> {
+            ((MainActivity)UI).intent2Activity(WarningMessageActivity.class);
+        });
+
+        confirmPopWindow.tv_monitorPoint.setOnClickListener(v -> {
+            getProjectType("0");
+            mBinder.include.tvTitle.setText("监测中");
+            confirmPopWindow.dismiss();
+        });
+        confirmPopWindow.tv_all.setOnClickListener(v -> {
+            getProjectType("1");
+            mBinder.include.tvTitle.setText("全部");
+            confirmPopWindow.dismiss();
+        });
+
+        if (!PreferenceUtils.getBoolean(getContext(),"newVersion")){
+            mBinder.include.imgbtnLeft.setNum(1);
+            mBinder.includeLeft.ivRedPoint.setVisibility(View.VISIBLE);
+            mBinder.includeLeft.tvNewVersion.setText("新版本"+"("+PreferenceUtils.getString(getContext(),"version")+")");
+        }else {
+            mBinder.include.imgbtnLeft.setNum(-1);
+            mBinder.includeLeft.ivRedPoint.setVisibility(View.GONE);
+            mBinder.includeLeft.tvNewVersion.setText("最新版本("+getVersionName()+")");
+        }
+
+        /**
+         * 版本更新
+         */
+        mBinder.includeLeft.rlNewVersion.setOnClickListener(v -> {
+            if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
+                calendarApply();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }else {
+                ToastUtils.showShortToast("已经是最新版本了！");
+            }
+        });
+        if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
+            calendarApply();
+        }
     }
 
+    private void checkVersion() {
+        String uu = PreferenceUtils.getString(getContext(),"apkUrl");
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        Map<String, String> params = new HashMap<>(0);
+        params.put("appType",61+"");
+        params.put("version","3.0.2");
+        Map<String, String> headers = new HashMap<>(0);
+        headers.put("Authorization","Bearer"+" "+PreferenceUtils.getString(BaseApplication.getContext(),"token"));
+        new UpdateAppManager
+                .Builder()
+                //必须设置，当前Activity
+                .setActivity((MainActivity) UI)
+                //必须设置，实现httpManager接口的对象
+                .setHttpManager(new UpdateAppHttpUtil())
+                //必须设置，更新地址
+                .setUpdateUrl(Constant.HTTP_URL +"project/queryVersion")
+                .setHeaders(headers)
+                //以下设置，都是可选
+                //设置请求方式，默认get
+                .setPost(true)
+                //添加自定义参数，默认version=1.0.0（app的versionName）；apkKey=唯一表示（在AndroidManifest.xml配置）
+                .setParams(params)
+                //设置apk下砸路径，默认是在下载到sd卡下/Download/1.0.0/test.apk
+                .setTargetPath(path)
+                //设置appKey，默认从AndroidManifest.xml获取，如果，使用自定义参数，则此项无效
+                .setAppKey("ab55ce55Ac4bcP408cPb8c1Aaeac179c5f6f")
+                .build()
+                //检测是否有新版本
+                .checkNewApp(new UpdateCallback() {
+                    /**
+                     * 解析json,自定义协议
+                     *
+                     * @param json 服务器返回的json
+                     * @return UpdateAppBean
+                     */
+                    @Override
+                    protected UpdateAppBean parseJson(String json) {
+                        UpdateAppBean updateAppBean = new UpdateAppBean();
+                        if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
+                            updateAppBean.setUpdate("Yes");
+                            updateAppBean.setConstraint(false);
+                            updateAppBean
+                                    .setNewVersion(PreferenceUtils.getString(getContext(),"version"))
+                                    .setUpdateLog("1.数据监控模块加了单位显示\n2.数据对比修改了指标测点显示\n3.修改了一些已知bug")
+                                    .setApkFileUrl(Constant.APK_URL+uu);
+                        }else {
+                            updateAppBean.setUpdate("No");
+                        }
+                        return updateAppBean;
+                    }
+
+                    /**
+                     * 有新版本
+                     *
+                     * @param updateApp        新版本信息
+                     * @param updateAppManager app更新管理器
+                     */
+                    @Override
+                    public void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
+                        //强制更新，
+                        if (updateApp.isConstraint()) {
+
+                        } else {
+
+                        }
+                        //自定义对话框
+                        showDiyDialog(updateApp, updateAppManager);
+                    }
+
+                    /**
+                     * 网络请求之前
+                     */
+                    @Override
+                    public void onBefore() {
+                        LogUtils.i("before");
+                    }
+
+                    /**
+                     * 网路请求之后
+                     */
+                    @Override
+                    public void onAfter() {
+
+                    }
+
+                });
+    }
 
     /**
      * 初始化要显示的数据
      */
     private void initData() {
 
-
         RecyclerView topRecyclerView = mBinder.topRecyclerView;
         RecyclerView pdfRecyclerView = mBinder.pdfRecyclerView;
 
-        pdfRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
-        pdfRecycViewAdapter.setDataList(homeViewData.getFiles());
-        pdfRecyclerView.setAdapter(pdfRecycViewAdapter);
+//        pdfRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
+//        pdfRecycViewAdapter.setDataList(homeViewData.getFiles());
+//        pdfRecyclerView.setAdapter(pdfRecycViewAdapter);
 
-        topRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
-        projectTypeRecycViewAdapter.setDataList(homeViewData.getProjecType());
+        topRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
+        projectTypeRecycViewAdapter.setDataList(homeViewData);
         topRecyclerView.setAdapter(projectTypeRecycViewAdapter);
 
-        // 初始化要展示的5个ImageView
-        imageViewList = new ArrayList<>();
-
-        ImageView imageView;
-        View pointView;
-        LinearLayout.LayoutParams layoutParams;
-        for (int i = 0; i < homeViewData.getImage().size(); i++) {
-            // 初始化要显示的图片对象
-            imageView = new ImageView(getContext());
-            ImageLoaderUtils.imageDisPlay(Constant.IMAGE_URL+homeViewData.getImage().get(i).getUrl(),imageView);
-            imageViewList.add(imageView);
-
-            // 加小白点, 指示器
-            pointView = new View(getContext());
-            pointView.setBackgroundResource(R.drawable.selector_bg_point);
-            layoutParams = new LinearLayout.LayoutParams(5, 5);
-            if (i != 0)
-                layoutParams.leftMargin = 10;
-            // 设置默认所有都不可用
-            pointView.setEnabled(false);
-            ll_point_container.addView(pointView, layoutParams);
-        }
-        PreferenceUtils.putString(getContext(),"ceshi",Constant.IMAGE_URL+homeViewData.getImage().get(0).getUrl());
 
         projectTypeRecycViewAdapter.setOnItemClickListener((view, position) -> {
             if ("".equals(PreferenceUtils.getString(getContext(),"token"))){
                 ((MainActivity) UI).intent2Activity(LoginActivity.class);
                 ((MainActivity) UI).finish();
             }else {
-                ((MainActivity) UI).intent2Activity(ProjectListActivity.class);
-                PreferenceUtils.putInt(getContext(),"projectType",homeViewData.getProjecType().get(position).getPtSc());
-                PreferenceUtils.putString(getContext(),"projectName",homeViewData.getProjecType().get(position).getProjectTypeName());
+                if (homeViewData.get(position).getProjectTotalCount()>0){
+                    ((MainActivity) UI).intent2Activity(ProjectListActivity.class);
+                    PreferenceUtils.putInt(getContext(),"projectType",homeViewData.get(position).getScId());
+                    PreferenceUtils.putString(getContext(),"projectName",homeViewData.get(position).getItemName());
+                }else {
+                    ToastUtils.showShortToast("该类型下暂无监测项目");
+                }
             }
         });
 
-//        pdfRecycViewAdapter.setOnItemClickListener((view, position) -> {
-//            if ("".equals(PreferenceUtils.getString(getContext(),"token"))){
-//                ((MainActivity) UI).intent2Activity(LoginActivity.class);
-//                ((MainActivity) UI).finish();
-//            }else {
-//                Intent intent = new Intent(getContext(),PDFActivity.class);
-//                intent.putExtra("reportUrl",homeViewData.getFiles().get(position).getFileUrl());
-//                intent.putExtra("report","free");
-//                getContext().startActivity(intent);
-//
-//            }
-//        });
-    }
-
-    private void initAdapter() {
-        ll_point_container.getChildAt(0).setEnabled(true);
-        tv_desc.setText(homeViewData.getImage().get(0).getDescription());
-        previousSelectedPosition = 0;
-
-        // 设置适配器
-        viewPager.setAdapter(new MyAdapter());
-
-        // 默认设置到中间的某个位置
-        int pos = Integer.MAX_VALUE / 2 - (Integer.MAX_VALUE / 2 % imageViewList.size());
-        // 2147483647 / 2 = 1073741823 - (1073741823 % 5)
-        viewPager.setCurrentItem(5000000); // 设置到某个位置
-    }
-
-    class MyAdapter extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return Integer.MAX_VALUE;
-        }
-
-        // 3. 指定复用的判断逻辑, 固定写法
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-//			System.out.println("isViewFromObject: "+(view == object));
-            // 当划到新的条目, 又返回来, view是否可以被复用.
-            // 返回判断规则
-            return view == object;
-        }
-
-        // 1. 返回要显示的条目内容, 创建条目
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            System.out.println("instantiateItem初始化: " + position);
-            // container: 容器: ViewPager
-            // position: 当前要显示条目的位置 0 -> 4
-
-//			newPosition = position % 5
-            int newPosition = position % imageViewList.size();
-
-            ImageView imageView = imageViewList.get(newPosition);
-            // a. 把View对象添加到container中
-            container.addView(imageView);
-            // b. 把View对象返回给框架, 适配器
-            return imageView; // 必须重写, 否则报异常
-        }
-
-        // 2. 销毁条目
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            // object 要销毁的对象
-            System.out.println("destroyItem销毁: " + position);
-            container.removeView((View) object);
-        }
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset,
-                               int positionOffsetPixels) {
-        // 滚动时调用
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        // 新的条目被选中时调用
-        System.out.println("onPageSelected: " + position);
-        int newPosition = position % imageViewList.size();
-
-        //设置文本
-        tv_desc.setText(homeViewData.getImage().get(newPosition).getDescription());
-
-//		for (int i = 0; i < ll_point_container.getChildCount(); i++) {
-//			View childAt = ll_point_container.getChildAt(position);
-//			childAt.setEnabled(position == i);
-//		}
-        // 把之前的禁用, 把最新的启用, 更新指示器
-        ll_point_container.getChildAt(previousSelectedPosition).setEnabled(false);
-        ll_point_container.getChildAt(newPosition).setEnabled(true);
-
-        // 记录之前的位置
-        previousSelectedPosition = newPosition;
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        // 滚动状态变化时调用
     }
 
     @Override
@@ -285,26 +283,27 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         UI.showWaitDialog();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onSuccess(Object bean, int tag) {
         switch (tag) {
             case 1:
-                homeViewData = (BeginEntity.DataBean) bean;
-                List<BeginEntity.DataBean.FilesBean> files = new ArrayList<>();
-                for (int i = 0; i < 4; i++) {
-                    files.add(new BeginEntity.DataBean.FilesBean());
-                }
-                homeViewData.setFiles(files);
-                // Model数据
+                homeViewData = (List<ProjecTypeEntity.DataBean>) bean;
                 initData();
-                // Controller 控制器
-                initAdapter();
-
                 if (PreferenceUtils.getString(getContext(),"uesrName")!=null){
-                    Map<String,String> map = new HashMap<>();
+                    Map<String,String> map = new HashMap<>(0);
                     map.put("userName", PreferenceUtils.getString(getContext(),"uesrName"));
                     mControl.getPersonMsg(this,map,2);
                 }
+//                if (homeViewData.size()==1){
+//                    Intent intent = new Intent(getContext(),ProjectListActivity.class);
+//                    getContext().startActivity(intent);
+//                    PreferenceUtils.putBoolean(getContext(),"singleProject",true);
+//                    PreferenceUtils.putInt(getContext(),"projectType",homeViewData.get(0).getScId());
+//                    PreferenceUtils.putString(getContext(),"projectName",homeViewData.get(0).getItemName());
+//                }else {
+//                    PreferenceUtils.putBoolean(getContext(),"singleProject",false);
+//                }
                 break;
             case 2:
                 PersonMessageEntity.DataBean dataBean = (PersonMessageEntity.DataBean)bean;
@@ -325,6 +324,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 mBinder.includeLeft.tvEmail.setText(personertEmail);
                 mBinder.includeLeft.tvCompany.setText(personertCompany);
                 PreferenceUtils.putString(getContext(),"userName",dataBean.getUserName());
+                PreferenceUtils.putInt(getContext(),"userId",dataBean.getUserId());
                 break;
             case 3:
                 PreferenceUtils.putInt(getContext(),"projectPosition",0);
@@ -338,11 +338,167 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 ((MainActivity)UI).intent2Activity(LoginActivity.class);
                 ((MainActivity)UI).finish();
                 break;
+            case 4:
+                AlarmEntity.DataBean alarmBean = (AlarmEntity.DataBean)bean;
+                mBinder.tvSensorErrorCount.setText(alarmBean.getSensorErrorCount()+"");
+                mBinder.tvTerminalErrorCount.setText(alarmBean.getTerminalErrorCount()+"");
+                mBinder.tvProjectAlarm.setText(alarmBean.getProjectAlarmCount()+"");
+                mBinder.tvAlarmOne.setText(alarmBean.getLevelOneCount()+"");
+                mBinder.tvAlarmTwo.setText(alarmBean.getLevelTwoCount()+"");
+                mBinder.tvAlarmThree.setText(alarmBean.getLevelThreeCount()+"");
+
+                getProjectType("0");
+                break;
+                default:
+                    break;
         }
     }
 
     @Override
-    public void onError(String errorMsg, int tag) {
+    public void onError(String errorMsg,int code, int tag) {
 
     }
+
+    private void getProjectType(String type) {
+        Map<String,String> map = new HashMap<>(0);
+        map.put("token",token);
+        map.put("type",type);
+        mControl.getHomeViewMsg(this,map,1);
+    }
+
+    @Override
+    public void onResume() {
+        getProjectType("0");
+    }
+
+    /**
+     * 获取当前程序的版本名
+     */
+    private String getVersionName(){
+        //获取packagemanager的实例
+        PackageManager packageManager = getContext().getPackageManager();
+        //getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = null;
+        try {
+            packInfo = packageManager.getPackageInfo(getContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        Log.e("TAG","版本号"+packInfo.versionCode);
+        Log.e("TAG","版本名"+packInfo.versionName);
+        return packInfo.versionName;
+    }
+
+    /**
+     * 自定义对话框
+     *
+     * @param updateApp
+     * @param updateAppManager
+     */
+    private void showDiyDialog(final UpdateAppBean updateApp, final UpdateAppManager updateAppManager) {
+        String targetSize = updateApp.getTargetSize();
+        String updateLog = updateApp.getUpdateLog();
+
+        String msg = "";
+
+        if (!TextUtils.isEmpty(targetSize)) {
+            msg = "新版本大小：" + targetSize + "\n\n";
+        }
+
+        if (!TextUtils.isEmpty(updateLog)) {
+            msg += updateLog;
+        }
+        new AlertDialog.Builder(getContext())
+                .setTitle(String.format("是否升级到%s版本？", updateApp.getNewVersion()))
+                .setMessage(msg)
+                .setPositiveButton("升级", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //显示下载进度
+                        if (isShowDownloadProgress) {
+                            updateAppManager.download(new DownloadService.DownloadCallback() {
+                                @Override
+                                public void onStart() {
+                                    HProgressDialogUtils.showHorizontalProgressDialog(((MainActivity)UI), "下载进度", false);
+                                }
+
+                                /**
+                                 * 进度
+                                 *
+                                 * @param progress  进度 0.00 -1.00 ，总大小
+                                 * @param totalSize 总大小 单位B
+                                 */
+                                @Override
+                                public void onProgress(float progress, long totalSize) {
+                                    HProgressDialogUtils.setProgress(Math.round(progress * 100));
+                                }
+
+                                /**
+                                 *
+                                 * @param total 总大小 单位B
+                                 */
+                                @Override
+                                public void setMax(long total) {
+
+                                }
+
+
+                                @Override
+                                public boolean onFinish(File file) {
+                                    HProgressDialogUtils.cancel();
+                                    return true;
+                                }
+
+                                @Override
+                                public void onError(String msg) {
+                                    Toast.makeText(((MainActivity)UI), msg, Toast.LENGTH_SHORT).show();
+                                    HProgressDialogUtils.cancel();
+
+                                }
+
+                                @Override
+                                public boolean onInstallAppAndAppOnForeground(File file) {
+                                    return false;
+                                }
+                            });
+                        } else {
+                            //不显示下载进度
+                            updateAppManager.download();
+                        }
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("暂不升级", (dialog, which) -> dialog.dismiss())
+                .create()
+                .show();
+    }
+
+    private void calendarApply() {
+        AndPermission.with(getContext())
+                .permission(Permission.STORAGE)
+                .callback(permissionListener)
+                .rationale((requestCode, rationale) -> {
+                    // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
+                    AndPermission.rationaleDialog(getContext(), rationale).show();
+                })
+                .start();
+    }
+    /**
+     * 回调监听。
+     */
+    private PermissionListener permissionListener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
+                checkVersion();
+        }
+        @Override
+        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+            // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
+            if (AndPermission.hasAlwaysDeniedPermission(getContext(), deniedPermissions)) {
+                // 第一种：用默认的提示语。
+                ToastUtils.showLongToast("版本更新必须读写您的SD卡，请在侧边栏跟新版本！");
+            }
+        }
+    };
+
 }

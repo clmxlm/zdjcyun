@@ -20,14 +20,15 @@ import com.zdjc.zdjcyun.BuildConfig;
 
 
 /**
- * @author yuyh.
- * @date 16/8/5.
+ * @author zj.
+ * @date 18/5/5.
  */
 public class Constant {
 
     /**
      * 生产环境服务器地址http://123.207.88.210:8080/
      * 测试环境服务器地址http://123.207.88.210:8081/
+     * 三版本测试环境服务器地址http://123.207.88.210:8180/
      * 本地10.88.89.170:8081/茂平
      * 本地10.88.89.206:8081/胡超
      * 本地10.88.89.193:8081/孔成
@@ -36,15 +37,18 @@ public class Constant {
     public static String HTTP_URL = null;
 
     public static String IMAGE_URL = null;
+    public static String APK_URL = null;
 
 
     static {
         if (BuildConfig.DEBUG) {
-            HTTP_URL = "http://123.207.88.210:8081/";
+            HTTP_URL = "http://123.207.88.210:8180/";
         } else {
-            HTTP_URL = "http://123.207.88.210:8081/";
+            HTTP_URL = "http://123.207.88.210:8180/";
         }
         IMAGE_URL = "http://123.207.88.210/";
+
+        APK_URL = "http://123.207.88.210";
     }
     public static final String DB_NAME = "weidu.db";
 

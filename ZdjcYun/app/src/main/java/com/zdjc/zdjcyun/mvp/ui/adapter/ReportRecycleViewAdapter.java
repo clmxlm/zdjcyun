@@ -14,11 +14,9 @@ import butterknife.Bind;
 
 public class ReportRecycleViewAdapter extends BaseRecyclerAdapter<PageReportEntity.DataBean.DataListBean> {
 
-    private Context context;
 
     public ReportRecycleViewAdapter(Context context) {
         super(context);
-        this.context = context;
     }
 
     @Override
@@ -34,25 +32,25 @@ public class ReportRecycleViewAdapter extends BaseRecyclerAdapter<PageReportEnti
     @Override
     protected void setView(RecyclerViewHolder o, int position, PageReportEntity.DataBean.DataListBean data) {
         ViewHolder holder= (ViewHolder) o;
-        holder.tv_pdf_name.setText(data.getReportName());
-        holder.tv_commit_user.setText(data.getCommit_user());
-        holder.tv_commit_time.setText(data.getCommit_time());
-        holder.tv_time_report.setText(data.getTimeof_Report());
-        holder.tv_personIn_charge.setText(data.getPersonIn_charge());
+        holder.tvPdfName.setText(data.getReportName());
+        holder.tvCommitUser.setText(data.getCommit_user());
+        holder.tvCommitTime.setText(data.getCommit_time());
+        holder.tvTimeReport.setText(data.getTimeof_Report());
+        holder.tvPersonInCharge.setText(data.getPersonIn_charge());
     }
 
 
     class ViewHolder extends RecyclerViewHolder {
         @Bind(R.id.tv_pdf_name)
-        TextView tv_pdf_name;
+        TextView tvPdfName;
         @Bind(R.id.tv_commit_user)
-        TextView tv_commit_user;
+        TextView tvCommitUser;
         @Bind(R.id.tv_commit_time)
-        TextView tv_commit_time;
+        TextView tvCommitTime;
         @Bind(R.id.tv_time_report)
-        TextView tv_time_report;
+        TextView tvTimeReport;
         @Bind(R.id.tv_personIn_charge)
-        TextView tv_personIn_charge;
+        TextView tvPersonInCharge;
 
         public ViewHolder(View itemView) {
             super(itemView);

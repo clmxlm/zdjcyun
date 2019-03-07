@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.utils.ToastUtils;
 import com.githang.statusbar.StatusBarCompat;
 import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.app.BaseApplication;
@@ -21,6 +22,7 @@ import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.SplashActivity;
 import com.zdjc.zdjcyun.util.DialogUtil;
 import com.zdjc.zdjcyun.util.MyUtils;
+import com.zdjc.zdjcyun.util.NetworkUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -28,7 +30,7 @@ import java.lang.reflect.Type;
 
 public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseModel> extends AppCompatActivity implements IModelActivitiy<T> {
 
-    public T mBinder = null;//binder
+    public T mBinder = null;
     public M mModel = null;
     private DialogUtil dialogUtil;
     private SystemStatusManager tintManager;
@@ -79,6 +81,11 @@ public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseMode
             }
 
         }
+
+        if (!NetworkUtils.isNetworkAvailable(this)){
+            ToastUtils.showShortToast("请检查网络设置！");
+        }
+
     }
     protected void init() {
         if (this instanceof LoginActivity) {
@@ -102,7 +109,7 @@ public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseMode
 
     @Override
     public Context getConText() {
-        return this.getApplication();
+        return this;
     }
 
     /**
@@ -122,6 +129,12 @@ public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseMode
     protected void onResume() {
         super.onResume();
         mModel.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mModel.onPause();
     }
 
     @Override
@@ -157,18 +170,20 @@ public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseMode
     /**
      * 显示进度条
      */
+    @Override
     public void showWaitDialog() {
-        if (hasWindowFocus()) {
+//        if (hasWindowFocus()) {
             if (dialogUtil == null) {
                 dialogUtil = new DialogUtil(this);
             }
             dialogUtil.show();
-        }
+//        }
     }
 
     /**
      * 隐藏进度条
      */
+    @Override
     public void hideWaitDialog() {
         if (dialogUtil != null) {
             dialogUtil.dismiss();
@@ -188,6 +203,15 @@ public abstract class BaseActivity<T extends ViewDataBinding, M extends BaseMode
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resId > 0) {
+            result = getResources().getDimensionPixelSize(resId);
+        }
+        return result;
     }
 
 }

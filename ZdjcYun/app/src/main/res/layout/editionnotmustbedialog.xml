@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/ceshi"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/MY_DP_20"
+              android:paddingRight="@dimen/MY_DP_20">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_40"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/MY_DP_10"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="@dimen/MY_SP_30"
+        android:textColor="@color/theme_color"
+        android:text="@string/app_name"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_40"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textSize="@dimen/MY_SP_18"
+        android:text="注意"
+        android:id="@+id/textView2" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_40"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="新版本已上线，现在就更新"/>
+
+    <com.zdjc.zdjcyun.event.DownloadProgressButton
+        android:id="@+id/btn_edition_yes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_30"
+        android:layout_marginTop="@dimen/MY_DP_10"
+        android:gravity="center"
+        android:background="@drawable/background_login_change"
+        android:textColor="@color/white"
+        android:textSize="@dimen/MY_SP_16"/>
+
+
+    <Button
+        android:id="@+id/btn_edition_remindLater"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_30"
+        android:layout_marginTop="@dimen/MY_DP_5"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/background_search_btn"
+        android:text="稍后提醒我"
+        android:textSize="@dimen/MY_SP_16"/>
+
+    <Button
+        android:id="@+id/btn_edition_no"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_30"
+        android:layout_marginBottom="@dimen/MY_DP_10"
+        android:layout_marginTop="@dimen/MY_DP_5"
+        android:background="@drawable/background_search_btn"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="取消"
+        android:textSize="@dimen/MY_SP_16"/>
+
+</LinearLayout>

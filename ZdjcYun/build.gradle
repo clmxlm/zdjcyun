@@ -25,7 +25,6 @@ allprojects {
         jcenter()
         //LRecyclerview jitpack仓库
         maven { url "https://jitpack.io" }
-
     }
 }
 

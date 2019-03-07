@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_title_one" />
+
+        <com.zdjc.zdjcyun.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_200"
+            app:title_background="#50000000"
+            app:title_textsize="@dimen/MY_SP_10"
+            app:title_textcolor="@android:color/white"
+            app:title_height="@dimen/MY_DP_30"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_project_dec"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+</layout>

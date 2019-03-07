@@ -13,4 +13,12 @@ public interface IProjectListPresenter {
     void getTypeProjectList(RequestCallBack callBack, Map<String, String> params, int tag);
 
     void getSearchProjectList(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryProjectStatusCount(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryAlarmProject(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryWillProject(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryMonitorView(RequestCallBack callBack, Map<String, String> params, int tag);
 }

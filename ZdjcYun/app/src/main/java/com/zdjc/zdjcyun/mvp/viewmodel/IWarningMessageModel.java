@@ -5,6 +5,5 @@ package com.zdjc.zdjcyun.mvp.viewmodel;
  */
 
 public interface IWarningMessageModel {
-    void initListener();
 
 }

@@ -19,9 +19,6 @@ import es.voghdev.pdfviewpager.library.adapter.PDFPagerAdapter;
 import es.voghdev.pdfviewpager.library.remote.DownloadFile;
 import es.voghdev.pdfviewpager.library.util.FileUtil;
 
-/**
- * Created by ali on 2017/2/20.
- */
 
 public class PDFModel extends BaseModel<ActivityPdfBinding,PDFPresenterImpl> implements IPDFModel ,DownloadFile.Listener{
 
@@ -95,7 +92,7 @@ public class PDFModel extends BaseModel<ActivityPdfBinding,PDFPresenterImpl> imp
     }
 
     @Override
-    public void onError(String errorMsg, int tag) {
+    public void onError(String errorMsg, int code,int tag) {
 
     }
 

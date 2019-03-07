@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/MY_DP_10"
+    android:layout_marginLeft="@dimen/MY_DP_10"
+    android:layout_marginTop="@dimen/MY_DP_10"
+    android:background="@drawable/ceshi"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_project_alarm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_74"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_more_iv"
+            android:layout_width="@dimen/MY_DP_24"
+            android:layout_height="@dimen/MY_DP_24"
+            android:layout_marginRight="@dimen/MY_DP_16"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_more"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="项目名称"
+                android:textSize="@dimen/MY_SP_12"
+                android:layout_toLeftOf="@+id/iv_more"
+                android:layout_marginLeft="@dimen/MY_DP_16"
+                android:textColor="@color/text_color_project"/>
+
+
+            <TextView
+                android:id="@+id/tv_project_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="地铁二号线—麓云路站"
+                android:textColor="#161617"
+                android:textSize="@dimen/MY_SP_18"
+                android:layout_marginLeft="@dimen/MY_DP_16"/>
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/MY_DP_1"
+        android:background="#e6e6e6"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/MY_DP_5"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_alarm_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/number_color"
+                android:textSize="@dimen/MY_SP_22" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="一级告警(个)"
+                android:textColor="@color/text_color_project"
+                android:textSize="@dimen/MY_SP_10" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/MY_DP_1"
+            android:layout_gravity="center_vertical"
+            android:background="#e6e6e6"
+            android:layout_height="@dimen/dp_40"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_alarm_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_22"
+                android:textColor="@color/number_color"
+                android:text="0"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_10"
+                android:textColor="@color/text_color_project"
+                android:text="二级告警(个)"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/MY_DP_1"
+            android:layout_gravity="center_vertical"
+            android:background="#e6e6e6"
+            android:layout_height="@dimen/dp_40"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_alarm_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_22"
+                android:textColor="@color/number_color"
+                android:text="0"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_10"
+                android:textColor="@color/text_color_project"
+                android:text="三级告警(个)"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/MY_DP_1"
+            android:layout_gravity="center_vertical"
+            android:background="#e6e6e6"
+            android:layout_height="@dimen/dp_40"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_alarm_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_22"
+                android:textColor="@color/number_color"
+                android:text="0"/>
+
+            <TextView
+                android:id="@+id/tv_common_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_10"
+                android:textColor="@color/text_color_project"
+                android:text="告警总数(个)"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/MY_DP_1"
+        android:background="#e6e6e6"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/MY_DP_45"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_12"
+                android:layout_height="@dimen/MY_DP_12"
+                android:layout_marginLeft="@dimen/MY_DP_17"
+                android:src="@mipmap/icon_terminal"/>
+
+            <TextView
+                android:id="@+id/tv_time_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="@color/text_color_project"
+                android:layout_marginLeft="@dimen/MY_DP_4"
+                android:text="终端异常(个)"/>
+
+            <TextView
+                android:id="@+id/tv_terminal_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_16"
+                android:textColor="@color/number_color"
+                android:layout_marginLeft="@dimen/MY_DP_19"
+                android:text="34"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/MY_DP_1"
+            android:layout_gravity="center_vertical"
+            android:background="#e6e6e6"
+            android:layout_margin="@dimen/MY_DP_5"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/MY_DP_45"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_12"
+                android:layout_height="@dimen/MY_DP_12"
+                android:layout_marginLeft="@dimen/MY_DP_17"
+                android:src="@mipmap/icon_sensor"/>
+
+            <TextView
+                android:id="@+id/tv_common_name_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_12"
+                android:textColor="@color/text_color_project"
+                android:layout_marginLeft="@dimen/MY_DP_4"
+                android:text="传感器异常(个)"/>
+
+            <TextView
+                android:id="@+id/tv_sensor_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_16"
+                android:textColor="@color/number_color"
+                android:layout_marginLeft="@dimen/MY_DP_19"
+                android:text="23"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

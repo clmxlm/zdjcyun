@@ -22,12 +22,20 @@ android {
             //说明so的路径为该libs路径，关联所有地图SDK的so文件
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.zdjc.zdjcyun"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.0"
+        versionCode 4
+        versionName "3.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
@@ -84,6 +92,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     implementation project(':form')
+    implementation project(':update-app')
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -118,8 +127,10 @@ dependencies {
     implementation 'es.voghdev.pdfviewpager:library:1.0.3'
     implementation 'com.jakewharton:butterknife:7.0.1'
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
-
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation 'com.shuyu:GSYVideoPlayer:6.0.0-beta'
+    implementation 'com.youth.banner:banner:1.4.10'
+    implementation 'com.yanzhenjie:permission:1.1.0'
 //    //更多ijk的编码支持
 //    implementation 'com.shuyu:gsyVideoPlayer-ex_so:6.0.0-beta'
 }

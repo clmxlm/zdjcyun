@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/ceshi"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/MY_DP_20"
+              android:paddingRight="@dimen/MY_DP_20">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_60"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="注意！"
+        android:id="@+id/textView2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_1"
+        android:background="#eeeeee"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_60"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="有新版本啦，请更新到最新版本！"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_1"
+        android:background="#eeeeee"/>
+
+
+    <TextView
+        android:id="@+id/tv_edition_yes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_50"
+        android:gravity="center"
+        android:text="确定"
+        android:textSize="@dimen/MY_SP_16"/>
+
+
+</LinearLayout>

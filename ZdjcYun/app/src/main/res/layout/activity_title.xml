@@ -4,7 +4,7 @@
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/title_bg"
+        android:background="@color/theme_color"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -13,19 +13,39 @@
             android:paddingLeft="@dimen/MY_DP_8"
             android:paddingRight="@dimen/MY_DP_18">
 
+            <ImageView
+                android:id="@+id/imgbtn_down"
+                android:layout_width="@dimen/MY_DP_12"
+                android:layout_height="@dimen/MY_DP_12"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/MY_DP_3"
+                android:layout_toRightOf="@+id/tv_title"
+                android:background="@mipmap/down"/>
+
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical"
-                android:layout_toRightOf="@+id/imgbtn_left"
-                android:text="@string/app_name"
+                android:layout_toRightOf="@+id/imgbtn_logo"
+                android:text="@string/monitoring"
                 android:textColor="@color/white"
                 android:layout_marginLeft="@dimen/MY_DP_5"
                 android:textSize="@dimen/MY_SP_18" />
 
             <ImageView
+                android:id="@+id/imgbtn_logo"
+                android:layout_width="@dimen/MY_DP_30"
+                android:layout_height="@dimen/MY_DP_30"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="@dimen/MY_DP_5"
+                android:layout_toRightOf="@+id/imgbtn_left"
+                android:background="@mipmap/logo_login"/>
+
+            <com.zdjc.zdjcyun.event.NumImageView
                 android:id="@+id/imgbtn_left"
                 android:layout_width="@dimen/MY_DP_30"
                 android:layout_height="@dimen/MY_DP_30"

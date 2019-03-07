@@ -19,5 +19,7 @@ public interface IWarningPresenter {
      */
     void getWarningList(RequestCallBack callBack, Map<String, String> params, int tag);
 
+    void getQueryAlarmCount(RequestCallBack callBack, Map<String, String> params, int tag);
+
     void changeWarningMsg(RequestCallBack callBack, Map<String, String> params, int tag);
 }

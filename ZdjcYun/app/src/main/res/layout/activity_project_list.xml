@@ -7,34 +7,307 @@
     android:layout_height="match_parent"
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
-    android:focusableInTouchMode="true"
-    android:background="#eeeeee"
+    android:background="@color/white"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <com.zdjc.zdjcyun.searchview.SearchView
-        android:id="@+id/search_view"
+    <include
+        android:id="@+id/include"
+        layout="@layout/activity_title_one" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_video_surveillance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/MY_DP_15"
+            android:background="@drawable/ceshi"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/monitor"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/MY_DP_5"
+                android:gravity="center"
+                android:text="视频监控>"/>
+
+        </LinearLayout>
+
+
+        <com.zdjc.zdjcyun.event.PercentProgressBar
+            android:id="@+id/ppb"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/MY_DP_180"
+            app:circleWidth="@dimen/MY_DP_10"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            android:layout_centerInParent="true"
+            app:communicateCostColor="#00d382"
+            app:entertainmentCostColor="#8e5fdf"
+            app:lifeCostColor="#ff4c48"
+            app:radius="@dimen/MY_DP_90"
+            app:trafficCostColor="#ffbd53"/>
+
+        <LinearLayout
+            android:id="@+id/ll_project"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_all_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/MY_SP_24"
+                android:text="4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您共有项目"/>
+
+            <Button
+                android:id="@+id/btn_detail"
+                android:layout_marginTop="@dimen/MY_DP_10"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/MY_DP_35"
+                android:background="@drawable/background_search_btn"
+                android:textColor="@color/white"
+                android:padding="@dimen/MY_DP_5"
+                android:text="查看详情>"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textSizeSearch="@dimen/MY_SP_6"
-        app:textColorSearch="#ffffff"
-        app:textHintSearch="输入查询关键字"
-        app:searchBlockHeight="150"
-        app:searchBlockColor="@color/theme_color"
-        />
+        android:layout_marginLeft="@dimen/MY_DP_15"
+        android:layout_marginRight="@dimen/MY_DP_15"
+        android:orientation="horizontal">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/MY_DP_10"
+            android:orientation="vertical">
 
-    <com.zdjc.zdjcyun.event.PullLoadMoreRecyclerView
-        android:id="@+id/recycleView"
+            <TextView
+                android:id="@+id/tv_projecting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="监测中"/>
+
+            <TextView
+                android:layout_width="@dimen/MY_DP_25"
+                android:layout_height="@dimen/MY_DP_5"
+                android:layout_marginTop="@dimen/MY_DP_2"
+                android:background="#00d382"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_project_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="异常项目"/>
+
+            <TextView
+                android:layout_width="@dimen/MY_DP_25"
+                android:layout_height="@dimen/MY_DP_5"
+                android:layout_marginTop="@dimen/MY_DP_2"
+                android:background="#ff4c48"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_projected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已完毕"/>
+
+            <TextView
+                android:layout_width="@dimen/MY_DP_25"
+                android:layout_height="@dimen/MY_DP_5"
+                android:layout_marginTop="@dimen/MY_DP_2"
+                android:background="#8e5fdf"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginRight="@dimen/MY_DP_10"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_will_projected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="即将完毕"/>
+
+            <TextView
+                android:layout_width="@dimen/MY_DP_25"
+                android:layout_height="@dimen/MY_DP_5"
+                android:layout_marginTop="@dimen/MY_DP_2"
+                android:background="#ffbd53"/>
+
+        </LinearLayout>
+        
+        
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/MY_DP_30"
+        android:layout_marginTop="@dimen/MY_DP_10"
+        android:layout_marginLeft="@dimen/MY_DP_16"
+        android:layout_marginRight="@dimen/MY_DP_16"
+        android:gravity="center"
+        android:background="@drawable/ceshi">
 
-    <TextView
-        android:id="@+id/tv_no_goods"
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/MY_DP_5"
+            android:background="@mipmap/project_alarm"/>
+
+        <TextView
+            android:id="@+id/tv_alarm_news"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/MY_SP_12"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="@dimen/MY_DP_10"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/MY_DP_25"
+            android:layout_weight="1"
+            android:src="@mipmap/icon_more"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/MY_DP_30"
+        android:layout_marginTop="@dimen/MY_DP_10"
+        android:layout_marginLeft="@dimen/MY_DP_16"
+        android:layout_marginRight="@dimen/MY_DP_16"
+        android:gravity="center"
+        android:background="@drawable/ceshi">
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/MY_DP_5"
+            android:background="@mipmap/projected"/>
+
+        <TextView
+            android:id="@+id/tv_will_end"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/MY_SP_12"
+            android:textColor="@color/text_color"
+            android:layout_marginLeft="@dimen/MY_DP_10"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/MY_DP_25"
+            android:layout_weight="1"
+            android:src="@mipmap/icon_more"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:gravity="center"
-        android:text="该类型没有项目！"/>
+        android:background="#f7f7fc"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/MY_SP_15"
+            android:layout_marginLeft="@dimen/MY_DP_16"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            android:textColor="#161617"
+            android:text="项目监测概览"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_no_goods"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="该类型没有项目！"/>
+
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

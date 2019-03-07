@@ -4,10 +4,10 @@ package com.zdjc.zdjcyun.mvp.ui.activities;
 import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.base.BaseActivity;
 import com.zdjc.zdjcyun.databinding.ActivityVideoPictureBinding;
-import com.zdjc.zdjcyun.mvp.viewmodel.impl.VideoOrPictureModel;
+import com.zdjc.zdjcyun.mvp.viewmodel.impl.PictureModel;
 
 
-public class PictureActivity extends BaseActivity<ActivityVideoPictureBinding,VideoOrPictureModel> {
+public class PictureActivity extends BaseActivity<ActivityVideoPictureBinding,PictureModel> {
 
     @Override
     public int getLayoutId() {

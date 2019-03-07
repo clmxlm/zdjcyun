@@ -31,7 +31,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainModel>{
 
     }
 
-    //对返回键进行监听
+    /**
+     * 对返回键进行监听
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {

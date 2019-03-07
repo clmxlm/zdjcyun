@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_st"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginTop="@dimen/MY_DP_5"
+        android:textSize="@dimen/MY_SP_18"
+        android:textColor="@color/black"
+        android:text="开始时间" />
+
+    <DatePicker
+        android:id="@+id/st"
+        android:theme="@android:style/Theme.Holo.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/MY_DP_200"
+        android:calendarViewShown="false"/>
+
+    <TextView
+        android:id="@+id/tv_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/MY_DP_10"
+        android:layout_marginTop="@dimen/MY_DP_5"
+        android:textSize="@dimen/MY_SP_18"
+        android:textColor="@color/black"
+        android:text="结束时间" />
+
+    <DatePicker
+        android:id="@+id/et"
+        android:theme="@android:style/Theme.Holo.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/MY_DP_200"
+        android:calendarViewShown="false"/>
+
+    <TimePicker
+        android:theme="@android:style/Theme.Holo.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/myTimePicker"/>
+
+
+</LinearLayout>

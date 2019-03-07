@@ -43,7 +43,8 @@ public class TopRecycViewAdapter extends BaseRecyclerViewAdapter<String> {
             btnLogin.setText(getDataList().get(position));
         }else {
             if (selectedPosition==position){
-                btnLogin.setText(getDataList().get(position)+"("+projectName+")");
+                String name = getDataList().get(position)+"("+projectName+")";
+                btnLogin.setText(name);
             }else {
                 btnLogin.setText(getDataList().get(position));
             }

@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import java.util.List;
 
 public class FragmentVpAdapter extends PagerAdapter {
-//    这个是viewpager的填充视图
+    /**
+     * 这个是viewpager的填充视图
+     */
     private List<View> views;
-//    这个是table导航条里面的内容填充
+    /**
+     * 这个是table导航条里面的内容填充
+     */
     private List<String> tabstrs;
 
     public FragmentVpAdapter(List<View> views, List<String> tabstrs) {
@@ -38,7 +42,9 @@ public class FragmentVpAdapter extends PagerAdapter {
         container.removeView(views.get(position));
     }
 
-    //    这个是和tablelayout相关的
+    /**
+     * 这个是和tablelayout相关的
+     */
     @Override
     public CharSequence getPageTitle(int position) {
         return tabstrs.get(position);

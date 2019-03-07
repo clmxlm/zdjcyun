@@ -270,6 +270,189 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_cloud_product"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_cloud_product"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/cloud_products"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_cloud_product"
+                android:text="云产品"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_cloud_service"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_cloud_service"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/cloud_service"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_cloud_service"
+                android:text="云服务"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_product_and_support"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_product_and_support"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_15"
+                android:src="@mipmap/product_and_support"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_product_and_support"
+                android:text="产品与支持"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_change_password"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/change_password"
+                android:layout_marginLeft="@dimen/MY_DP_15"/>
+
+            <TextView
+                android:id="@+id/tv_change_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_change_password"
+                android:text="修改密码"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@drawable/more"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_new_version"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:background="@drawable/select_tv_lable"
+            android:clickable="true">
+
+            <ImageView
+                android:id="@+id/iv_new_version"
+                android:layout_width="@dimen/MY_DP_15"
+                android:layout_height="@dimen/MY_DP_15"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/ic_new_version"
+                android:layout_marginLeft="@dimen/MY_DP_15"/>
+
+            <TextView
+                android:id="@+id/tv_new_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/MY_DP_20"
+                android:layout_toRightOf="@+id/iv_new_version"
+                android:text="版本更新"
+                android:textColor="@color/black"
+                android:textSize="@dimen/MY_SP_14"/>
+
+            <ImageView
+                android:id="@+id/iv_red_point"
+                android:layout_width="@dimen/MY_DP_20"
+                android:layout_height="@dimen/MY_DP_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/MY_DP_20"
+                android:src="@mipmap/red_point"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/rl_logout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/MY_DP_50"

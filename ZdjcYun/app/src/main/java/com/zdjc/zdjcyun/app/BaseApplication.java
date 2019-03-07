@@ -3,7 +3,6 @@ package com.zdjc.zdjcyun.app;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.view.WindowManager;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.blankj.utilcode.utils.CrashUtils;
@@ -45,6 +44,7 @@ public class BaseApplication extends Application {
         initCrashUtils();
 
     }
+
     private void initJpush() {
         // 设置开启日志,发布时请关闭日志
         JPushInterface.setDebugMode(true);

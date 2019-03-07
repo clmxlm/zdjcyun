@@ -2,8 +2,9 @@ package com.zdjc.zdjcyun.mvp.presenter.impl;
 
 
 import com.zdjc.zdjcyun.base.BaseNetControl;
-import com.zdjc.zdjcyun.mvp.entity.BeginEntity;
+import com.zdjc.zdjcyun.mvp.entity.AlarmEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
+import com.zdjc.zdjcyun.mvp.entity.ProjecTypeEntity;
 import com.zdjc.zdjcyun.mvp.entity.TypeProjectEntity;
 import com.zdjc.zdjcyun.mvp.entity.UserEntity;
 import com.zdjc.zdjcyun.mvp.presenter.IMainPresenter;
@@ -31,7 +32,7 @@ public class MainPresenterImpl extends BaseNetControl implements IMainPresenter 
         HttpRequestImpl.getInstance().beginViewMsg(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BeginEntity>() {
+                .subscribe(new Observer<ProjecTypeEntity>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         /**
@@ -41,7 +42,7 @@ public class MainPresenterImpl extends BaseNetControl implements IMainPresenter 
                     }
 
                     @Override
-                    public void onNext(BeginEntity value) {
+                    public void onNext(ProjecTypeEntity value) {
                         /**
                          * 这里是回掉成功的
                          */
@@ -193,6 +194,56 @@ public class MainPresenterImpl extends BaseNetControl implements IMainPresenter 
 
                     @Override
                     public void onNext(UserEntity value) {
+                        /**
+                         * 这里是回掉成功的
+                         */
+                        if(value.getCode()==0){
+                            /**
+                             * 这里是把自己想要的数据传过去，现在getData成功的话就是token啦，那边拿到的也是token
+                             */
+                            callBack.success(value.getData(),tag);
+                        }else {
+                            callBack.error(value.getMsg(),value.getCode(),tag);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        /**
+                         * 这里是回掉错误的
+                         */
+                        callBack.error(e.getMessage(),1,tag);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        /**
+                         * 完成不用管
+                         */
+                    }
+                });
+    }
+
+    @Override
+    public void getHomeAlarmCounts(RequestCallBack callBack, Map<String, String> params, int tag) {
+        /**
+         * 请求前
+         */
+        callBack.beforeRequest(tag);
+        HttpRequestImpl.getInstance().homeAlarmCounts(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AlarmEntity>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        /**
+                         * 这个就是rxjava的任务对象
+                         */
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onNext(AlarmEntity value) {
                         /**
                          * 这里是回掉成功的
                          */

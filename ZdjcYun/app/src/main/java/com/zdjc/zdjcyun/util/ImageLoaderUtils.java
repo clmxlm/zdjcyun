@@ -177,6 +177,8 @@ public class ImageLoaderUtils {
                 .load(id)
                 .crossFade()
                 .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.NONE) //跳过硬盘缓存
+                .skipMemoryCache(true) //跳过内存缓存
 //                .placeholder(R.drawable.defaultheard)
                 .into(myImageView);
     }

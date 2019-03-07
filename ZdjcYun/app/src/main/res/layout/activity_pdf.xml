@@ -12,7 +12,6 @@
             android:id="@+id/include"
             layout="@layout/activity_title_one" />
 
-
         <LinearLayout
             android:id="@+id/ll_report"
             android:layout_width="match_parent"
