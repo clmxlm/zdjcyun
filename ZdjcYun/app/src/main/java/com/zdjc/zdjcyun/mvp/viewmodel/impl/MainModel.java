@@ -86,6 +86,8 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         map.put("token",token);
         mControl.getHomeAlarmCounts(this,map,4);
 
+        getProjectType("0");
+
         drawerLayout = mBinder.drawer;
         mBinder.include.imgbtnLeft.setVisibility(View.VISIBLE);
         mBinder.include.imgbtnLeft.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
@@ -190,7 +192,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                             updateAppBean.setConstraint(false);
                             updateAppBean
                                     .setNewVersion(PreferenceUtils.getString(getContext(),"version"))
-                                    .setUpdateLog("1.数据监控模块加了单位显示\n2.数据对比修改了指标测点显示\n3.修改了一些已知bug")
+                                    .setUpdateLog("1.项目文库新增日报下载查看\n2.特定项目数据图表展示更新\n3.修改了一些已知bug")
                                     .setApkFileUrl(Constant.APK_URL+uu);
                         }else {
                             updateAppBean.setUpdate("No");
@@ -330,7 +332,6 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 mBinder.tvAlarmTwo.setText(alarmBean.getLevelTwoCount()+"");
                 mBinder.tvAlarmThree.setText(alarmBean.getLevelThreeCount()+"");
 
-                getProjectType("0");
                 break;
             case 5:
                 VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
@@ -371,7 +372,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
 
     @Override
     public void onResume() {
-        getProjectType("0");
+
     }
 
     /**
@@ -499,7 +500,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
             // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
             if (AndPermission.hasAlwaysDeniedPermission(getContext(), deniedPermissions)) {
                 // 第一种：用默认的提示语。
-                ToastUtils.showLongToast("版本更新必须读写您的SD卡，请在侧边栏跟新版本！");
+                ToastUtils.showLongToast("版本更新必须读写您的SD卡，请在侧边栏更新版本！");
             }
         }
     };

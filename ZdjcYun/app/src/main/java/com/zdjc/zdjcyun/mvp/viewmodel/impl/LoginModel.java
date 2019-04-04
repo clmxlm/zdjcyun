@@ -63,10 +63,10 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
                 params.put("zdjc","zdjc");
                 mControl.queryMonitorUnit(this,params,2);
 
-                HashMap<String, String> paramsVersion = new HashMap<>(0);
-                paramsVersion.put("appType",61+"");
-                paramsVersion.put("version",getVersionName());
-                mControl.queryVersion(this,paramsVersion,3);
+//                HashMap<String, String> paramsVersion = new HashMap<>(0);
+//                paramsVersion.put("appType",61+"");
+//                paramsVersion.put("version",getVersionName());
+//                mControl.queryVersion(this,paramsVersion,3);
                 break;
             case 2:
                 /**
@@ -76,18 +76,20 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
                 Gson gson = new Gson();
                 String monitorUnitData = gson.toJson(data);
                 PreferenceUtils.putString(getContext(),"monitorUnit",monitorUnitData);
-                break;
-
-            case 3:
-                VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
-                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.isNewVersion());
-                PreferenceUtils.putString(getContext(),"version",dataVersion.getVersion());
-                PreferenceUtils.putString(getContext(),"apkUrl",dataVersion.getUrl());
 
                 LoginActivity activity=(LoginActivity)UI;
                 activity.intent2Activity(MainActivity.class);
                 activity.finish();
                 break;
+
+//            case 3:
+//                VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
+//                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.isNewVersion());
+//                PreferenceUtils.putString(getContext(),"version",dataVersion.getVersion());
+//                PreferenceUtils.putString(getContext(),"apkUrl",dataVersion.getUrl());
+//
+//
+//                break;
              default:
                 break;
         }
