@@ -26,6 +26,10 @@ import static com.zdjc.zdjcyun.util.AppUtils.getAssets;
 
 public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseControl> extends BaseObservable implements IModel, RequestCallBack {
 
+    protected final static int SENSOR_TYPE = 6;
+    protected final static int SENSOR_TYPE_TWO = 9;
+    protected final static int SENSOR_TYPE_THREE = 12;
+    protected final static int SENSOR_TYPE_FOURE = 13;
     protected IModelActivitiy UI = null;
     protected T mBinder = null;
     protected M mControl = null;

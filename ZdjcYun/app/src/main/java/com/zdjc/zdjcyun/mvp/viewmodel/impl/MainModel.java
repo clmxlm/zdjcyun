@@ -35,6 +35,7 @@ import com.zdjc.zdjcyun.event.ConfirmPopWindow;
 import com.zdjc.zdjcyun.mvp.entity.AlarmEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.ProjecTypeEntity;
+import com.zdjc.zdjcyun.mvp.entity.VersionEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.MainPresenterImpl;
 import com.zdjc.zdjcyun.mvp.ui.activities.ChangePasswordActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
@@ -79,6 +80,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
     }
 
     private void initViews() {
+
         token = PreferenceUtils.getString(getContext(),"token");
         Map<String,String> map = new HashMap<>(0);
         map.put("token",token);
@@ -130,15 +132,6 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
             confirmPopWindow.dismiss();
         });
 
-        if (!PreferenceUtils.getBoolean(getContext(),"newVersion")){
-            mBinder.include.imgbtnLeft.setNum(1);
-            mBinder.includeLeft.ivRedPoint.setVisibility(View.VISIBLE);
-            mBinder.includeLeft.tvNewVersion.setText("新版本"+"("+PreferenceUtils.getString(getContext(),"version")+")");
-        }else {
-            mBinder.include.imgbtnLeft.setNum(-1);
-            mBinder.includeLeft.ivRedPoint.setVisibility(View.GONE);
-            mBinder.includeLeft.tvNewVersion.setText("最新版本("+getVersionName()+")");
-        }
 
         /**
          * 版本更新
@@ -151,9 +144,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 ToastUtils.showShortToast("已经是最新版本了！");
             }
         });
-        if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
-            calendarApply();
-        }
+
     }
 
     private void checkVersion() {
@@ -161,7 +152,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         Map<String, String> params = new HashMap<>(0);
         params.put("appType",61+"");
-        params.put("version","3.0.2");
+        params.put("version",getVersionName());
         Map<String, String> headers = new HashMap<>(0);
         headers.put("Authorization","Bearer"+" "+PreferenceUtils.getString(BaseApplication.getContext(),"token"));
         new UpdateAppManager
@@ -252,10 +243,6 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
         RecyclerView topRecyclerView = mBinder.topRecyclerView;
         RecyclerView pdfRecyclerView = mBinder.pdfRecyclerView;
 
-//        pdfRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),4));
-//        pdfRecycViewAdapter.setDataList(homeViewData.getFiles());
-//        pdfRecyclerView.setAdapter(pdfRecycViewAdapter);
-
         topRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         projectTypeRecycViewAdapter.setDataList(homeViewData);
         topRecyclerView.setAdapter(projectTypeRecycViewAdapter);
@@ -295,15 +282,11 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                     map.put("userName", PreferenceUtils.getString(getContext(),"uesrName"));
                     mControl.getPersonMsg(this,map,2);
                 }
-//                if (homeViewData.size()==1){
-//                    Intent intent = new Intent(getContext(),ProjectListActivity.class);
-//                    getContext().startActivity(intent);
-//                    PreferenceUtils.putBoolean(getContext(),"singleProject",true);
-//                    PreferenceUtils.putInt(getContext(),"projectType",homeViewData.get(0).getScId());
-//                    PreferenceUtils.putString(getContext(),"projectName",homeViewData.get(0).getItemName());
-//                }else {
-//                    PreferenceUtils.putBoolean(getContext(),"singleProject",false);
-//                }
+
+                HashMap<String, String> paramsVersion = new HashMap<>(0);
+                paramsVersion.put("appType",61+"");
+                paramsVersion.put("version",getVersionName());
+                mControl.queryVersion(this,paramsVersion,5);
                 break;
             case 2:
                 PersonMessageEntity.DataBean dataBean = (PersonMessageEntity.DataBean)bean;
@@ -348,6 +331,26 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 mBinder.tvAlarmThree.setText(alarmBean.getLevelThreeCount()+"");
 
                 getProjectType("0");
+                break;
+            case 5:
+                VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
+                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.isNewVersion());
+                PreferenceUtils.putString(getContext(),"version",dataVersion.getVersion());
+                PreferenceUtils.putString(getContext(),"apkUrl",dataVersion.getUrl());
+
+                if (!PreferenceUtils.getBoolean(getContext(),"newVersion")){
+                    mBinder.include.imgbtnLeft.setNum(1);
+                    mBinder.includeLeft.ivRedPoint.setVisibility(View.VISIBLE);
+                    mBinder.includeLeft.tvNewVersion.setText("新版本"+"("+PreferenceUtils.getString(getContext(),"version")+")");
+                }else {
+                    mBinder.include.imgbtnLeft.setNum(-1);
+                    mBinder.includeLeft.ivRedPoint.setVisibility(View.GONE);
+                    mBinder.includeLeft.tvNewVersion.setText("最新版本("+getVersionName()+")");
+                }
+
+                if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
+                    calendarApply();
+                }
                 break;
                 default:
                     break;

@@ -11,19 +11,25 @@ import com.zdjc.zdjcyun.mvp.entity.AlarmNewsEntity;
 import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
 import com.zdjc.zdjcyun.mvp.entity.BasicInformationEntity;
 import com.zdjc.zdjcyun.mvp.entity.ComparisonDataEntity;
+import com.zdjc.zdjcyun.mvp.entity.ComparisonGPSDataEntity;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
 import com.zdjc.zdjcyun.mvp.entity.DataMonitoringImagesEntity;
+import com.zdjc.zdjcyun.mvp.entity.DeepDataEntity;
 import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.DeviceEntity;
+import com.zdjc.zdjcyun.mvp.entity.DocumentEntity;
+import com.zdjc.zdjcyun.mvp.entity.GPSNormEntity;
 import com.zdjc.zdjcyun.mvp.entity.HazardsEntity;
 import com.zdjc.zdjcyun.mvp.entity.ImageEntity;
 import com.zdjc.zdjcyun.mvp.entity.ImageListEntity;
+import com.zdjc.zdjcyun.mvp.entity.MapTypeEntity;
 import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
 import com.zdjc.zdjcyun.mvp.entity.MemberMsgEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorPointName;
 import com.zdjc.zdjcyun.mvp.entity.MonitorTypeNameEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorViewEntity;
+import com.zdjc.zdjcyun.mvp.entity.NormDeepEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.PictureEntity;
@@ -278,8 +284,38 @@ public class HttpRequestImpl implements IHttpRequest {
     }
 
     @Override
+    public Observable<ComparisonGPSDataEntity> queryComparisonNormTwoData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryComparisonNormTwoData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<ComparisonDataEntity> queryComparisonNormThreeData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryComparisonData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<ComparisonDataEntity> queryComparisonNormFourData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryComparisonData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
     public Observable<SensorDataEntity> querySensorData(Map<String, String> params) {
         return RetrofitManager.getInstance().getAppService().querySensorData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<GPSNormEntity> queryNormTwoSensorData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryNormTwoSensorData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<DeepDataEntity> queryNormThreeSensorData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryNormThreeSensorData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<SensorDataEntity> queryNormFourSensorData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryNormFourSensorData(getCacheControl(),"Bearer"+" "+getToken(), params);
     }
 
     @Override
@@ -305,5 +341,20 @@ public class HttpRequestImpl implements IHttpRequest {
     @Override
     public Observable<VersionEntity> queryVersion(Map<String, String> params) {
         return RetrofitManager.getInstance().getAppService().queryVersion(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<MapTypeEntity> queryMapType(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryMapType(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<NormDeepEntity> queryDeepData(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryDeepData(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<DocumentEntity> getDocuments(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().getDocuments(getCacheControl(),"Bearer"+" "+getToken(), params);
     }
 }

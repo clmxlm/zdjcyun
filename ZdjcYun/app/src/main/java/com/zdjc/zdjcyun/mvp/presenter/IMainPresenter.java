@@ -19,4 +19,6 @@ public interface IMainPresenter {
     void loginOut(RequestCallBack callBack, Map<String, String> params, int tag);
 
     void getHomeAlarmCounts(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void queryVersion(RequestCallBack callBack, Map<String, String> params, int tag);
 }

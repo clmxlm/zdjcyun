@@ -8,19 +8,25 @@ import com.zdjc.zdjcyun.mvp.entity.AlarmNewsEntity;
 import com.zdjc.zdjcyun.mvp.entity.AllProjectListEntity;
 import com.zdjc.zdjcyun.mvp.entity.BasicInformationEntity;
 import com.zdjc.zdjcyun.mvp.entity.ComparisonDataEntity;
+import com.zdjc.zdjcyun.mvp.entity.ComparisonGPSDataEntity;
 import com.zdjc.zdjcyun.mvp.entity.CurveDetailEntity;
 import com.zdjc.zdjcyun.mvp.entity.DataMonitoringImagesEntity;
+import com.zdjc.zdjcyun.mvp.entity.DeepDataEntity;
 import com.zdjc.zdjcyun.mvp.entity.DeepDispalcementEntity;
 import com.zdjc.zdjcyun.mvp.entity.DeviceEntity;
+import com.zdjc.zdjcyun.mvp.entity.DocumentEntity;
+import com.zdjc.zdjcyun.mvp.entity.GPSNormEntity;
 import com.zdjc.zdjcyun.mvp.entity.HazardsEntity;
 import com.zdjc.zdjcyun.mvp.entity.ImageEntity;
 import com.zdjc.zdjcyun.mvp.entity.ImageListEntity;
 import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
 import com.zdjc.zdjcyun.mvp.entity.MemberMsgEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorPointName;
+import com.zdjc.zdjcyun.mvp.entity.MapTypeEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorTypeNameEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorViewEntity;
+import com.zdjc.zdjcyun.mvp.entity.NormDeepEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.PictureEntity;
@@ -310,18 +316,61 @@ public interface IHttpRequest {
     Observable<MonitorPointName> queryMonitorPointName(Map<String, String> params);
 
     /**
-     * 对比数据下的指标集合下的测点集合选择之后拉取数据
+     * 对比数据下的特定指标集合下的测点集合选择之后拉取数据
      *
      * @return
      */
     Observable<ComparisonDataEntity> queryComparisonData(Map<String, String> params);
 
     /**
-     * 点击图片上的圆点请求指标下单个测点的曲线信息
+     * 对比数据下的特定指标集合下的测点集合选择之后拉取数据
+     *
+     * @return
+     */
+    Observable<ComparisonGPSDataEntity> queryComparisonNormTwoData(Map<String, String> params);
+
+    /**
+     * 对比数据下的特定指标集合下的测点集合选择之后拉取数据
+     *
+     * @return
+     */
+    Observable<ComparisonDataEntity> queryComparisonNormThreeData(Map<String, String> params);
+
+    /**
+     * 对比数据下的特定指标集合下的测点集合选择之后拉取数据
+     *
+     * @return
+     */
+    Observable<ComparisonDataEntity> queryComparisonNormFourData(Map<String, String> params);
+
+    /**
+     * 点击图片上的圆点请求特定指标下单个测点的曲线信息
      *
      * @return
      */
     Observable<SensorDataEntity> querySensorData(Map<String, String> params);
+
+    /**
+     * 点击图片上的圆点请求特定指标下单个测点的曲线信息
+     *
+     * @return
+     */
+    Observable<GPSNormEntity> queryNormTwoSensorData(Map<String, String> params);
+
+    /**
+     * 点击图片上的圆点请求特定指标下单个测点的曲线信息
+     *
+     * @return
+     */
+    Observable<DeepDataEntity> queryNormThreeSensorData(Map<String, String> params);
+
+    /**
+     * 点击图片上的圆点请求特定指标下单个测点的曲线信息
+     *
+     * @return
+     */
+    Observable<SensorDataEntity> queryNormFourSensorData(Map<String, String> params);
+
 
     /**
      * 点击图片上的圆点请求指标下单个测点的文字信息
@@ -357,6 +406,27 @@ public interface IHttpRequest {
      * @return
      */
     Observable<VersionEntity> queryVersion(Map<String, String> params);
+
+    /**
+     * 拉取指标mapType建立不同的数据对象模型信息
+     *
+     * @return
+     */
+    Observable<MapTypeEntity> queryMapType(Map<String, String> params);
+
+    /**
+     * 拉取指标深部位移的数据对象模型信息
+     *
+     * @return
+     */
+    Observable<NormDeepEntity> queryDeepData(Map<String, String> params);
+
+    /**
+     * 拉取项目下的所有文档
+     *
+     * @return
+     */
+    Observable<DocumentEntity> getDocuments(Map<String, String> params);
 
 
 }

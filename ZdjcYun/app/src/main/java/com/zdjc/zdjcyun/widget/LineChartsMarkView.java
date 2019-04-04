@@ -2,6 +2,7 @@ package com.zdjc.zdjcyun.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
@@ -28,11 +29,14 @@ public class LineChartsMarkView extends MarkerView {
 
     private final MarkViewRecycViewAdapter markViewRecycViewAdapter;
     private TextView tvDate;
+    private Context context;
+    private int titleTag=-1;
     private IAxisValueFormatter xAxisValueFormatter;
     DecimalFormat df = new DecimalFormat("0.000");
 
     public LineChartsMarkView(Context context, IAxisValueFormatter xAxisValueFormatter) {
         super(context, R.layout.layout_markviews);
+        this.context = context;
         this.xAxisValueFormatter = xAxisValueFormatter;
         tvDate = (TextView) findViewById(R.id.tv_date);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycleView);
@@ -40,6 +44,10 @@ public class LineChartsMarkView extends MarkerView {
         markViewRecycViewAdapter = new MarkViewRecycViewAdapter(context);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(markViewRecycViewAdapter);
+    }
+
+    public void getTitleName(int tag){
+        this.titleTag = tag;
     }
 
     @SuppressLint("SetTextI18n")
@@ -52,7 +60,11 @@ public class LineChartsMarkView extends MarkerView {
             ArrayList<ILineDataSet> dataSetList = (ArrayList<ILineDataSet>) lineData.getDataSets();
             markViewRecycViewAdapter.setList(dataSetList);
             markViewRecycViewAdapter.setEntry(e);
-            tvDate.setText("时间: "+xAxisValueFormatter.getFormattedValue(e.getX(), null));
+            if (titleTag==10){
+                tvDate.setText("深度m: "+xAxisValueFormatter.getFormattedValue(e.getX(), null));
+            }else {
+                tvDate.setText("时间: "+xAxisValueFormatter.getFormattedValue(e.getX(), null));
+            }
         }
         super.refreshContent(e, highlight);
     }

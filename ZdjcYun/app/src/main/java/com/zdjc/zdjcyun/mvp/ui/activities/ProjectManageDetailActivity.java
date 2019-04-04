@@ -21,6 +21,7 @@ import com.zdjc.zdjcyun.mvp.ui.fragment.BIMFragment;
 import com.zdjc.zdjcyun.mvp.ui.fragment.BasicInformationFragment;
 import com.zdjc.zdjcyun.mvp.ui.fragment.DataMonitoringFragment;
 import com.zdjc.zdjcyun.mvp.ui.fragment.DeviceFragment;
+import com.zdjc.zdjcyun.mvp.ui.fragment.DocumentsDetailFragment;
 import com.zdjc.zdjcyun.mvp.ui.fragment.HazardsFragment;
 import com.zdjc.zdjcyun.mvp.ui.fragment.MemberMsgFragment;
 import com.zdjc.zdjcyun.mvp.ui.fragment.ProjectImagesFragment;
@@ -69,7 +70,7 @@ public class ProjectManageDetailActivity extends AppCompatActivity {
         mFragmentArrays[5] = BIMFragment.newInstance("");
         mFragmentArrays[6] = HazardsFragment.newInstance("");
         mFragmentArrays[7] = AlarmDetailFragment.newInstance("");
-        mFragmentArrays[8] = BIMFragment.newInstance("");
+        mFragmentArrays[8] = DocumentsDetailFragment.newInstance("");
         mFragmentArrays[9] = BIMFragment.newInstance("");
         mFragmentArrays[10] = ProjectImagesFragment.newInstance("");
 

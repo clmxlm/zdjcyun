@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:textSize="@dimen/MY_SP_15"
         android:layout_marginLeft="@dimen/MY_DP_15"
         android:textColor="@android:color/white" />
 

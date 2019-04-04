@@ -101,7 +101,7 @@ public class TabModel extends BaseModel<FragmentTabBinding,TabPresenterImpl> imp
 
         videoPlayer =  mBinder.videoPlayer;
         //rtmp://112.74.35.181:10244/oflaDemo/test  rtsp:admin:hnzdjc123@10.88.89.108:554/cam/realmonitor?channel=1&subtype=0
-        String source1 = "rtmp://112.74.35.181:10244/oflaDemo/test";
+        String source1 = "rtmp://10.88.89.170:1935/live/test1";
         videoPlayer.setUp(source1, true, "");
 
         //增加封面

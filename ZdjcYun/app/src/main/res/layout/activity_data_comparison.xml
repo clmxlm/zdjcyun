@@ -64,8 +64,8 @@
             <com.zdjc.zdjcyun.event.SegmentTabLayout
                 android:id="@+id/segmentTabLayout"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/MY_DP_15"
-                android:layout_marginRight="@dimen/MY_DP_15"
+                android:layout_marginLeft="@dimen/MY_DP_10"
+                android:layout_marginRight="@dimen/MY_DP_10"
                 android:layout_height="@dimen/MY_DP_32"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/MY_DP_10"
@@ -86,8 +86,8 @@
             <com.zdjc.zdjcyun.event.SegmentTabLayout
                 android:id="@+id/segmentTabLayout_time"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/MY_DP_15"
-                android:layout_marginRight="@dimen/MY_DP_15"
+                android:layout_marginLeft="@dimen/MY_DP_10"
+                android:layout_marginRight="@dimen/MY_DP_10"
                 android:layout_height="@dimen/MY_DP_32"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/MY_DP_10"

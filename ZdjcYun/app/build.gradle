@@ -34,8 +34,8 @@ android {
         applicationId "com.zdjc.zdjcyun"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 4
-        versionName "3.0.2"
+        versionCode 9
+        versionName "3.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 

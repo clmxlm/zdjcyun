@@ -27,19 +27,23 @@ import com.zdjc.zdjcyun.charting.components.YAxis;
 import com.zdjc.zdjcyun.charting.data.Entry;
 import com.zdjc.zdjcyun.charting.data.LineData;
 import com.zdjc.zdjcyun.charting.data.LineDataSet;
+import com.zdjc.zdjcyun.charting.formatter.DefaultValueFormatter;
 import com.zdjc.zdjcyun.charting.formatter.IAxisValueFormatter;
 import com.zdjc.zdjcyun.charting.highlight.Highlight;
 import com.zdjc.zdjcyun.charting.interfaces.datasets.ILineDataSet;
 import com.zdjc.zdjcyun.charting.listener.OnChartValueSelectedListener;
 import com.zdjc.zdjcyun.databinding.ActivityDataComparisonBinding;
 import com.zdjc.zdjcyun.mvp.entity.ComparisonDataEntity;
+import com.zdjc.zdjcyun.mvp.entity.ComparisonGPSDataEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorTypeNameEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
+import com.zdjc.zdjcyun.mvp.entity.SensorDataEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.DataComparisonPresenterImpl;
 import com.zdjc.zdjcyun.mvp.ui.activities.DataComparisonActivity;
 import com.zdjc.zdjcyun.mvp.viewmodel.IDataComparisonhModel;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 import com.zdjc.zdjcyun.util.ScreenUtil;
+import com.zdjc.zdjcyun.widget.LineChartMarkView;
 import com.zdjc.zdjcyun.widget.LineChartsMarkView;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -52,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static com.zdjc.zdjcyun.util.DateUtil.getDateToString;
 
@@ -59,6 +64,7 @@ import static com.zdjc.zdjcyun.util.DateUtil.getDateToString;
 public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding, DataComparisonPresenterImpl> implements IDataComparisonhModel {
 
     private String[] stringArray = {"累计变化量", "单次变化量", "变化速率"};
+    private String[] stringTotalArray = {"累计变化量X", "累计变化量Y", "累计变化量Z"};
     private String[] stringArrayTime = {"全部", "一周", "一月"};
     private String[] xValue1 = new String[]{};
     private ArrayList<String> xTimeData= new ArrayList<>(Arrays.asList(xValue1));
@@ -74,13 +80,16 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
     private LineChart mChart;
     private int tagPositon=0;
     private ArrayList<ComparisonDataEntity.DataBean.ComparisonVOBean> comparisonVO = new ArrayList<>();
+    private ArrayList<ComparisonGPSDataEntity.DataBean.ComparisonVOBean> comparisonGPSVO = new ArrayList<>();
     private long startTime;
     private long endTime;
     private String pointNamesJson;
     private ArrayList<MonitorUnitEntity.DataBean> monitorUnitList = new ArrayList<>();
+    private int mapType = -1;
 
     @Override
     public void onCreate() {
+        mapType = PreferenceUtils.getInt(getContext(),"mapType",mapType);
         mInflater = LayoutInflater.from(getContext());
         id = PreferenceUtils.getInt(getContext(), "sectorId") + "";
         mBinder.include.tvTitle.setText("数据对比");
@@ -91,7 +100,7 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
         });
         startTime = System.currentTimeMillis();
         endTime = startTime-7200000*12*7;
-        PreferenceUtils.putString(getContext(),"AmountOfChangeName","累计变化量");
+
         Map<String, String> map = new HashMap<>(0);
         map.put("sectorId", id);
         mControl.getQueryMonitorTypeName(DataComparisonModel.this, map, 1);
@@ -135,6 +144,7 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
                         return tv;
                     }
                 });
+
                 break;
             case 3:
                 tagPositon++;
@@ -152,6 +162,39 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
                 curvelData(xValue1,comparisonVO);
                 mBinder.tvSelectedMonitor.setText(PreferenceUtils.getString(getContext(),"monitorTypeName"));
                 break;
+            case 4:
+                tagPositon++;
+                ComparisonGPSDataEntity.DataBean comparisonGPSDataEntity = (ComparisonGPSDataEntity.DataBean) bean;
+                comparisonGPSVO = comparisonGPSDataEntity.getComparisonVO();
+                xTimeData.clear();
+                monitorPointNumberList.clear();
+                for (ComparisonGPSDataEntity.DataBean.ComparisonVOBean aa : comparisonGPSVO) {
+                    monitorPointNumberList.add(aa.getMonitorPointNumber());
+                    for (ArrayList<Object> string : aa.getTotalChangeX()) {
+                        xTimeData.add(((String) string.get(0)));
+                    }
+                }
+                xValue1 = xTimeData.toArray(new String[xTimeData.size()]);
+                curvelGPSData(xValue1,comparisonGPSVO);
+                mBinder.tvSelectedMonitor.setText(PreferenceUtils.getString(getContext(),"monitorTypeName"));
+                break;
+            case 5:
+                mapType = (int) bean;
+                PreferenceUtils.putInt(getContext(),"mapType",mapType);
+                if (mapType==SENSOR_TYPE){
+                    PreferenceUtils.putString(getContext(),"AmountOfChangeName","累计变化量");
+                }else if (mapType==SENSOR_TYPE_TWO){
+                    PreferenceUtils.putString(getContext(),"AmountOfChangeName","累计变化量X");
+                }
+                if (mapType==SENSOR_TYPE){
+                    mBinder.segmentTabLayout.setTabData(stringArray);
+                }else if (mapType==SENSOR_TYPE_TWO){
+                    mBinder.segmentTabLayout.setTabData(stringTotalArray);
+                }
+                mBinder.segmentTabLayout.setCurrentTab(0);
+                mBinder.segmentTabLayoutTime.setTabData(stringArrayTime);
+                mBinder.segmentTabLayoutTime.setCurrentTab(1);
+                break;
             default:
                 break;
         }
@@ -165,7 +208,13 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
 
     @Override
     public void initData() {
-        mBinder.segmentTabLayout.setTabData(stringArray);
+        if (mapType==SENSOR_TYPE){
+            mBinder.segmentTabLayout.setTabData(stringArray);
+        }else if (mapType==SENSOR_TYPE_TWO){
+            mBinder.segmentTabLayout.setTabData(stringTotalArray);
+        }else {
+            mBinder.segmentTabLayout.setTabData(stringArray);
+        }
         mBinder.segmentTabLayout.setCurrentTab(0);
         mBinder.segmentTabLayoutTime.setTabData(stringArrayTime);
         mBinder.segmentTabLayoutTime.setCurrentTab(1);
@@ -180,11 +229,22 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
         mBinder.segmentTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                PreferenceUtils.putString(getContext(),"AmountOfChangeName",stringArray[position]);
+                if (mapType==SENSOR_TYPE){
+                    PreferenceUtils.putString(getContext(),"AmountOfChangeName",stringArray[position]);
+                }else if (mapType==SENSOR_TYPE_TWO){
+                    PreferenceUtils.putString(getContext(),"AmountOfChangeName",stringTotalArray[position]);
+                }else {
+                    PreferenceUtils.putString(getContext(),"AmountOfChangeName",stringArray[position]);
+                }
                 if (tagPositon==0){
                     ToastUtils.showShortToast("请先选择对比数据!");
                 }else {
-                    curvelData(xValue1,comparisonVO);
+                    if (mapType==SENSOR_TYPE){
+                        curvelData(xValue1,comparisonVO);
+                    }else if (mapType==SENSOR_TYPE_TWO){
+                        curvelGPSData(xValue1,comparisonGPSVO);
+                    }
+
                 }
             }
 
@@ -261,6 +321,14 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
             map.put("sectorId", id);
             map.put("monitorType", data.get(position).getMonitorType()+"");
             mControl.getQueryMonitorPointName(DataComparisonModel.this, map, 2);
+
+            /**
+             * 请求不同指标下的不同数据对象tag
+             */
+            Map<String, String> mapType = new HashMap<>(0);
+            mapType.put("monitorType", data.get(position).getMonitorType()+"");
+            mControl.getQueryMapType(DataComparisonModel.this, mapType, 5);
+
             PreferenceUtils.putInt(getContext(),"monitorType",data.get(position).getMonitorType());
             PreferenceUtils.putString(getContext(),"monitorTypeName",data.get(position).getMonitorTypeName());
 
@@ -274,7 +342,6 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
             }
             return true;
         });
-
 
         tagFlowLayout2.setOnSelectListener(selectPosSet -> {
 
@@ -320,7 +387,12 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
         map.put("beginTime", endTimeString);
         map.put("endTime", startTimeString);
         map.put("dateType", 1+"");
-        mControl.getQueryComparisonData(DataComparisonModel.this, map, 3);
+        if (mapType==SENSOR_TYPE){
+            mControl.getQueryComparisonData(DataComparisonModel.this, map, 3);
+        }else if (mapType==SENSOR_TYPE_TWO){
+            mControl.getQueryComparisonGPSData(DataComparisonModel.this, map, 4);
+        }
+
     }
 
 
@@ -386,9 +458,6 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
         // set an alternative background color
         mChart.setBackgroundColor(Color.parseColor("#ffffff"));
         // add data
-        colorList.add(R.color.theme_color);
-        colorList.add(R.color.colorAccent);
-        colorList.add(R.color.number_color);
         showLineChart(yData,monitorPointNumberList,colorList);
 
         mChart.animateX(2500);
@@ -454,6 +523,7 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
                 mv.setChartView(mChart);
                 mChart.setMarker(mv);
                 mChart.invalidate();
+
             }
             @Override
             public void onNothingSelected() {
@@ -461,6 +531,161 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
             }
         });
     }
+    private void curvelGPSData(String[] xValue,ArrayList<ComparisonGPSDataEntity.DataBean.ComparisonVOBean> yData){
+        mChart = mBinder.chart1;
+        // no description text
+        mChart.getDescription().setEnabled(false);
+        // enable touch gestures
+        mChart.setTouchEnabled(true);
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+        mChart.setDrawGridBackground(false);
+        mChart.setHighlightPerDragEnabled(true);
+        mChart.setDrawBorders(false);
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(true);
+
+        // set an alternative background color
+        mChart.setBackgroundColor(Color.parseColor("#ffffff"));
+        // add data
+        setData(yData,monitorPointNumberList);
+
+        mChart.animateX(2500);
+        // get the legend (only possible after setting data)
+        Legend l = mChart.getLegend();
+        // modify the legend ...
+        l.setForm(Legend.LegendForm.LINE);
+        l.setTypeface(mTfLight);
+        l.setTextSize(11f);
+        l.setTextColor(Color.BLACK);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setGranularity(1f);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelCount(3);
+        if (xValue.length>0){
+            xAxis.setValueFormatter((value, axis) -> xValue[(int) value % xValue.length]);
+        }
+        YAxis yAxis = mChart.getAxisLeft();
+        yAxis.setDrawGridLines(false);
+        yAxis.setTextColor(Color.BLACK);
+
+        yAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                if ("变化速率".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName"))){
+                    return value+"("+PreferenceUtils.getString(getContext(),"rateUnit")+")";
+                }else {
+                    return value+"("+PreferenceUtils.getString(getContext(),"otherUnit")+")";
+                }
+            }
+        });
+
+        YAxis yAxis1 = mChart.getAxisRight();
+        yAxis1.setDrawGridLines(false);
+        yAxis1.setTextColor(Color.BLACK);
+        yAxis1.setEnabled(false);
+        yAxis1.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                if ("变化速率".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName"))){
+                    return value+"("+PreferenceUtils.getString(getContext(),"rateUnit")+")";
+                }else {
+                    return value+"("+PreferenceUtils.getString(getContext(),"otherUnit")+")";
+                }
+            }
+        });
+
+
+
+        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if ("累计变化量X".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName"))){
+                    LineChartMarkView mv = new LineChartMarkView(getContext(), xAxis.getValueFormatter(),"累计变化量X");
+                    mv.setChartView(mChart);
+                    mChart.setMarker(mv);
+                    mChart.invalidate();
+                }else if (("累计变化量Y".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName")))){
+                    LineChartMarkView mv = new LineChartMarkView(getContext(), xAxis.getValueFormatter(),"累计变化量Y");
+                    mv.setChartView(mChart);
+                    mChart.setMarker(mv);
+                    mChart.invalidate();
+                }else if (("累计变化量Z".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName")))){
+                    LineChartMarkView mv = new LineChartMarkView(getContext(), xAxis.getValueFormatter(),"累计变化量Z");
+                    mv.setChartView(mChart);
+                    mChart.setMarker(mv);
+                    mChart.invalidate();
+                }
+
+            }
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+    }
+
+    /**
+     * 统一曲线图设值
+     */
+    private void setData(ArrayList<ComparisonGPSDataEntity.DataBean.ComparisonVOBean> data1,ArrayList<String> monitorPointNumberList) {
+
+        ArrayList<Entry> yVals1 = new ArrayList<>();
+        LineDataSet set1 = null;
+            for (int i = 0; i < data1.size(); i++) {
+                if ("累计变化量X".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName"))){
+                    for (int j = 0; j < data1.get(i).getTotalChangeX().size(); j++) {
+                        yVals1.add(new Entry(j, Float.valueOf(String.valueOf(data1.get(i).getTotalChangeX().get(j).get(1)))));
+                    }
+                    set1 = new LineDataSet(yVals1, monitorPointNumberList.get(i));
+                }else if (("累计变化量Y".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName")))){
+                    for (int j = 0; j < data1.get(i).getTotalChangeY().size(); j++) {
+                        yVals1.add(new Entry(j, Float.valueOf(String.valueOf(data1.get(i).getTotalChangeY().get(j).get(1)))));
+                    }
+                    set1 = new LineDataSet(yVals1, monitorPointNumberList.get(i));
+                }else if (("累计变化量Z".equals(PreferenceUtils.getString(getContext(),"AmountOfChangeName")))){
+                    for (int j = 0; j < data1.get(i).getTotalChangeZ().size(); j++) {
+                        yVals1.add(new Entry(j, Float.valueOf(String.valueOf(data1.get(i).getTotalChangeZ().get(j).get(1)))));
+                    }
+                    set1 = new LineDataSet(yVals1, monitorPointNumberList.get(i));
+                }
+
+            }
+        //随机颜色
+        Random myRandom = new Random();
+        int ranColor = 0xff000000 | myRandom.nextInt(0x00ffffff);
+
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setColor(ranColor);
+        set1.setLineWidth(1f);
+        set1.setFillAlpha(65);
+        set1.setDrawCircleHole(false);
+        set1.setDrawCircles(false);
+        set1.setValueTextColor(Color.BLACK);
+        set1.setDrawValues(true);
+        //设置小数点后面位数
+        set1.setValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "   "+value);
+        LineData data = new LineData(set1);
+        //不显示圆点上的数值
+        data.setDrawValues(false);
+        data.setValueFormatter(new DefaultValueFormatter(3));
+        // set data
+        mChart.setData(data);
+
+//        }
+    }
+
     /**
      * 展示多条曲线。
      */
@@ -482,12 +707,14 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
                     yVals2.add(new Entry(j, Float.valueOf(String.valueOf(yAxisValues.get(i).getSpeedChange().get(j).get(1)))));
                 }
             }
+            Random myRandom = new Random();
+            int ranColor = 0xff000000 | myRandom.nextInt(0x00ffffff);
             LineDataSet lineDataSet = new LineDataSet(yVals2, labels.get(i));
             lineDataSet.setDrawCircleHole(false);
-            lineDataSet.setColor(colorList.get(i));
+            lineDataSet.setColor(ranColor);
             lineDataSet.setDrawCircles(false);
             lineDataSet.setDrawFilled(true);
-            initLineDataSet(lineDataSet, colours.get(i), false);
+            initLineDataSet(lineDataSet, ranColor, false);
             dataSets.add(lineDataSet);
         }
         LineData data = new LineData(dataSets);
@@ -502,18 +729,6 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
      * @param mode        折线图是否填充
      */
     private void initLineDataSet(LineDataSet lineDataSet, int color, boolean mode) {
-
-//        lineDataSet.setCircleColor(color);
-//        lineDataSet.setLineWidth(1f);
-//        lineDataSet.setFillColor(color);
-//        lineDataSet.setCircleRadius(3f);
-//        //设置曲线值的圆点是实心还是空心
-//        lineDataSet.setDrawCircleHole(false);
-//        lineDataSet.setValueTextSize(9f);
-//        //设置折线图填充
-//        lineDataSet.setDrawFilled(mode);
-//        lineDataSet.setFormLineWidth(1f);
-//        lineDataSet.setFormSize(15.f);
 
         lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet.setLineWidth(1f);

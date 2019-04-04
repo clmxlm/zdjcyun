@@ -13,4 +13,6 @@ public interface IDataComparisonPresenter {
     void getQueryMonitorTypeName(RequestCallBack callBack, Map<String, String> params, int tag);
     void getQueryMonitorPointName(RequestCallBack callBack, Map<String, String> params, int tag);
     void getQueryComparisonData(RequestCallBack callBack, Map<String, String> params, int tag);
+    void getQueryComparisonGPSData(RequestCallBack callBack, Map<String, String> params, int tag);
+    void getQueryMapType(RequestCallBack callBack, Map<String, String> params, int tag);
 }

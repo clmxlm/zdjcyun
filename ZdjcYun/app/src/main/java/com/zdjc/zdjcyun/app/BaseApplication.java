@@ -25,9 +25,6 @@ public class BaseApplication extends Application {
     private static BaseApplication mContext;
     private RefWatcher refWatcher;
 
-    /**
-     * u紧急呼吁用户用户有
-     */
 
     @Override
     public void onCreate() {

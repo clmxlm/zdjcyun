@@ -14,5 +14,15 @@ public interface IDataMonitoringPresenter {
 
     void getQuerySensorData(RequestCallBack callBack, Map<String, String> params, int tag);
 
+    void getQueryNormTwoSensorData(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryNormThreeSensorData(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryNormFourSensorData(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryMapType(RequestCallBack callBack, Map<String, String> params, int tag);
+
     void getQueryTerminalAndSensor(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryDeepData(RequestCallBack callBack, Map<String, String> params, int tag);
 }

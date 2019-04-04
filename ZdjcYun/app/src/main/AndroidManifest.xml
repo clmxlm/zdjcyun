@@ -53,6 +53,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/open_app_file_paths"/>
+        </provider>
+
         <!--6zIYQL1exkPF9kIsOUOtVvtAmwRlS6kD-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

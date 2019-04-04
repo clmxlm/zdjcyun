@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @create 2019/1/22
  * @Describe
  */
-public class SensorDataEntity {
+public class SensorDataEntity extends SersonData{
 
 
     /**
