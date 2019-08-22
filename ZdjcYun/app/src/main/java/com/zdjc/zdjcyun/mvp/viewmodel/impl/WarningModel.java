@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zdjc.zdjcyun.base.BaseModel;
-import com.zdjc.zdjcyun.base.OnItemClickListener;
 import com.zdjc.zdjcyun.databinding.ActivityWarningMessageBinding;
 import com.zdjc.zdjcyun.event.PullLoadMoreRecyclerView;
 import com.zdjc.zdjcyun.mvp.entity.AlarmCountEntity;
@@ -27,18 +26,17 @@ public class WarningModel extends BaseModel<ActivityWarningMessageBinding,Warnin
 
     private WarningRecycViewAdapter adapter;
     private PullLoadMoreRecyclerView recyclerView;
-    private TextView tv_no_goods;
+    private TextView tvNoGoods;
     private int page = 1;
     private AlarmCountEntity.DataBean dataBean;
 
     @Override
     public void onCreate() {
-
         inData();
     }
 
     private void inData() {
-        tv_no_goods = mBinder.tvNoGoods;
+        tvNoGoods = mBinder.tvNoGoods;
         recyclerView = mBinder.recycleView;
         adapter = new WarningRecycViewAdapter(getContext());
         recyclerView.setGridLayout(1);
@@ -56,19 +54,16 @@ public class WarningModel extends BaseModel<ActivityWarningMessageBinding,Warnin
             }
         });
 
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                PreferenceUtils.putInt(getContext(),"sectorId",dataBean.getAlarmCounts().get(position).getSectorId());
-                PreferenceUtils.putString(getContext(),"alarmTag","warning");
-                Intent intent = new Intent(getContext(), ProjectManageDetailActivity.class);
-                intent.putExtra("sectorName",dataBean.getAlarmCounts().get(position).getSectorName());
-                getContext().startActivity(intent);
-            }
+        adapter.setOnItemClickListener((view, position) -> {
+            PreferenceUtils.putInt(getContext(),"sectorId",dataBean.getAlarmCounts().get(position).getSectorId());
+            PreferenceUtils.putString(getContext(),"alarmTag","warning");
+            Intent intent = new Intent(getContext(), ProjectManageDetailActivity.class);
+            intent.putExtra("sectorName",dataBean.getAlarmCounts().get(position).getSectorName());
+            getContext().startActivity(intent);
         });
     }
 
-    public void getProjectList(int page){
+    private void getProjectList(int page){
         Map<String,String> map = new HashMap<>(0);
         map.put("current", page + "");
         map.put("pageSize", 10 + "");
@@ -93,11 +88,11 @@ public class WarningModel extends BaseModel<ActivityWarningMessageBinding,Warnin
                     }
                 }else if (dataBean.getAlarmCounts().size()==0){
                     if (page>1){
-                        tv_no_goods.setVisibility(View.VISIBLE);
+                        tvNoGoods.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }else {
                         recyclerView.setVisibility(View.VISIBLE);
-                        tv_no_goods.setVisibility(View.GONE);
+                        tvNoGoods.setVisibility(View.GONE);
                     }
                 }
                 if (recyclerView != null) {
@@ -105,7 +100,6 @@ public class WarningModel extends BaseModel<ActivityWarningMessageBinding,Warnin
                 }
                 break;
             case 2:
-
                 break;
             default:
                 break;
@@ -116,6 +110,7 @@ public class WarningModel extends BaseModel<ActivityWarningMessageBinding,Warnin
     public void onError(String errorMsg, int code,int tag) {
 
     }
+
     private void getData() {
         new Handler().postDelayed(() -> {
             page++;

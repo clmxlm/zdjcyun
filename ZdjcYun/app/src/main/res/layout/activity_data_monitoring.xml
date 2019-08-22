@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_title_one" />
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/drawer"
+            android:layout_marginTop="@dimen/MY_DP_50"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/MY_DP_30">
+
+                    <ImageView
+                        android:id="@+id/iv_left_monitoring"
+                        android:layout_width="@dimen/MY_DP_30"
+                        android:layout_height="@dimen/MY_DP_30"
+                        android:layout_alignParentLeft="true"
+                        android:src="@mipmap/icon_left"/>
+
+                    <TextView
+                        android:id="@+id/tv_adapter_monitor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/iv_left_monitoring"
+                        android:gravity="center"
+                        android:layout_marginLeft="@dimen/MY_DP_20"
+                        android:text="指标一"/>
+
+
+                </RelativeLayout>
+
+                <com.zdjc.zdjcyun.charting.charts.LineChart
+                    android:id="@+id/line_chart_adapter"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/MY_DP_260"/>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true"
+                        android:scrollbars="none"
+                        >
+
+                        <HorizontalScrollView
+                            android:id="@+id/scroll_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scrollbarAlwaysDrawHorizontalTrack="false"
+                            android:scrollbars="none">
+
+                            <LinearLayout
+                                android:id="@+id/MyTable"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="9dp"
+                                android:orientation="vertical"
+                                >
+                            </LinearLayout>
+
+                        </HorizontalScrollView>
+                    </ScrollView>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/include_monitor_activity_left"
+                layout="@layout/sideslipping_sharing_monitor_activity_layout" />
+
+        </android.support.v4.widget.DrawerLayout>
+
+    </RelativeLayout>
+
+
+</layout>

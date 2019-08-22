@@ -41,7 +41,7 @@ public class ProjectManageInRecycViewAdapter extends BaseRecyclerViewAdapter<Pro
         TextView mTvProjectK = viewHolder.getView(R.id.tv_project_k);
         TextView mTvStateNormal = viewHolder.getView(R.id.tv_state_normal);
         ImageView mIvStateNormal = viewHolder.getView(R.id.iv_state_normal);
-        RelativeLayout mRlProjectManage = viewHolder.getView(R.id.rl_project_manage);
+        LinearLayout mRlProjectManage = viewHolder.getView(R.id.rl_project_manage);
         TextView mTvAlarmOne = viewHolder.getView(R.id.tv_alarm_one);
         TextView mTvAlarmTwo = viewHolder.getView(R.id.tv_alarm_two);
         TextView mTvAlarmThree = viewHolder.getView(R.id.tv_alarm_three);

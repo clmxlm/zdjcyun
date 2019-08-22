@@ -180,7 +180,6 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 .checkNewApp(new UpdateCallback() {
                     /**
                      * 解析json,自定义协议
-                     *
                      * @param json 服务器返回的json
                      * @return UpdateAppBean
                      */
@@ -192,7 +191,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                             updateAppBean.setConstraint(false);
                             updateAppBean
                                     .setNewVersion(PreferenceUtils.getString(getContext(),"version"))
-                                    .setUpdateLog("1.项目文库新增日报下载查看\n2.特定项目数据图表展示更新\n3.修改了一些已知bug")
+                                    .setUpdateLog(PreferenceUtils.getString(getContext(),"versionDescription"))
                                     .setApkFileUrl(Constant.APK_URL+uu);
                         }else {
                             updateAppBean.setUpdate("No");
@@ -210,7 +209,8 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                     public void hasNewApp(UpdateAppBean updateApp, UpdateAppManager updateAppManager) {
                         //强制更新，
                         if (updateApp.isConstraint()) {
-
+                            //自定义对话框
+                            showDiyDialog(updateApp, updateAppManager);
                         } else {
 
                         }
@@ -307,7 +307,7 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 mBinder.includeLeft.tvUsername.setText(personertName);
                 mBinder.includeLeft.tvPhone.setText(personertPhone);
                 mBinder.includeLeft.tvEmail.setText(personertEmail);
-                mBinder.includeLeft.tvCompany.setText(personertCompany);
+                mBinder.includeLeft.tvCompany.setText("湖南中大检测技术集团有限公司");
                 PreferenceUtils.putString(getContext(),"userName",dataBean.getUserName());
                 PreferenceUtils.putInt(getContext(),"userId",dataBean.getUserId());
                 break;
@@ -335,23 +335,30 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
                 break;
             case 5:
                 VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
-                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.isNewVersion());
+                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.getNewVersion());
+                PreferenceUtils.putBoolean(getContext(),"forcedUpdate",dataVersion.isForcedUpdate());
                 PreferenceUtils.putString(getContext(),"version",dataVersion.getVersion());
                 PreferenceUtils.putString(getContext(),"apkUrl",dataVersion.getUrl());
+                PreferenceUtils.putString(getContext(),"versionDescription",dataVersion.getVersionDescription());
 
                 if (!PreferenceUtils.getBoolean(getContext(),"newVersion")){
-                    mBinder.include.imgbtnLeft.setNum(1);
-                    mBinder.includeLeft.ivRedPoint.setVisibility(View.VISIBLE);
-                    mBinder.includeLeft.tvNewVersion.setText("新版本"+"("+PreferenceUtils.getString(getContext(),"version")+")");
+                    if (!PreferenceUtils.getBoolean(getContext(),"newVersion")){
+                        mBinder.include.imgbtnLeft.setNum(1);
+                        mBinder.includeLeft.ivRedPoint.setVisibility(View.VISIBLE);
+                        mBinder.includeLeft.tvNewVersion.setText("新版本"+"("+getVersionName()+")");
+                    }else {
+                        mBinder.include.imgbtnLeft.setNum(-1);
+                        mBinder.includeLeft.ivRedPoint.setVisibility(View.GONE);
+                        mBinder.includeLeft.tvNewVersion.setText("最新版本("+getVersionName()+")");
+                    }
+                    if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
+                        calendarApply();
+                    }
                 }else {
-                    mBinder.include.imgbtnLeft.setNum(-1);
-                    mBinder.includeLeft.ivRedPoint.setVisibility(View.GONE);
-                    mBinder.includeLeft.tvNewVersion.setText("最新版本("+getVersionName()+")");
-                }
-
-                if (!PreferenceUtils.getBoolean(getContext(),"newVersion")) {
                     calendarApply();
                 }
+
+
                 break;
                 default:
                     break;
@@ -402,77 +409,75 @@ public class MainModel extends BaseModel<ActivityMainBinding,MainPresenterImpl> 
     private void showDiyDialog(final UpdateAppBean updateApp, final UpdateAppManager updateAppManager) {
         String targetSize = updateApp.getTargetSize();
         String updateLog = updateApp.getUpdateLog();
-
         String msg = "";
-
         if (!TextUtils.isEmpty(targetSize)) {
             msg = "新版本大小：" + targetSize + "\n\n";
         }
-
         if (!TextUtils.isEmpty(updateLog)) {
             msg += updateLog;
         }
+        String stringTitle = "";
+        String stringBtn = "";
+        boolean isShow = true;
+        if (!PreferenceUtils.getBoolean(getContext(),"newVersion")){
+            stringTitle = "是否升级到"+getVersionName()+"?";
+            stringBtn = "暂不升级";
+            isShow = true;
+        }else {
+            stringTitle = "请升级到"+getVersionName()+"!";
+            stringBtn = "";
+            isShow = false;
+        }
         new AlertDialog.Builder(getContext())
-                .setTitle(String.format("是否升级到%s版本？", updateApp.getNewVersion()))
+                .setTitle(String.format(stringTitle, updateApp.getNewVersion()))
                 .setMessage(msg)
-                .setPositiveButton("升级", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //显示下载进度
-                        if (isShowDownloadProgress) {
-                            updateAppManager.download(new DownloadService.DownloadCallback() {
-                                @Override
-                                public void onStart() {
-                                    HProgressDialogUtils.showHorizontalProgressDialog(((MainActivity)UI), "下载进度", false);
-                                }
-
-                                /**
-                                 * 进度
-                                 *
-                                 * @param progress  进度 0.00 -1.00 ，总大小
-                                 * @param totalSize 总大小 单位B
-                                 */
-                                @Override
-                                public void onProgress(float progress, long totalSize) {
-                                    HProgressDialogUtils.setProgress(Math.round(progress * 100));
-                                }
-
-                                /**
-                                 *
-                                 * @param total 总大小 单位B
-                                 */
-                                @Override
-                                public void setMax(long total) {
-
-                                }
-
-
-                                @Override
-                                public boolean onFinish(File file) {
-                                    HProgressDialogUtils.cancel();
-                                    return true;
-                                }
-
-                                @Override
-                                public void onError(String msg) {
-                                    Toast.makeText(((MainActivity)UI), msg, Toast.LENGTH_SHORT).show();
-                                    HProgressDialogUtils.cancel();
-
-                                }
-
-                                @Override
-                                public boolean onInstallAppAndAppOnForeground(File file) {
-                                    return false;
-                                }
-                            });
-                        } else {
-                            //不显示下载进度
-                            updateAppManager.download();
-                        }
-                        dialog.dismiss();
+                .setPositiveButton("升级", (dialog, which) -> {
+                    //显示下载进度
+                    if (isShowDownloadProgress) {
+                        updateAppManager.download(new DownloadService.DownloadCallback() {
+                            @Override
+                            public void onStart() {
+                                HProgressDialogUtils.showHorizontalProgressDialog(((MainActivity)UI), "下载进度", false);
+                            }
+                            /**
+                             * 进度
+                             * @param progress  进度 0.00 -1.00 ，总大小
+                             * @param totalSize 总大小 单位B
+                             */
+                            @Override
+                            public void onProgress(float progress, long totalSize) {
+                                HProgressDialogUtils.setProgress(Math.round(progress * 100));
+                            }
+                            /**
+                             *
+                             * @param total 总大小 单位B
+                             */
+                            @Override
+                            public void setMax(long total) {
+                            }
+                            @Override
+                            public boolean onFinish(File file) {
+                                HProgressDialogUtils.cancel();
+                                return true;
+                            }
+                            @Override
+                            public void onError(String msg1) {
+                                Toast.makeText(((MainActivity)UI), msg1, Toast.LENGTH_SHORT).show();
+                                HProgressDialogUtils.cancel();
+                            }
+                            @Override
+                            public boolean onInstallAppAndAppOnForeground(File file) {
+                                return false;
+                            }
+                        });
+                    } else {
+                        //不显示下载进度
+                        updateAppManager.download();
                     }
+                    dialog.dismiss();
                 })
-                .setNegativeButton("暂不升级", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton(stringBtn, (dialog, which) -> dialog.dismiss())
+                .setCancelable(isShow)
                 .create()
                 .show();
     }

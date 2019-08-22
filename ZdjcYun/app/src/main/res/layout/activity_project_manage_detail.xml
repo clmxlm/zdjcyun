@@ -14,16 +14,41 @@
             layout="@layout/activity_title_one" />
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/theme_color"
-            app:tabIndicatorColor="#fe9900"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="#acacac"
-            app:tabIndicatorHeight="3dp"/>
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/MY_DP_40"
+                android:background="@color/theme_color"
+                app:tabIndicatorColor="#fe9900"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextColor="#acacac"
+                app:tabIndicatorHeight="3dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_all"
+                android:layout_width="@dimen/MY_DP_60"
+                android:layout_height="@dimen/MY_DP_40"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="#4e5280"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="@dimen/MY_DP_30"
+                    android:layout_height="@dimen/MY_DP_30"
+                    android:background="@mipmap/icon_all" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
 
         <android.support.v4.view.ViewPager
             android:id="@+id/tab_viewpager"

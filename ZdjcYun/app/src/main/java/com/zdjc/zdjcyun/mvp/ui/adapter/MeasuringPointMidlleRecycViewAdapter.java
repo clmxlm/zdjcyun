@@ -5,11 +5,12 @@ import android.widget.TextView;
 
 import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
+import com.zdjc.zdjcyun.mvp.entity.VideoEntity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.base.BaseRecyclerViewAdapter;
 import com.zdjc.zdjcyun.util.SuperViewHolder;
 
 
-public class MeasuringPointMidlleRecycViewAdapter extends BaseRecyclerViewAdapter<MeasuringPointEntity.DataBean.DetectionsBean> {
+public class MeasuringPointMidlleRecycViewAdapter extends BaseRecyclerViewAdapter<VideoEntity.DataBean.VideoVosBean> {
 
 
     public MeasuringPointMidlleRecycViewAdapter(Context context) {
@@ -28,9 +29,7 @@ public class MeasuringPointMidlleRecycViewAdapter extends BaseRecyclerViewAdapte
 
     private void fillValue(int position, SuperViewHolder viewHolder) {
         TextView tvMonitorPoint = viewHolder.getView(R.id.tv);
-
-
-        tvMonitorPoint.setText("2018-9-23 9:23");
+        tvMonitorPoint.setText(getDataList().get(position).getMonitorPointNumber());
 
     }
 }

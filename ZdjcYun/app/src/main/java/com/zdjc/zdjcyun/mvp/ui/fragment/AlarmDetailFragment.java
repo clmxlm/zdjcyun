@@ -36,4 +36,5 @@ public class AlarmDetailFragment extends BaseFragment<FragmentAlarmDetailBinding
     public void initView() {
 
     }
+
 }

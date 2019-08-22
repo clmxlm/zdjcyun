@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/ll_dialog"
@@ -9,6 +10,34 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/ll_video_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_40"
+            android:background="@color/theme_deep_color"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="实时预览"
+                android:gravity="center"
+                android:textColor="#fe9900"
+                android:textSize="@dimen/MY_SP_16"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="历史回放"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/MY_SP_16"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
         <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
         android:id="@+id/video_player"
         android:layout_width="match_parent"
@@ -16,41 +45,20 @@
         android:layout_centerInParent="true" />
 
         <TextView
+            android:id="@+id/tv_video_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
             android:gravity="center_vertical"
             android:background="#121521"
             android:textColor="@color/white"
-            android:text="麓云路站-摄像头4"/>
+            android:text="测试点-摄像头4"/>
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_left"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rl_left"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:background="#e8e8ef"
-                android:layout_height="match_parent"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rl_middle"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:background="#f7f7fc"
-                android:layout_height="match_parent"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rl_right"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:background="@color/white"
-                android:layout_height="match_parent"/>
-
-
-        </LinearLayout>
+            android:layout_weight="1"
+            android:background="#e8e8ef"
+            android:layout_height="match_parent"/>
 
 
     </LinearLayout>

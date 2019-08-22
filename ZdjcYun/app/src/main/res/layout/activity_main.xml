@@ -5,8 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
         <android.support.v4.widget.DrawerLayout
             android:id="@+id/drawer"
@@ -329,8 +328,6 @@
                 layout="@layout/sideslipping_sharing_layout" />
 
         </android.support.v4.widget.DrawerLayout>
-
-
 
     </RelativeLayout>
 

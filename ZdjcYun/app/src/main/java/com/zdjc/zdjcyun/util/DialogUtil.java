@@ -13,8 +13,7 @@ import com.zdjc.zdjcyun.R;
  */
 
 public class DialogUtil {
-    private Dialog pd; //Dialog对象
-
+    private Dialog pd;
 
     public DialogUtil(Activity activity) {
         pd = new Dialog(activity, R.style.dialog);

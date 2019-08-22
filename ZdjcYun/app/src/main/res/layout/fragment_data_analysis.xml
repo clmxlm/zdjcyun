@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_selected_data"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_43"
+            android:background="@drawable/ceshi"
+            android:gravity="center_vertical"
+            android:layout_margin="@dimen/MY_DP_10">
+
+            <TextView
+                android:id="@+id/tv_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="选择分析数据条件"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="@dimen/MY_DP_16"
+                android:textSize="@dimen/MY_SP_14"
+                android:textColor="#161617"/>
+
+            <TextView
+                android:id="@+id/tv_selected_monitor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/tv_selected"
+                android:layout_marginLeft="@dimen/MY_DP_16"
+                android:textSize="@dimen/MY_SP_14"
+                android:textColor="#161617"/>
+
+            <ImageView
+                android:layout_width="@dimen/MY_DP_16"
+                android:layout_height="@dimen/MY_DP_16"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/MY_DP_16"
+                android:src="@mipmap/icon_more"/>
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_10"
+            android:background="#eeeeee"/>
+
+        <com.zdjc.zdjcyun.event.SegmentTabLayout
+            android:id="@+id/segmentTabLayout_analysis_monitor"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/MY_DP_10"
+            android:layout_marginRight="@dimen/MY_DP_10"
+            android:layout_height="@dimen/MY_DP_30"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/MY_DP_10"
+            tl:tl_bar_color="#ffffff"
+            tl:tl_indicator_color="@color/theme_color"
+            tl:tl_indicator_corner_radius="2dp"
+            tl:tl_tab_padding="10dp"/>
+
+        <com.zdjc.zdjcyun.charting.charts.LineChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/MY_DP_30"
+            android:background="@color/white"
+            android:layout_height="match_parent"/>
+
+        <com.zdjc.zdjcyun.charting.charts.CandleStickChart
+            android:id="@+id/candle_stick_chart"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/MY_DP_30"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:layout_height="match_parent"/>
+
+        <com.zdjc.zdjcyun.charting.charts.ScatterChart
+            android:id="@+id/scatter_chart"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/MY_DP_30"
+            android:visibility="gone"
+            android:layout_height="match_parent"/>
+
+        <com.zdjc.zdjcyun.charting.charts.BubbleChart
+            android:id="@+id/bubble_chart"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/MY_DP_30"
+            android:background="@color/white"
+            android:visibility="gone"
+            android:layout_height="match_parent"/>
+
+
+
+    </LinearLayout>
+
+</layout>
+

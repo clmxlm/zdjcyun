@@ -22,4 +22,5 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/huise"
         android:textSize="@dimen/MY_SP_18" />
+
 </RelativeLayout>

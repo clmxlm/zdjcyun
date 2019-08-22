@@ -192,9 +192,12 @@ public class DocumentsDetailModel extends BaseModel<FragmentDocumentsDetailBindi
             case 1:
                 data = (ArrayList<DocumentEntity.DataBean>) bean;
                 if (data.size() > 0) {
+                    mBinder.recycleView.setVisibility(View.VISIBLE);
+                    mBinder.tvNoDocuments.setVisibility(View.GONE);
                     documentsDetailRecycViewAdapter.setDataList(data);
                 }else {
-                    ToastUtils.showLongToast("暂时没有文档");
+                    mBinder.recycleView.setVisibility(View.GONE);
+                    mBinder.tvNoDocuments.setVisibility(View.VISIBLE);
                 }
                 if (mBinder.recycleView != null) {
                     mBinder.recycleView.setPullLoadMoreCompleted();
@@ -203,7 +206,12 @@ public class DocumentsDetailModel extends BaseModel<FragmentDocumentsDetailBindi
             case 2:
                 data = (ArrayList<DocumentEntity.DataBean>) bean;
                 if (data.size() > 0) {
+                    mBinder.recycleView.setVisibility(View.VISIBLE);
+                    mBinder.tvNoDocuments.setVisibility(View.GONE);
                     documentsDetailRecycViewAdapter.setDataList(data);
+                }else {
+                    mBinder.recycleView.setVisibility(View.GONE);
+                    mBinder.tvNoDocuments.setVisibility(View.VISIBLE);
                 }
                 if (mBinder.recycleView != null) {
                     mBinder.recycleView.setPullLoadMoreCompleted();
@@ -235,13 +243,6 @@ public class DocumentsDetailModel extends BaseModel<FragmentDocumentsDetailBindi
 
     private void getSearchDocuments(String documentName, String documentType) {
         Map<String, String> map = new HashMap<>(0);
-        if("等级三".equals(documentType)){
-            documentType = "三";
-        }else if ("等级二".equals(documentType)){
-            documentType = "二";
-        }else if ("等级一".equals(documentType)){
-            documentType = "一";
-        }
         map.put("name", documentName);
         map.put("type", "");
         map.put("sectorId", id);

@@ -5,6 +5,7 @@ import com.blankj.utilcode.utils.NetworkUtils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.zdjc.zdjcyun.BuildConfig;
 import com.zdjc.zdjcyun.app.BaseApplication;
+import com.zdjc.zdjcyun.app.Constant;
 import com.zdjc.zdjcyun.util.ConstantUtil;
 
 import java.io.File;
@@ -18,6 +19,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.WebSocketListener;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -68,6 +70,14 @@ public class RetrofitManager {
             }
         }
         return sOkHttpClient;
+    }
+
+    public void connectWebSocket(WebSocketListener webSocketListener){
+        OkHttpClient okHttpClient = getOkHttpClient();
+
+        Request request = new Request.Builder().url(Constant.WEB_SOCKET).build();
+        WebSocketListener socketListener = webSocketListener;
+        okHttpClient.newWebSocket(request, socketListener);
     }
 
     /**

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">中大智能监测云平台</string>
+    <string name="app_name">ZD智能监测云平台</string>
     <string name="load">加载中...</string>
     <string name="monitoring">监测中</string>
     <string name="all">全部</string>

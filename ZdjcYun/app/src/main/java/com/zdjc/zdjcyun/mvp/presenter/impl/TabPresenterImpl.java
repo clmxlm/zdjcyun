@@ -3,6 +3,7 @@ package com.zdjc.zdjcyun.mvp.presenter.impl;
 
 import com.zdjc.zdjcyun.base.BaseNetControl;
 import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
+import com.zdjc.zdjcyun.mvp.entity.VideoEntity;
 import com.zdjc.zdjcyun.mvp.presenter.ITabPresenter;
 import com.zdjc.zdjcyun.network.RequestCallBack;
 import com.zdjc.zdjcyun.network.request.HttpRequestImpl;
@@ -21,15 +22,15 @@ import io.reactivex.schedulers.Schedulers;
 public class TabPresenterImpl extends BaseNetControl implements ITabPresenter {
 
     @Override
-    public void getMeasuringPointMsg(RequestCallBack callBack, Map<String, String> params, int tag) {
+    public void getQueryVideoBySectorId(RequestCallBack callBack, Map<String, String> params, int tag) {
         /**
          * 请求前
          */
         callBack.beforeRequest(tag);
-        HttpRequestImpl.getInstance().measuringPointMsg(params)
+        HttpRequestImpl.getInstance().queryVideoBySectorId(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MeasuringPointEntity>() {
+                .subscribe(new Observer<VideoEntity>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         /**
@@ -39,7 +40,7 @@ public class TabPresenterImpl extends BaseNetControl implements ITabPresenter {
                     }
 
                     @Override
-                    public void onNext(MeasuringPointEntity value) {
+                    public void onNext(VideoEntity value) {
                         /**
                          * 这里是回掉成功的
                          */

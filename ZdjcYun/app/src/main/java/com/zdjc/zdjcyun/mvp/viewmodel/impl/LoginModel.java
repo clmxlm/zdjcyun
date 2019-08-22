@@ -3,7 +3,6 @@ package com.zdjc.zdjcyun.mvp.viewmodel.impl;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.view.View;
 
 import com.blankj.utilcode.utils.ToastUtils;
@@ -12,12 +11,10 @@ import com.zdjc.zdjcyun.app.BaseApplication;
 import com.zdjc.zdjcyun.base.BaseModel;
 import com.zdjc.zdjcyun.databinding.ActivityLoginBinding;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
-import com.zdjc.zdjcyun.mvp.entity.VersionEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.LoginPresenterImpl;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
 import com.zdjc.zdjcyun.mvp.viewmodel.ILoginModel;
-import com.zdjc.zdjcyun.util.AppActivityManager;
 import com.zdjc.zdjcyun.util.EditTextHolder;
 import com.zdjc.zdjcyun.util.EdtCheckEntity;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
@@ -32,13 +29,24 @@ import cn.jpush.android.api.JPushInterface;
 public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterImpl> implements ILoginModel,
         EditTextHolder.OnEditTextFocusChangeListener {
 
+    private String pwd="";
+    private String name="";
+
     @Override
     public void onCreate() {
+        mBinder.etUsername.setText(PreferenceUtils.getString(getContext(),"userName"));
+        mBinder.etPassword.setText(PreferenceUtils.getString(getContext(),"passWord"));
     }
 
     @Override
-    public void onBeforeRequest(int tag) {
+    public void onBeforeRequest(int tag){
         UI.showWaitDialog();
+    }
+
+    @Override
+    public void onResume() {
+        mBinder.etUsername.setText(PreferenceUtils.getString(getContext(),"userName"));
+        mBinder.etPassword.setText(PreferenceUtils.getString(getContext(),"passWord"));
     }
 
     @Override
@@ -59,14 +67,14 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
 
                 JPushInterface.resumePush(getContext());
 
+                PreferenceUtils.putString(getContext(),"userName",name);
+                PreferenceUtils.putString(getContext(),"passWord",pwd);
+
                 HashMap<String, String> params = new HashMap<>(0);
                 params.put("zdjc","zdjc");
                 mControl.queryMonitorUnit(this,params,2);
 
-//                HashMap<String, String> paramsVersion = new HashMap<>(0);
-//                paramsVersion.put("appType",61+"");
-//                paramsVersion.put("version",getVersionName());
-//                mControl.queryVersion(this,paramsVersion,3);
+
                 break;
             case 2:
                 /**
@@ -82,14 +90,7 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
                 activity.finish();
                 break;
 
-//            case 3:
-//                VersionEntity.DataBean dataVersion = (VersionEntity.DataBean)bean;
-//                PreferenceUtils.putBoolean(getContext(),"newVersion",dataVersion.isNewVersion());
-//                PreferenceUtils.putString(getContext(),"version",dataVersion.getVersion());
-//                PreferenceUtils.putString(getContext(),"apkUrl",dataVersion.getUrl());
-//
-//
-//                break;
+
              default:
                 break;
         }
@@ -109,8 +110,8 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
     public void login() {
 
         HashMap<String, String> params = new HashMap<>(0);
-        String pwd = mBinder.etPassword.getText().toString();
-        String name = mBinder.etUsername.getText().toString();
+        pwd = mBinder.etPassword.getText().toString();
+        name = mBinder.etUsername.getText().toString();
 
         if ("".equals(name)){
             ToastUtils.showLongToast("请输入用户名");
@@ -137,13 +138,12 @@ public class LoginModel extends BaseModel<ActivityLoginBinding, LoginPresenterIm
         PackageManager packageManager = getContext().getPackageManager();
         //getPackageName()是你当前类的包名，0代表是获取版本信息
         PackageInfo packInfo = null;
+
         try {
             packInfo = packageManager.getPackageInfo(getContext().getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        Log.e("TAG","版本号"+packInfo.versionCode);
-        Log.e("TAG","版本名"+packInfo.versionName);
         return packInfo.versionName;
     }
 }

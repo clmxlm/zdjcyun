@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_pop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/ll_bottom"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_selected_data"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/MY_DP_43"
+                android:background="@drawable/ceshi"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="选择类型"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/MY_DP_16"
+                    android:textSize="@dimen/MY_SP_14"
+                    android:textColor="#161617"/>
+
+                <ImageView
+                    android:id="@+id/iv_cancel"
+                    android:layout_width="@dimen/MY_DP_16"
+                    android:layout_height="@dimen/MY_DP_16"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/MY_DP_16"
+                    android:src="@mipmap/cancel"/>
+
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.zhy.view.flowlayout.TagFlowLayout
+                    android:id="@+id/flowlayout1"
+                    zhy:max_select="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/MY_DP_10"/>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+</layout>

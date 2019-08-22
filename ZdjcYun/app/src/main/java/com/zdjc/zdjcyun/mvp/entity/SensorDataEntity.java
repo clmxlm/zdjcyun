@@ -51,7 +51,7 @@ public class SensorDataEntity extends SersonData{
          */
 
         private int mapType;
-        private ArrayList<CommonDataVOsBean> commonDataVOs;
+        private ArrayList<CommonDataVOBean> commonDataVO;
 
         public int getMapType() {
             return mapType;
@@ -61,15 +61,15 @@ public class SensorDataEntity extends SersonData{
             this.mapType = mapType;
         }
 
-        public ArrayList<CommonDataVOsBean> getCommonDataVOs() {
-            return commonDataVOs;
+        public ArrayList<CommonDataVOBean> getCommonDataVO() {
+            return commonDataVO;
         }
 
-        public void setCommonDataVOs(ArrayList<CommonDataVOsBean> commonDataVOs) {
-            this.commonDataVOs = commonDataVOs;
+        public void setCommonDataVO(ArrayList<CommonDataVOBean> commonDataVO) {
+            this.commonDataVO = commonDataVO;
         }
 
-        public static class CommonDataVOsBean {
+        public static class CommonDataVOBean {
             /**
              * createDate : 2018-12-14 11:05:54
              * measuredData : 1.1

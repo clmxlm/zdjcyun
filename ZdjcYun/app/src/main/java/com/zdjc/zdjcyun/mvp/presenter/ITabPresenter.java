@@ -10,5 +10,5 @@ import java.util.Map;
  */
 
 public interface ITabPresenter {
-    void getMeasuringPointMsg(RequestCallBack callBack, Map<String, String> params, int tag);
+    void getQueryVideoBySectorId(RequestCallBack callBack, Map<String, String> params, int tag);
 }

@@ -16,20 +16,21 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/MY_DP_10"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/MY_DP_10"
                     android:background="@color/white"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/et1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="@dimen/MY_DP_40"
                         android:layout_marginLeft="@dimen/MY_DP_10"
                         android:layout_marginRight="@dimen/MY_DP_10"
@@ -39,18 +40,15 @@
                         android:textColorHint="#9b9b9b"
                         android:background="@drawable/background_sign_in_dialog" />
 
-                    <EditText
-                        android:id="@+id/et2"
-                        android:layout_width="wrap_content"
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="@dimen/MY_DP_40"
-                        android:layout_marginLeft="@dimen/MY_DP_10"
+                        android:id="@+id/spinner2"
                         android:layout_marginRight="@dimen/MY_DP_10"
-                        android:hint="请输入告警状态"
                         android:paddingLeft="@dimen/MY_DP_10"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/MY_SP_13"
-                        android:textColorHint="#9b9b9b"
-                        android:background="@drawable/background_sign_in_dialog" />
+                        android:textSize="@dimen/MY_SP_13" />
 
                 </LinearLayout>
 
@@ -59,31 +57,29 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/et3"
-                        android:layout_width="wrap_content"
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="@dimen/MY_DP_40"
+                        android:id="@+id/spinner1"
                         android:layout_marginLeft="@dimen/MY_DP_10"
                         android:layout_marginRight="@dimen/MY_DP_10"
-                        android:hint="请输入告警类型"
                         android:paddingLeft="@dimen/MY_DP_10"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/MY_SP_13"
-                        android:textColorHint="#9b9b9b"
-                        android:background="@drawable/background_sign_in_dialog" />
+                        android:textSize="@dimen/MY_SP_13" />
 
-                    <EditText
-                        android:id="@+id/et4"
-                        android:layout_width="wrap_content"
+
+
+                    <Spinner
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="@dimen/MY_DP_40"
-                        android:layout_marginLeft="@dimen/MY_DP_10"
+                        android:id="@+id/spinner"
                         android:layout_marginRight="@dimen/MY_DP_10"
-                        android:hint="请输入告警等级"
                         android:paddingLeft="@dimen/MY_DP_10"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/MY_SP_13"
-                        android:textColorHint="#9b9b9b"
-                        android:background="@drawable/background_sign_in_dialog" />
+                        android:textSize="@dimen/MY_SP_13" />
+
 
 
                 </LinearLayout>
@@ -115,6 +111,16 @@
             android:layout_width="match_parent"
             android:background="#f7f7fc"
             android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/tv_no_alarm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/MY_SP_16"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="暂无数据"/>
 
     </LinearLayout>
 

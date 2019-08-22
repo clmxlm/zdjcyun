@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by ali on 2017/2/17.
  */
 
-public interface IDataMonitoringPresenter {
+public interface IDataQueryPresenter {
     void getQueryImagesMonitorPoint(RequestCallBack callBack, Map<String, String> params, int tag);
 
     void getQuerySensorData(RequestCallBack callBack, Map<String, String> params, int tag);
@@ -25,4 +25,6 @@ public interface IDataMonitoringPresenter {
     void getQueryTerminalAndSensor(RequestCallBack callBack, Map<String, String> params, int tag);
 
     void getQueryDeepData(RequestCallBack callBack, Map<String, String> params, int tag);
+
+    void getQueryMonitorTypePointName(RequestCallBack callBack, Map<String, String> params, int tag);
 }

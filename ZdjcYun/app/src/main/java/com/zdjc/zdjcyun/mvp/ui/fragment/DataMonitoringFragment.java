@@ -36,4 +36,8 @@ public class DataMonitoringFragment extends BaseFragment<FragmentDataMonitoringB
     public void initView() {
 
     }
+
+
+
+
 }

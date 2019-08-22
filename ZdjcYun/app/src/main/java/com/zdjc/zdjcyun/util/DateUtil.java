@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -110,7 +111,6 @@ public class DateUtil {
 
     public static long formatDuring(String data) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         long millionSeconds = 0;//毫秒
         try {
             millionSeconds = sdf.parse(data).getTime();

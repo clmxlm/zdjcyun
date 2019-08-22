@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView
+            android:layout_width="@dimen/MY_DP_260"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white"
+            android:scrollbars="none">
+
+
+    <!-- 侧滑菜单内容 -->
+    <LinearLayout
+        android:id="@+id/drawer_view"
+        android:layout_width="@dimen/MY_DP_260"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="选择指标和测点"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rl_left"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:layout_height="match_parent"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rl_right"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:background="#eeeeee"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+</layout>

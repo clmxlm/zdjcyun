@@ -34,8 +34,8 @@ android {
         applicationId "com.zdjc.zdjcyun"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 13
-        versionName "3.1.2"
+        versionCode 15
+        versionName "3.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 
@@ -131,6 +131,10 @@ dependencies {
     implementation 'com.shuyu:GSYVideoPlayer:6.0.0-beta'
     implementation 'com.youth.banner:banner:1.4.10'
     implementation 'com.yanzhenjie:permission:1.1.0'
+    //依赖STOMP协议的Android实现
+    implementation 'com.github.NaikSoftware:StompProtocolAndroid:1.6.4'
+    //StompProtocolAndroid 依赖于webSocket的标准实现
+    implementation 'org.java-websocket:Java-WebSocket:1.3.0'
 //    //更多ijk的编码支持
 //    implementation 'com.shuyu:gsyVideoPlayer-ex_so:6.0.0-beta'
 }

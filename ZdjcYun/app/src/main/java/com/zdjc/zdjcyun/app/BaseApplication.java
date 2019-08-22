@@ -9,9 +9,9 @@ import com.blankj.utilcode.utils.CrashUtils;
 import com.blankj.utilcode.utils.LogUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.blankj.utilcode.utils.Utils;
-import com.squareup.leakcanary.LeakCanary;
+
+import com.zdjc.zdjcyun.BuildConfig;import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-import com.zdjc.zdjcyun.BuildConfig;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -48,6 +48,7 @@ public class BaseApplication extends Application {
         // 设置开启日志,发布时请关闭日志
         JPushInterface.setDebugMode(true);
         //初始化极光推送sdk
+        JPushInterface.setAlias(getContext(),0,"dataMonitoring");
         JPushInterface.init(this);
     }
 
@@ -62,7 +63,6 @@ public class BaseApplication extends Application {
         //注意该方法要再setContentView方法之前实现
         SDKInitializer.initialize(this);
     }
-
 //    private void initDB() {
 //        GreenDaoHelper.initDatabase(this);
 //    }

@@ -27,9 +27,11 @@ import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
 import com.zdjc.zdjcyun.mvp.entity.MemberMsgEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorPointName;
 import com.zdjc.zdjcyun.mvp.entity.MonitorTypeNameEntity;
+import com.zdjc.zdjcyun.mvp.entity.MonitorTypePointNameEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorViewEntity;
 import com.zdjc.zdjcyun.mvp.entity.NormDeepEntity;
+import com.zdjc.zdjcyun.mvp.entity.OperationLogEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.PictureEntity;
@@ -47,6 +49,7 @@ import com.zdjc.zdjcyun.mvp.entity.UpdatePasswordEntity;
 import com.zdjc.zdjcyun.mvp.entity.UserBean;
 import com.zdjc.zdjcyun.mvp.entity.UserEntity;
 import com.zdjc.zdjcyun.mvp.entity.VersionEntity;
+import com.zdjc.zdjcyun.mvp.entity.VideoEntity;
 import com.zdjc.zdjcyun.mvp.entity.WarningEntity;
 import com.zdjc.zdjcyun.mvp.entity.WillProjectedEntity;
 import com.zdjc.zdjcyun.network.RetrofitManager;
@@ -356,5 +359,20 @@ public class HttpRequestImpl implements IHttpRequest {
     @Override
     public Observable<DocumentEntity> getDocuments(Map<String, String> params) {
         return RetrofitManager.getInstance().getAppService().getDocuments(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<OperationLogEntity> queryOperated(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryOperated(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<MonitorTypePointNameEntity> queryMonitorTypePointName(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryMonitorTypePointName(getCacheControl(),"Bearer"+" "+getToken(), params);
+    }
+
+    @Override
+    public Observable<VideoEntity> queryVideoBySectorId(Map<String, String> params) {
+        return RetrofitManager.getInstance().getAppService().queryVideoBySectorId(getCacheControl(),"Bearer"+" "+getToken(), params);
     }
 }

@@ -15,6 +15,7 @@ import com.zdjc.zdjcyun.mvp.entity.WillProjectedEntity;
 import com.zdjc.zdjcyun.mvp.presenter.impl.ProjectListPresenterImpl;
 import com.zdjc.zdjcyun.mvp.ui.activities.ProjectListActivity;
 import com.zdjc.zdjcyun.mvp.ui.activities.ProjectManageActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.VideoActivity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.ProjectRecycViewAdapter;
 import com.zdjc.zdjcyun.mvp.viewmodel.IProjectListModel;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
@@ -69,7 +70,7 @@ public class ProjectListModel extends BaseModel<ActivityProjectListBinding,Proje
             ((ProjectListActivity)UI).intent2Activity(ProjectManageActivity.class);
         });
         //视频监测模块
-        mBinder.llVideoSurveillance.setOnClickListener(v -> ToastUtils.showShortToast("开发中..."));
+        mBinder.llVideoSurveillance.setOnClickListener(v -> ((ProjectListActivity) UI).intent2Activity(VideoActivity.class));
         //所有项目点击事件
         mBinder.llProject.setOnClickListener(v -> {
             ((ProjectListActivity) UI).intent2Activity(ProjectManageActivity.class);

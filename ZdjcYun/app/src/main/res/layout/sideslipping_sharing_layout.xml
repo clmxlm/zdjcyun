@@ -54,7 +54,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:paddingLeft="@dimen/MY_DP_5"
-                        android:text="中大检测"
+                        android:text="ZD智能监测"
                         android:textColor="@color/white"
                         android:textSize="@dimen/MY_SP_19"/>
 

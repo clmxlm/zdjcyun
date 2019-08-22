@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/MY_DP_5"
             android:gravity="center"
-            android:text="-中大检测客户端V3.0-"
+            android:text="-中大检测客户端V1.0-"
             android:layout_alignParentBottom="true"
             android:textColor="#ffffff"
             android:layout_marginBottom="@dimen/MY_DP_60"

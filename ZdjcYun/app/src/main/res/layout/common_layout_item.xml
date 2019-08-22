@@ -9,16 +9,18 @@
     android:id="@+id/ll_project_manage"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_project_manage"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/MY_DP_44"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/MY_DP_5"
+        android:orientation="horizontal"
         android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tv_project_k"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="6"
             android:layout_height="wrap_content"
             android:text="K段: 麓云路站"
             android:textColor="#161617"
@@ -26,31 +28,39 @@
             android:layout_marginLeft="@dimen/MY_DP_16"/>
 
 
-        <ImageView
-            android:id="@+id/iv_more"
-            android:layout_width="@dimen/MY_DP_12"
-            android:layout_height="@dimen/MY_DP_12"
-            android:layout_marginRight="@dimen/MY_DP_16"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_more"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_state_normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="监控正常"
-            android:textSize="@dimen/MY_SP_12"
-            android:layout_toLeftOf="@+id/iv_more"
-            android:layout_marginRight="@dimen/MY_DP_16"/>
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="@dimen/MY_DP_12"
+                android:layout_height="@dimen/MY_DP_12"
+                android:layout_marginRight="@dimen/MY_DP_16"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/icon_more"/>
 
-        <ImageView
-            android:id="@+id/iv_state_normal"
-            android:layout_width="@dimen/MY_DP_16"
-            android:layout_height="@dimen/MY_DP_16"
-            android:layout_marginRight="@dimen/MY_DP_110"
-            android:layout_alignParentRight="true"/>
+            <TextView
+                android:id="@+id/tv_state_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="监控正常"
+                android:textSize="@dimen/MY_SP_12"
+                android:layout_toLeftOf="@+id/iv_more"
+                android:layout_marginRight="@dimen/MY_DP_16"/>
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_state_normal"
+                android:layout_width="@dimen/MY_DP_16"
+                android:layout_height="@dimen/MY_DP_16"
+                android:layout_marginRight="@dimen/MY_DP_110"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_project_alarm"

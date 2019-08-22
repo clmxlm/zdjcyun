@@ -73,9 +73,12 @@ public class ProjectRecycViewAdapter extends BaseRecyclerAdapter<MonitorViewEnti
         Collections.reverse(valueList);
 
 
-
         for (MonitorViewEntity.DataBean.ListBean valueBean : valueList) {
-            xValues.add(valueBean.getMonitorTypeName());
+            if (null == valueBean.getMonitorTypeName()){
+                xValues.add("暂无指标");
+            }else {
+                xValues.add(valueBean.getMonitorTypeName());
+            }
             yValue1.add((float) valueBean.getLevel1());
             yValue2.add((float) valueBean.getLevel2());
             yValue3.add((float) valueBean.getLevel3());

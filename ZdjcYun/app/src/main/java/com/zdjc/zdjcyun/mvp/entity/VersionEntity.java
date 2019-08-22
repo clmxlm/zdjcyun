@@ -50,10 +50,28 @@ public class VersionEntity {
          */
 
         private boolean newVersion;
+        private boolean forcedUpdate;
         private String version;
         private String url;
+        private String versionDescription;
 
-        public boolean isNewVersion() {
+        public boolean isForcedUpdate() {
+            return forcedUpdate;
+        }
+
+        public void setForcedUpdate(boolean forcedUpdate) {
+            this.forcedUpdate = forcedUpdate;
+        }
+
+        public String getVersionDescription() {
+            return versionDescription;
+        }
+
+        public void setVersionDescription(String versionDescription) {
+            this.versionDescription = versionDescription;
+        }
+
+        public boolean getNewVersion() {
             return newVersion;
         }
 

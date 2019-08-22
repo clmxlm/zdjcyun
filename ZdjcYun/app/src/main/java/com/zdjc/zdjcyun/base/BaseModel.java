@@ -13,6 +13,7 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.mvp.ui.activities.LoginActivity;
 import com.zdjc.zdjcyun.network.RequestCallBack;
+import com.zdjc.zdjcyun.util.AppUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -62,8 +63,7 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
 
     @Override
     public void onCreate() {
-        mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
-
+        mTfLight = Typeface.createFromAsset(UI.getConText().getAssets(), "OpenSans-Light.ttf");
     }
 
     @Override
@@ -102,7 +102,6 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
 
     @Override
     public void beforeRequest(int tag) {
-
         onBeforeRequest(tag);
     }
 
@@ -163,6 +162,7 @@ public abstract class BaseModel<T extends ViewDataBinding, M extends IBaseContro
     public Context getContext() {
         return UI.getConText();
     }
+
 
 
 

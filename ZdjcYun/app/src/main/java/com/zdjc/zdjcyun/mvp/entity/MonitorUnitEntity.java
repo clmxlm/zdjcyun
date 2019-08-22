@@ -57,10 +57,10 @@ public class MonitorUnitEntity {
 
         private int monitorType;
         private String monitorTypeName;
-        private String unitA;
-        private String unitB;
-        private String unitC;
-        private String unitD;
+        private String unitAtype;
+        private String unitBtype;
+        private String unitCtype;
+        private String unitDtype;
 
         public int getMonitorType() {
             return monitorType;
@@ -78,36 +78,36 @@ public class MonitorUnitEntity {
             this.monitorTypeName = monitorTypeName;
         }
 
-        public String getUnitA() {
-            return unitA;
+        public String getUnitAtype() {
+            return unitAtype;
         }
 
-        public void setUnitA(String unitA) {
-            this.unitA = unitA;
+        public void setUnitAtype(String unitAtype) {
+            this.unitAtype = unitAtype;
         }
 
-        public String getUnitB() {
-            return unitB;
+        public String getUnitBtype() {
+            return unitBtype;
         }
 
-        public void setUnitB(String unitB) {
-            this.unitB = unitB;
+        public void setUnitBtype(String unitBtype) {
+            this.unitBtype = unitBtype;
         }
 
-        public String getUnitC() {
-            return unitC;
+        public String getUnitCtype() {
+            return unitCtype;
         }
 
-        public void setUnitC(String unitC) {
-            this.unitC = unitC;
+        public void setUnitCtype(String unitCtype) {
+            this.unitCtype = unitCtype;
         }
 
-        public String getUnitD() {
-            return unitD;
+        public String getUnitDtype() {
+            return unitDtype;
         }
 
-        public void setUnitD(String unitD) {
-            this.unitD = unitD;
+        public void setUnitDtype(String unitDtype) {
+            this.unitDtype = unitDtype;
         }
     }
 }

@@ -45,7 +45,7 @@ public class MeasuringPointModel extends BaseModel<ActivityMeasuringPointBinding
         measuringPointLeftRecycViewAdapter.setOnItemClickListener((view, position) -> {
             measuringPointLeftRecycViewAdapter.getPosition(position);
             measuringPointLeftRecycViewAdapter.notifyDataSetChanged();
-            measuringPointRightRecycViewAdapter.setDataList(pointList.get(position).getDetections());
+//            measuringPointRightRecycViewAdapter.setDataList(pointList.get(position).getDetections());
             measuringPointRightRecycViewAdapter.notifyDataSetChanged();
             leftPosition = position;
         });
@@ -76,10 +76,10 @@ public class MeasuringPointModel extends BaseModel<ActivityMeasuringPointBinding
             case 1:
                 pointList = (List<MeasuringPointEntity.DataBean>)bean;
 
-                measuringPointLeftRecycViewAdapter.setDataList(pointList);
+//                measuringPointLeftRecycViewAdapter.setDataList(pointList);
                 mBinder.rlLeft.setAdapter(measuringPointLeftRecycViewAdapter);
 
-                measuringPointRightRecycViewAdapter.setDataList(pointList.get(0).getDetections());
+//                measuringPointRightRecycViewAdapter.setDataList(pointList.get(0).getDetections());
                 mBinder.rlRight.setAdapter(measuringPointRightRecycViewAdapter);
                 break;
                 default:

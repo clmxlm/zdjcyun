@@ -24,9 +24,11 @@ import com.zdjc.zdjcyun.mvp.entity.MemberMsgEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorPointName;
 import com.zdjc.zdjcyun.mvp.entity.MapTypeEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorTypeNameEntity;
+import com.zdjc.zdjcyun.mvp.entity.MonitorTypePointNameEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorViewEntity;
 import com.zdjc.zdjcyun.mvp.entity.NormDeepEntity;
+import com.zdjc.zdjcyun.mvp.entity.OperationLogEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.PictureEntity;
@@ -44,6 +46,7 @@ import com.zdjc.zdjcyun.mvp.entity.UpdatePasswordEntity;
 import com.zdjc.zdjcyun.mvp.entity.UserBean;
 import com.zdjc.zdjcyun.mvp.entity.UserEntity;
 import com.zdjc.zdjcyun.mvp.entity.VersionEntity;
+import com.zdjc.zdjcyun.mvp.entity.VideoEntity;
 import com.zdjc.zdjcyun.mvp.entity.WarningEntity;
 import com.zdjc.zdjcyun.mvp.entity.WillProjectedEntity;
 
@@ -429,4 +432,21 @@ public interface IHttpRequest {
     Observable<DocumentEntity> getDocuments(Map<String, String> params);
 
 
+    /**
+     * 操作日志
+     * @return
+     */
+    Observable<OperationLogEntity> queryOperated(Map<String, String> params);
+
+    /**
+     * 查询区间下的指标集合对应指标下的测点集合
+     * @return
+     */
+    Observable<MonitorTypePointNameEntity> queryMonitorTypePointName(Map<String, String> params);
+
+    /**
+     * 查询项目下的视频集合
+     * @return
+     */
+    Observable<VideoEntity> queryVideoBySectorId(Map<String, String> params);
 }

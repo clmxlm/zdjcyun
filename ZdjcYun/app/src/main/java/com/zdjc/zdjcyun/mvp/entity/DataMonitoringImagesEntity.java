@@ -136,8 +136,8 @@ public class DataMonitoringImagesEntity {
              */
 
             private String monitorPointNumber;
-            private String picX;
-            private String picY;
+            private String picXaxis;
+            private String picYaxis;
             private int monitorType;
             private int status;
             private String terminalNumber;
@@ -151,20 +151,20 @@ public class DataMonitoringImagesEntity {
                 this.monitorPointNumber = monitorPointNumber;
             }
 
-            public String getPicX() {
-                return picX;
+            public String getPicXaxis() {
+                return picXaxis;
             }
 
-            public void setPicX(String picX) {
-                this.picX = picX;
+            public void setPicXaxis(String picXaxis) {
+                this.picXaxis = picXaxis;
             }
 
-            public String getPicY() {
-                return picY;
+            public String getPicYaxis() {
+                return picYaxis;
             }
 
-            public void setPicY(String picY) {
-                this.picY = picY;
+            public void setPicYaxis(String picYaxis) {
+                this.picYaxis = picYaxis;
             }
 
             public int getMonitorType() {

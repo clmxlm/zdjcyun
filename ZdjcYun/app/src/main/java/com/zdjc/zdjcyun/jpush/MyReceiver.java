@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.blankj.utilcode.utils.LogUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.zdjc.zdjcyun.mvp.ui.activities.MainActivity;
+import com.zdjc.zdjcyun.mvp.ui.activities.ProjectManageDetailActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +48,7 @@ public class MyReceiver extends BroadcastReceiver {
 				int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
 				LogUtils.i(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 
-				Intent i = new Intent(context, MainActivity.class);
+				Intent i = new Intent(context, ProjectManageDetailActivity.class);
 				i.putExtras(bundle);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -56,7 +57,7 @@ public class MyReceiver extends BroadcastReceiver {
 				LogUtils.i(TAG, "[MyReceiver] 用户点击打开了通知");
 				ToastUtils.showShortToast("用户点击打开了通知");
 				//打开自定义的Activity
-				Intent i = new Intent(context, MainActivity.class);
+				Intent i = new Intent(context, ProjectManageDetailActivity.class);
 				i.putExtras(bundle);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -12,6 +12,8 @@
     <color name="huise">#cdcdcd</color>
     <color name="view_background">#acacac</color>
     <color name="white">#ffffff</color>
+    <color name="onclick_color">#ededfe</color>
+    <color name="unonclick_color">#f7f7fc</color>
     <color name="click_true">#f0f0f0</color>
     <color name="white_tou">#3fffffff</color>
 
@@ -108,6 +110,7 @@
 
     <color name="yellow_b3">#b39b61</color>
 
+    <color name="table_background">#e9e3f6</color>
     <color name="purple_bf">#bf5dee</color>
     <color name="purple_55">#553de6</color>
 

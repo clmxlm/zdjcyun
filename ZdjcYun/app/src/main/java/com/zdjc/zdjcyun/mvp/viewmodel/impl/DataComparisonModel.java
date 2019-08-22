@@ -334,9 +334,9 @@ public class DataComparisonModel extends BaseModel<ActivityDataComparisonBinding
 
             for (int i = 0; i < monitorUnitList.size(); i++) {
                 if (data.get(position).getMonitorType() == monitorUnitList.get(i).getMonitorType()){
-                    String otherUnit = monitorUnitList.get(i).getUnitA();
+                    String otherUnit = monitorUnitList.get(i).getUnitAtype();
                     PreferenceUtils.putString(getContext(),"otherUnit",otherUnit);
-                    String rateUnit = monitorUnitList.get(i).getUnitC();
+                    String rateUnit = monitorUnitList.get(i).getUnitCtype();
                     PreferenceUtils.putString(getContext(),"rateUnit",rateUnit);
                 }
             }

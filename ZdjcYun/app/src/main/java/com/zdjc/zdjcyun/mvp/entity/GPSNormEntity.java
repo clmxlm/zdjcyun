@@ -47,7 +47,7 @@ public class GPSNormEntity {
          */
 
         private int mapType;
-        private ArrayList<CommonDataVOsBean> commonDataVOs;
+        private ArrayList<CommonDataVOBean> commonDataVO;
 
         public int getMapType() {
             return mapType;
@@ -57,15 +57,15 @@ public class GPSNormEntity {
             this.mapType = mapType;
         }
 
-        public ArrayList<CommonDataVOsBean> getCommonDataVOs() {
-            return commonDataVOs;
+        public ArrayList<CommonDataVOBean> getCommonDataVO() {
+            return commonDataVO;
         }
 
-        public void setCommonDataVOs(ArrayList<CommonDataVOsBean> commonDataVOs) {
-            this.commonDataVOs = commonDataVOs;
+        public void setCommonDataVO(ArrayList<CommonDataVOBean> commonDataVO) {
+            this.commonDataVO = commonDataVO;
         }
 
-        public static class CommonDataVOsBean {
+        public static class CommonDataVOBean {
             /**
              * createDate : 2019-03-05 00:00:00
              * measuredDataX : 3121679.59008281

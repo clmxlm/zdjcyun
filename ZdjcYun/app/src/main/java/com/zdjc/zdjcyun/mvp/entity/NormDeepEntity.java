@@ -41,80 +41,80 @@ public class NormDeepEntity {
     }
 
     public static class DataBean {
-        private ArrayList<MeasuredDataXBean> measuredDataX;
-        private ArrayList<SingleChangeXBean> singleChangeX;
-        private ArrayList<TotalChangeXBean> totalChangeX;
-        private ArrayList<SpeedChangeXBean> speedChangeX;
-        private ArrayList<MeasuredDataYBean> measuredDataY;
-        private ArrayList<SingleChangeYBean> singleChangeY;
-        private ArrayList<TotalChangeYBean> totalChangeY;
-        private ArrayList<SpeedChangeYBean> speedChangeY;
+        private ArrayList<MeasuredDataxBean> measuredDatax;
+        private ArrayList<SingleChangexBean> singleChangex;
+        private ArrayList<TotalChangexBean> totalChangex;
+        private ArrayList<SpeedChangexBean> speedChangex;
+        private ArrayList<MeasuredDatayBean> measuredDatay;
+        private ArrayList<SingleChangeyBean> singleChangey;
+        private ArrayList<TotalChangeyBean> totalChangey;
+        private ArrayList<SpeedChangeyBean> speedChangey;
 
-        public ArrayList<MeasuredDataXBean> getMeasuredDataX() {
-            return measuredDataX;
+        public ArrayList<MeasuredDataxBean> getMeasuredDatax() {
+            return measuredDatax;
         }
 
-        public void setMeasuredDataX(ArrayList<MeasuredDataXBean> measuredDataX) {
-            this.measuredDataX = measuredDataX;
+        public void setMeasuredDatax(ArrayList<MeasuredDataxBean> measuredDatax) {
+            this.measuredDatax = measuredDatax;
         }
 
-        public ArrayList<SingleChangeXBean> getSingleChangeX() {
-            return singleChangeX;
+        public ArrayList<SingleChangexBean> getSingleChangex() {
+            return singleChangex;
         }
 
-        public void setSingleChangeX(ArrayList<SingleChangeXBean> singleChangeX) {
-            this.singleChangeX = singleChangeX;
+        public void setSingleChangex(ArrayList<SingleChangexBean> singleChangex) {
+            this.singleChangex = singleChangex;
         }
 
-        public ArrayList<TotalChangeXBean> getTotalChangeX() {
-            return totalChangeX;
+        public ArrayList<TotalChangexBean> getTotalChangex() {
+            return totalChangex;
         }
 
-        public void setTotalChangeX(ArrayList<TotalChangeXBean> totalChangeX) {
-            this.totalChangeX = totalChangeX;
+        public void setTotalChangex(ArrayList<TotalChangexBean> totalChangex) {
+            this.totalChangex = totalChangex;
         }
 
-        public ArrayList<SpeedChangeXBean> getSpeedChangeX() {
-            return speedChangeX;
+        public ArrayList<SpeedChangexBean> getSpeedChangex() {
+            return speedChangex;
         }
 
-        public void setSpeedChangeX(ArrayList<SpeedChangeXBean> speedChangeX) {
-            this.speedChangeX = speedChangeX;
+        public void setSpeedChangex(ArrayList<SpeedChangexBean> speedChangex) {
+            this.speedChangex = speedChangex;
         }
 
-        public ArrayList<MeasuredDataYBean> getMeasuredDataY() {
-            return measuredDataY;
+        public ArrayList<MeasuredDatayBean> getMeasuredDatay() {
+            return measuredDatay;
         }
 
-        public void setMeasuredDataY(ArrayList<MeasuredDataYBean> measuredDataY) {
-            this.measuredDataY = measuredDataY;
+        public void setMeasuredDatay(ArrayList<MeasuredDatayBean> measuredDatay) {
+            this.measuredDatay = measuredDatay;
         }
 
-        public ArrayList<SingleChangeYBean> getSingleChangeY() {
-            return singleChangeY;
+        public ArrayList<SingleChangeyBean> getSingleChangey() {
+            return singleChangey;
         }
 
-        public void setSingleChangeY(ArrayList<SingleChangeYBean> singleChangeY) {
-            this.singleChangeY = singleChangeY;
+        public void setSingleChangey(ArrayList<SingleChangeyBean> singleChangey) {
+            this.singleChangey = singleChangey;
         }
 
-        public ArrayList<TotalChangeYBean> getTotalChangeY() {
-            return totalChangeY;
+        public ArrayList<TotalChangeyBean> getTotalChangey() {
+            return totalChangey;
         }
 
-        public void setTotalChangeY(ArrayList<TotalChangeYBean> totalChangeY) {
-            this.totalChangeY = totalChangeY;
+        public void setTotalChangey(ArrayList<TotalChangeyBean> totalChangey) {
+            this.totalChangey = totalChangey;
         }
 
-        public ArrayList<SpeedChangeYBean> getSpeedChangeY() {
-            return speedChangeY;
+        public ArrayList<SpeedChangeyBean> getSpeedChangey() {
+            return speedChangey;
         }
 
-        public void setSpeedChangeY(ArrayList<SpeedChangeYBean> speedChangeY) {
-            this.speedChangeY = speedChangeY;
+        public void setSpeedChangey(ArrayList<SpeedChangeyBean> speedChangey) {
+            this.speedChangey = speedChangey;
         }
 
-        public static class MeasuredDataXBean {
+        public static class MeasuredDataxBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : 144.2606
@@ -140,7 +140,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class SingleChangeXBean {
+        public static class SingleChangexBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : -151.5035
@@ -166,7 +166,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class TotalChangeXBean {
+        public static class TotalChangexBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : -346.8203
@@ -192,7 +192,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class SpeedChangeXBean {
+        public static class SpeedChangexBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : -72.8223
@@ -218,7 +218,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class MeasuredDataYBean {
+        public static class MeasuredDatayBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : -72.8223
@@ -244,7 +244,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class SingleChangeYBean {
+        public static class SingleChangeyBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : 21.9995
@@ -270,7 +270,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class TotalChangeYBean {
+        public static class TotalChangeyBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : 402.1077
@@ -296,7 +296,7 @@ public class NormDeepEntity {
             }
         }
 
-        public static class SpeedChangeYBean {
+        public static class SpeedChangeyBean {
             /**
              * createDate : 2019-03-01 00:10:00
              * date : 38.3896

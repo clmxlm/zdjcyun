@@ -24,9 +24,11 @@ import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
 import com.zdjc.zdjcyun.mvp.entity.MemberMsgEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorPointName;
 import com.zdjc.zdjcyun.mvp.entity.MonitorTypeNameEntity;
+import com.zdjc.zdjcyun.mvp.entity.MonitorTypePointNameEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorUnitEntity;
 import com.zdjc.zdjcyun.mvp.entity.MonitorViewEntity;
 import com.zdjc.zdjcyun.mvp.entity.NormDeepEntity;
+import com.zdjc.zdjcyun.mvp.entity.OperationLogEntity;
 import com.zdjc.zdjcyun.mvp.entity.PageReportEntity;
 import com.zdjc.zdjcyun.mvp.entity.PersonMessageEntity;
 import com.zdjc.zdjcyun.mvp.entity.PictureEntity;
@@ -44,6 +46,7 @@ import com.zdjc.zdjcyun.mvp.entity.UpdatePasswordEntity;
 import com.zdjc.zdjcyun.mvp.entity.UserBean;
 import com.zdjc.zdjcyun.mvp.entity.UserEntity;
 import com.zdjc.zdjcyun.mvp.entity.VersionEntity;
+import com.zdjc.zdjcyun.mvp.entity.VideoEntity;
 import com.zdjc.zdjcyun.mvp.entity.WarningEntity;
 import com.zdjc.zdjcyun.mvp.entity.WillProjectedEntity;
 
@@ -334,5 +337,21 @@ public interface AppService {
     Observable<DocumentEntity> getDocuments(@Header("Cache-Control") String cacheControl,
                                              @Header("Authorization") String token,
                                              @QueryMap(encoded = true) Map<String, String> params);
+
+    @GET("operated/queryOperated")
+    Observable<OperationLogEntity> queryOperated(@Header("Cache-Control") String cacheControl,
+                                                @Header("Authorization") String token,
+                                                @QueryMap(encoded = true) Map<String, String> params);
+
+    @GET("point/queryMonitorTypePointName")
+    Observable<MonitorTypePointNameEntity> queryMonitorTypePointName(@Header("Cache-Control") String cacheControl,
+                                                                     @Header("Authorization") String token,
+                                                                     @QueryMap(encoded = true) Map<String, String> params);
+
+
+    @GET("video/queryVideoBySectorId")
+    Observable<VideoEntity> queryVideoBySectorId(@Header("Cache-Control") String cacheControl,
+                                                 @Header("Authorization") String token,
+                                                 @QueryMap(encoded = true) Map<String, String> params);
 
 }

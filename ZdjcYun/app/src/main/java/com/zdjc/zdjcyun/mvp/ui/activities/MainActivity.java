@@ -10,6 +10,7 @@ import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.base.BaseActivity;
 import com.zdjc.zdjcyun.databinding.ActivityMainBinding;
 import com.zdjc.zdjcyun.mvp.entity.MessageEntity;
+import com.zdjc.zdjcyun.mvp.entity.PushEntity;
 import com.zdjc.zdjcyun.mvp.viewmodel.impl.MainModel;
 import com.zdjc.zdjcyun.util.PreferenceUtils;
 
@@ -44,24 +45,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainModel>{
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        Bundle bundle = intent.getExtras();
-        if (bundle!=null){
-            String kk = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            Gson gson = new Gson();
-            MessageEntity listType = gson.fromJson(kk, MessageEntity.class);
-            String projectId = listType.getProjectId();
-            PreferenceUtils.putBoolean(this,"push",true);
-            PreferenceUtils.putInt(this,"projectId",Integer.valueOf(projectId));
-            intent2Activity(ProjectDetailActivity.class);
-        }
-
-
     }
 
     public void exit() {

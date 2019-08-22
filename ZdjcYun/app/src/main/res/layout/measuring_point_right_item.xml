@@ -16,38 +16,8 @@
            android:id="@+id/tv_monitorPoint"
            android:layout_width="match_parent"
            android:textSize="@dimen/MY_SP_16"
-           android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_smuNumber"
-            android:textSize="@dimen/MY_SP_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_smuChannel"
-            android:textSize="@dimen/MY_SP_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_sensorLongitude"
-            android:textSize="@dimen/MY_SP_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_sensorLatitude"
-            android:textSize="@dimen/MY_SP_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_point_status"
-            android:textSize="@dimen/MY_SP_16"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+           android:gravity="center"
+           android:layout_height="@dimen/MY_DP_50" />
 
     </LinearLayout>
 

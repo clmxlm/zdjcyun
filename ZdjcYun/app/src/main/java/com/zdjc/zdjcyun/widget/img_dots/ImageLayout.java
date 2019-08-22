@@ -144,9 +144,23 @@ public class ImageLayout extends FrameLayout{
             LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.layout_img_point, this, false);
             ImageView imageView =  view.findViewById(R.id.imgPoint);
             if (points.get(i).status==0){
+                //绿色 正常
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dot_point_img));
-            }else {
+            }else if (points.get(i).status==3){
+                //红色 三级告警
                 imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dot_point_img_red));
+            }else if (points.get(i).status==1){
+                //黄色 一级告警
+                imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dot_point_img_yellow));
+            }else if (points.get(i).status==2){
+                //橙色 二级告警
+                imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dot_point_img_orange));
+            }else if (points.get(i).status==-1){
+                //灰色 监测完毕
+                imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dot_point_img_gray));
+            }else {
+                //其它情况都是绿色
+                imageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.dot_point_img));
             }
             imageView.setTag(i);
             AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();

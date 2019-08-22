@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_title"
+        android:layout_width="@dimen/MY_DP_268"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:clickable="true"
+        android:background="@color/white"
+        android:focusable="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_50"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="选择指标"
+                android:textSize="@dimen/MY_SP_14"
+                android:textColor="#333333"
+                android:gravity="center"
+                android:background="#f7f7fc"
+                android:paddingLeft="@dimen/MY_DP_10"
+                android:layout_height="match_parent" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="选择测点"
+                android:textSize="@dimen/MY_SP_14"
+                android:textColor="#333333"
+                android:gravity="center"
+                android:paddingLeft="@dimen/MY_DP_10"
+                android:layout_height="match_parent" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/MY_DP_1"
+            android:background="#ececec"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_index"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="#f7f7fc"
+                android:layout_height="match_parent"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_point"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
+

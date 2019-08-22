@@ -5,11 +5,12 @@ import android.widget.TextView;
 
 import com.zdjc.zdjcyun.R;
 import com.zdjc.zdjcyun.mvp.entity.MeasuringPointEntity;
+import com.zdjc.zdjcyun.mvp.entity.VideoEntity;
 import com.zdjc.zdjcyun.mvp.ui.adapter.base.BaseRecyclerViewAdapter;
 import com.zdjc.zdjcyun.util.SuperViewHolder;
 
 
-public class MeasuringPointLeftRecycViewAdapter extends BaseRecyclerViewAdapter<MeasuringPointEntity.DataBean> {
+public class MeasuringPointLeftRecycViewAdapter extends BaseRecyclerViewAdapter<String> {
 
     private Context context;
     private int leftPosition=0;
@@ -35,7 +36,7 @@ public class MeasuringPointLeftRecycViewAdapter extends BaseRecyclerViewAdapter<
 
     private void fillValue(int position, SuperViewHolder viewHolder) {
         TextView tvMonitorTypeName = viewHolder.getView(R.id.tv_monitor_type_name);
-        tvMonitorTypeName.setText(getDataList().get(position).getMonitorTypeName());
+        tvMonitorTypeName.setText(getDataList().get(position));
         if (position==leftPosition){
             tvMonitorTypeName.setBackgroundColor(context.getResources().getColor(R.color.fragment_background));
         }else {
